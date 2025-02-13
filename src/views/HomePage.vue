@@ -1,63 +1,32 @@
-<script setup>
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
-</script>
-
 <template>
-  <Header />
-
-  <Banner />
-
-  <InfoCine />
-
-  <Carrusel />
-
-  <Mapa />
-
-  <Footer />
+  <div class="container">
+    <HomeHeader />
+    <LoginForm v-if="mostrarLogin" @mostrarRegistro="toggleRegistro" />
+    <RegisterForm v-else @mostrarLogin="toggleLogin" />
+    <InfoSection />
+    <Footer />
+  </div>
 </template>
 
-<style scoped>
-.banner {
-  width: 100%;
-  position: relative;
-}
+<script setup>
+import { ref } from 'vue';
+import HomeHeader from '@/components/HomeHeader.vue';
+import Footer from '@/components/HomeFooter.vue';
+import LoginForm from '@/components/LoginForm.vue';
+import RegisterForm from '@/components/RegisterForm.vue';
+import InfoSection from '@/components/InfoSection.vue';
 
-.banner-image {
-  width: 100%;
-  height: auto;
-}
+const mostrarLogin = ref(true);
 
-.info-section {
-  padding-top: 5%;
-}
+const toggleRegistro = () => (mostrarLogin.value = false);
+const toggleLogin = () => (mostrarLogin.value = true);
+</script>
 
-.info-content {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 260px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.info-logo-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 40px;
-  width: 30%;
-}
-
-.info-logo {
-  width: 100%;
-  max-width: 250px;
-}
-
-.info-description {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  width: 400px;
+<style lang="scss" scoped>
+.container {
+  max-width: 800px;
+  margin: auto;
+  flex: 1;
+  padding-top: 20px; 
 }
 </style>

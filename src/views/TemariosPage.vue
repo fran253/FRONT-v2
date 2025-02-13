@@ -1,8 +1,7 @@
 <script setup lang="ts">
     import { ref } from "vue";
     import CardTemario from "@/components/CardTemario.vue";
-    import Header from "@/components/Header.vue";
-    import Footer from "@/components/Footer.vue";
+
 
 
     interface Temario {

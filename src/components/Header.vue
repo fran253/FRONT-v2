@@ -1,59 +1,66 @@
-<script>
-export default {
-  name: "Header",
-};
-</script>
-
 <template>
-  <header class="header">
-    <div class="logo">
-      <img src="../images/logo.png" alt="logo" class="logo-image">
-    </div>
-    <nav class="menu">
-      <router-link to="/peliculas">PELICULAS</router-link>
-      <router-link to="#">MENU</router-link>
-      <router-link to="#ENCUENTRANOS">
-        <img src="../images/chincheta.png" alt="Ubicación">
+    <v-app-bar app class="header" height="80">
+      <v-btn icon @click="$emit('toggle-sidebar')" class="mobile-menu-btn">
+        <v-icon>mdi-menu</v-icon>
+      </v-btn>
+  
+      <v-toolbar-title>Plataforma de Aprendizaje</v-toolbar-title>
+  
+      <v-spacer></v-spacer>
+  
+      <!-- Buscador -->
+      <v-text-field
+        v-model="search"
+        label="Buscar cursos..."
+        append-icon="mdi-magnify"
+        single-line
+        hide-details
+        class="search-bar"
+        @input="$emit('update-search', search)"
+      ></v-text-field>
+  
+      <router-link to="/perfil" class="perfil-link">
+        Perfil
       </router-link>
-    </nav>
-  </header>
-</template>
-
-<style scoped>
-.header {
-    margin-top: 4%;
-    margin-bottom: 1.5%;
-    padding: 1px 0;
-
-    .logo {
-        .logo-image {
-            width: 250px; 
-            height: auto;
-        }
+    </v-app-bar>
+  </template>
+  
+  <script setup>
+  import { ref } from 'vue';
+  
+  const search = ref('');
+  </script>
+  
+  <style lang="scss" scoped>
+  .header {
+    background: #B0B0B0; /* Gris */
+    color: white;
+    padding: 10px;
+  }
+  
+  .search-bar {
+    max-width: 400px;
+    min-width: 300px;
+    background: white;
+    border-radius: 8px;
+  }
+  
+  .perfil-link {
+    margin-left: 15px;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-weight: bold;
+    transition: opacity 0.2s;
+  
+    &:hover {
+      opacity: 0.7;
     }
-
-    .menu {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000; 
-        background-color: #FFC300;
-        display: flex;
-        justify-content: center; 
-        padding: 19px 0;
-
-        a {
-            color: black;
-            text-decoration: none;
-            font-size: 1rem; 
-            font-family: 'Jura', sans-serif;
-            margin: 0 50px; 
-
-            &:hover {
-                color: #333333;
-            }
-        }
+  }
+  
+  .mobile-menu-btn {
+    @media (min-width: 769px) {
+      display: none;
     }
-}
-</style>
+  }
+  </style>
+  
