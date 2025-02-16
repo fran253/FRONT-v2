@@ -6,18 +6,18 @@
       <Sidebar v-model="drawer" />
 
       <div class="content">
-        <h1 class="titulo">Listado de Cursos</h1>
-
         <v-container class="cursos-container">
           <v-row align="start" justify="start">
-            <v-col v-for="curso in cursosFiltrados" :key="curso.titulo" cols="12" sm="6" md="4" lg="3">
+            <v-col v-for="curso in cursosFiltrados" :key="curso.id" cols="12" sm="6" md="4" lg="3">
               <CardCurso 
+                :id="curso.id"
                 :titulo="curso.titulo"
                 :subtitulo="curso.subtitulo"
                 :descripcion="curso.descripcion"
                 :imagen="curso.imagen"
               />
             </v-col>
+
           </v-row>
         </v-container>
       </div>
@@ -39,30 +39,35 @@ const searchQuery = ref('');
 
 const cursos = [
   { 
+    id: 1,
     titulo: 'Bachillerato', 
     subtitulo: 'Educación secundaria superior', 
     descripcion: 'Cursos de 1º y 2º de bachillerato con distintas modalidades.', 
     imagen: 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg' 
   },
   { 
+    id: 2,
     titulo: 'Secundaria', 
     subtitulo: 'Educación básica', 
     descripcion: '4 años de educación obligatoria para adolescentes.', 
     imagen: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' 
   },
   { 
+    id: 3,
     titulo: 'Primaria', 
     subtitulo: 'Educación infantil', 
     descripcion: 'Educación para niños de 6 a 12 años.', 
     imagen: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' 
   },
   { 
+    id: 4,
     titulo: 'Grado Universitario', 
     subtitulo: 'Carreras universitarias', 
     descripcion: 'Programas académicos de nivel superior.', 
     imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
-  },
+  }
 ];
+
 
 const cursosFiltrados = computed(() => {
   if (!searchQuery.value) return cursos;
@@ -85,9 +90,10 @@ const filtrarCursos = (query) => {
 }
 
 .content {
+  margin-top: 2%;
   flex: 1;
   padding: 20px;
-  margin-left: 250px;
+  margin-left: 10%;
 }
 
 .titulo {
