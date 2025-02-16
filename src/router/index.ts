@@ -7,8 +7,8 @@ import PerfilPage from "@/views/PerfilPage.vue";
 
 const routes = [
   { path: "/", component: HomeView },
-  { path: "/asignaturas/:idCurso", component: AsignaturasPage, props: true }, // ruta para mostrar asignaturas de un curso
-  { path: "/temarios", component: TemariosPage },
+  { path: "/asignaturas/:idCurso", component: AsignaturasPage, props: true },
+  { path: "/temarios/:idAsignatura", component: TemariosPage, props: true },
   { path: "/cursos", component: CursosPage },
   { path: "/perfil", component: PerfilPage }
 ];

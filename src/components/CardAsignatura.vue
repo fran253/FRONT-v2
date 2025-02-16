@@ -1,5 +1,23 @@
+<script setup lang="ts">
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const props = defineProps<{ 
+  asignatura: { 
+    id: number;
+    nombre: string;
+    imagen: string;
+  } 
+}>();
+
+const seleccionarAsignatura = () => {
+  router.push(`/temarios/${props.asignatura.id}`);
+};
+</script>
+
 <template>
-  <v-card class="mx-auto" max-width="400">
+  <v-card class="mx-auto" max-width="400" @click="seleccionarAsignatura">
     <v-img
       class="align-end text-white"
       height="200"
@@ -19,21 +37,3 @@
     </v-card-actions>
   </v-card>
 </template>
-
-<script setup lang="ts">
-import { ref, defineProps } from "vue";
-
-const asignaturas = ref([
-  { id: 1, nombre: "Matemáticas", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" },
-  { id: 2, nombre: "Historia", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" },
-  { id: 3, nombre: "Física", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" },
-]);
-
-defineProps<{ 
-  asignatura: { 
-    id: number;
-    nombre: string;
-    imagen: string;
-  } 
-}>();
-</script>
