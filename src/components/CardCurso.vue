@@ -13,12 +13,20 @@ const curso = defineProps({
 });
 
 const show = ref(false);
+const misCursos = ref(JSON.parse(localStorage.getItem('misCursos') || '[]'));
 
 const seleccionarCurso = () => {
   if (curso.id) {
     router.push(`/asignaturas/${curso.id}`);
   } else {
     console.error("⚠️ Error: El curso no tiene un ID asignado", curso);
+  }
+};
+
+const agregarAMisCursos = () => {
+  if (!misCursos.value.some(c => c.id === curso.id)) {
+    misCursos.value.push(curso);
+    localStorage.setItem('misCursos', JSON.stringify(misCursos.value));
   }
 };
 </script>
@@ -36,11 +44,8 @@ const seleccionarCurso = () => {
     </v-card-subtitle>
 
     <v-card-actions>
-      <v-btn color="orange-lighten-2" text>Ver más</v-btn>
+      <v-btn icon="mdi-plus" variant="flat" color="orange" class="text-white" @click.stop="agregarAMisCursos">+</v-btn>
 
-      <v-spacer></v-spacer>
-
-      <v-btn :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click.stop="show = !show"></v-btn>
     </v-card-actions>
 
     <v-expand-transition>
@@ -52,3 +57,9 @@ const seleccionarCurso = () => {
   </v-card>
 </template>
 
+<style scoped>
+.text-white {
+  color: white;
+  font-size: 150%;
+}
+</style>
