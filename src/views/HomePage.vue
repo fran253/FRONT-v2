@@ -11,7 +11,6 @@
 <script setup>
 import { ref } from 'vue';
 import HomeHeader from '@/components/HomeHeader.vue';
-import Footer from '@/components/HomeFooter.vue';
 import LoginForm from '@/components/LoginForm.vue';
 import RegisterForm from '@/components/RegisterForm.vue';
 import InfoSection from '@/components/InfoSection.vue';

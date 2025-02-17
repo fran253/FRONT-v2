@@ -9,6 +9,10 @@ import CardAsignatura from "@/components/CardAsignatura.vue";
 const route = useRoute();
 const drawer = ref(false);
 const idCurso = ref(route.params.idCurso); 
+const items = ref([
+  { title: 'Cursos', disabled: false, href: '/cursos' },
+  { title: 'Asignaturas', disabled: false },
+]);
 
 const asignaturas = ref([
   { id: 1, cursoId: 1, nombre: "Matemáticas", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" },
@@ -27,6 +31,13 @@ watchEffect(() => {
   <v-app>
     <Header @toggle-sidebar="drawer = !drawer" />
 
+    <!-- inicio breadcrumb -->
+    <v-breadcrumbs class="breadcrumbs" :items="items">
+      <template v-slot:prepend>
+          <v-icon icon="$vuetify" size="small"></v-icon>
+        </template>
+      </v-breadcrumbs>
+      <!-- fin breadcrumb -->
     <v-container class="main-container">
       <Sidebar v-model="drawer" />
 
@@ -47,6 +58,18 @@ watchEffect(() => {
 
 
 <style lang="scss" scoped>
+.breadcrumbs{
+  margin-left:5% ;
+  margin-top: 6%;
+}
+
+.content {
+  margin-top: -4%;
+  flex: 1;
+  padding: 20px;
+  margin-left: 1%;
+}
+
 .main-container {
   display: flex;
   gap: 20px;
@@ -54,12 +77,6 @@ watchEffect(() => {
   padding-top: 64px;
 }
 
-.content {
-  margin-top: 2%;
-  flex: 1;
-  padding: 20px;
-  margin-left: 10%;
-}
 
 .asignaturas-container {
   padding: 20px;

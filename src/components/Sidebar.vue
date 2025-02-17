@@ -1,12 +1,32 @@
 <template>
-  <v-navigation-drawer 
+  <v-navigation-drawer
     v-model="drawer"
     :permanent="!isMobile"
+    expand-on-hover
+    rail
     app
     class="sidebar"
   >
+    <!-- Avatar y usuario -->
     <v-list>
-      <v-list-item v-for="item in menuItems" :key="item.text" link :to="item.route">
+      <v-list-item
+        prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
+        subtitle="sandra_a88@gmail.com"
+        title="Sandra Adams"
+      ></v-list-item>
+    </v-list>
+
+    <v-divider></v-divider>
+
+    <!-- Menú de navegación -->
+    <v-list density="compact" nav>
+      <v-list-item
+        v-for="item in menuItems"
+        :key="item.text"
+        link
+        :to="item.route"
+        :prepend-icon="item.icon"
+      >
         <v-list-item-title>{{ item.text }}</v-list-item-title>
       </v-list-item>
     </v-list>
@@ -26,29 +46,30 @@ const drawer = ref(!mobile.value);
 const isMobile = computed(() => mobile.value);
 
 const menuItems = [
-{ text: "Cursos", route: "/cursos" },
-{ text: "Mis Cursos", route: "/mis-cursos" },
-{ text: "Configuración", route: "/configuracion" }
+  { text: "Cursos", route: "/cursos", icon: "mdi-school" },
+  { text: "Mis Cursos", route: "/mis-cursos", icon: "mdi-book-open-variant" },
+  { text: "Configuración", route: "/configuracion", icon: "mdi-cog" }
 ];
 </script>
 
 <style lang="scss" scoped>
 .sidebar {
-  width: 250px;
   background: #ffae6c;
-  color: rgb(255, 255, 255);
-  padding: 20px;
+  color: white;
   min-height: 100vh;
   position: fixed;
   left: 0;
-  top: 0;
+  top:0;
   bottom: 0;
   z-index: 1000;
   border-right: 3px solid #FF5500;
 }
+.v-list-item{
+  margin-top: 10%;
 
+}
 .v-list-item-title {
-  color: rgb(255, 255, 255);
+  color: white;
   font-weight: bold;
 }
 

@@ -1,32 +1,3 @@
-<template>
-  <v-app>
-    <Header @toggle-sidebar="drawer = !drawer" @update-search="filtrarCursos" />
-
-    <v-container class="main-container">
-      <Sidebar v-model="drawer" />
-
-      <div class="content">
-        <v-container class="cursos-container">
-          <v-row align="start" justify="start">
-            <v-col v-for="curso in cursosFiltrados" :key="curso.id" cols="12" sm="6" md="4" lg="3">
-              <CardCurso 
-                :id="curso.id"
-                :titulo="curso.titulo"
-                :subtitulo="curso.subtitulo"
-                :descripcion="curso.descripcion"
-                :imagen="curso.imagen"
-              />
-            </v-col>
-
-          </v-row>
-        </v-container>
-      </div>
-    </v-container>
-
-    <Footer />
-  </v-app>
-</template>
-
 <script setup>
 import { ref, computed } from 'vue';
 import Header from '@/components/Header.vue';
@@ -36,6 +7,9 @@ import CardCurso from '@/components/CardCurso.vue';
 
 const drawer = ref(false);
 const searchQuery = ref('');
+const items = ref([
+  { title: 'Cursos', disabled: false, href: '/cursos' },
+]);
 
 const cursos = [
   { 
@@ -65,9 +39,57 @@ const cursos = [
     subtitulo: 'Carreras universitarias', 
     descripcion: 'Programas académicos de nivel superior.', 
     imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
+  },
+  { 
+    id: 4,
+    titulo: 'Grado Universitario', 
+    subtitulo: 'Carreras universitarias', 
+    descripcion: 'Programas académicos de nivel superior.', 
+    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
+  },
+  { 
+    id: 4,
+    titulo: 'Grado Universitario', 
+    subtitulo: 'Carreras universitarias', 
+    descripcion: 'Programas académicos de nivel superior.', 
+    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
+  },
+  { 
+    id: 4,
+    titulo: 'Grado Universitario', 
+    subtitulo: 'Carreras universitarias', 
+    descripcion: 'Programas académicos de nivel superior.', 
+    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
+  },
+  { 
+    id: 4,
+    titulo: 'Grado Universitario', 
+    subtitulo: 'Carreras universitarias', 
+    descripcion: 'Programas académicos de nivel superior.', 
+    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
+  },
+  { 
+    id: 4,
+    titulo: 'Grado Universitario', 
+    subtitulo: 'Carreras universitarias', 
+    descripcion: 'Programas académicos de nivel superior.', 
+    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
+  },
+  { 
+    id: 4,
+    titulo: 'Grado Universitario', 
+    subtitulo: 'Carreras universitarias', 
+    descripcion: 'Programas académicos de nivel superior.', 
+    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
+  },
+  { 
+    id: 4,
+    titulo: 'Grado Universitario', 
+    subtitulo: 'Carreras universitarias', 
+    descripcion: 'Programas académicos de nivel superior.', 
+    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
   }
 ];
-
 
 const cursosFiltrados = computed(() => {
   if (!searchQuery.value) return cursos;
@@ -81,7 +103,59 @@ const filtrarCursos = (query) => {
 };
 </script>
 
+
+<template>
+  <v-app>
+    <Header @toggle-sidebar="drawer = !drawer" @update-search="filtrarCursos" />
+
+      <!-- inicio breadcrumb -->
+      <v-breadcrumbs class="breadcrumbs" :items="items">
+      <template v-slot:prepend>
+          <v-icon icon="$vuetify" size="small"></v-icon>
+        </template>
+      </v-breadcrumbs>
+      <!-- fin breadcrumb -->
+    <v-container class="main-container">
+      <Sidebar v-model="drawer" />
+
+      <div class="content">
+        <v-container class="cursos-container">
+          <v-row align="start" justify="start">
+            <v-col v-for="curso in cursosFiltrados" :key="curso.id" cols="12" sm="6" md="4" lg="3">
+              <CardCurso 
+                :id="curso.id"
+                :titulo="curso.titulo"
+                :subtitulo="curso.subtitulo"
+                :descripcion="curso.descripcion"
+                :imagen="curso.imagen"
+              />
+            </v-col>
+
+          </v-row>
+        </v-container>
+      </div>
+    </v-container>
+
+    <Footer />
+  </v-app>
+</template>
+
+
+
 <style lang="scss" scoped>
+
+.breadcrumbs{
+  margin-left:5% ;
+  margin-top: 6%;
+}
+
+.content {
+  margin-top: -4%;
+  flex: 1;
+  padding: 20px;
+  margin-left: 1%;
+}
+
 .main-container {
   display: flex;
   gap: 20px;
@@ -89,12 +163,7 @@ const filtrarCursos = (query) => {
   padding-top: 64px;
 }
 
-.content {
-  margin-top: 2%;
-  flex: 1;
-  padding: 20px;
-  margin-left: 10%;
-}
+
 
 .titulo {
   text-align: center;
