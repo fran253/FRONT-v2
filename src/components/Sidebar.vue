@@ -1,9 +1,8 @@
 <template>
   <v-navigation-drawer
     v-model="drawer"
-    :permanent="!isMobile"
-    expand-on-hover
-    rail
+    :width="isExpanded ? 250 : 80"
+    :rail="!isExpanded"
     app
     class="sidebar"
   >
@@ -13,23 +12,37 @@
         prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
         subtitle="sandra_a88@gmail.com"
         title="Sandra Adams"
-      ></v-list-item>
+        @click="expandSidebar">
+        <template v-slot:append>
+          <v-btn
+            v-if="isExpanded"
+            icon
+            variant="text"
+            @click.stop="toggleSidebar">
+
+            <v-icon>mdi-chevron-left</v-icon>
+          </v-btn>
+        </template>
+      </v-list-item>
     </v-list>
+    <!-- end Avatar y usuario -->
 
     <v-divider></v-divider>
 
-    <!-- Menú de navegación -->
+    <!-- Opciones -->
     <v-list density="compact" nav>
       <v-list-item
         v-for="item in menuItems"
         :key="item.text"
         link
         :to="item.route"
-        :prepend-icon="item.icon"
-      >
-        <v-list-item-title>{{ item.text }}</v-list-item-title>
+        :prepend-icon="item.icon">
+
+        <v-list-item-title v-if="isExpanded">{{ item.text }}</v-list-item-title>
       </v-list-item>
     </v-list>
+    <!-- end Opciones -->
+
   </v-navigation-drawer>
 
   <v-btn v-if="isMobile" icon @click="drawer = !drawer" class="menu-btn">
@@ -42,32 +55,38 @@ import { ref, computed } from 'vue';
 import { useDisplay } from 'vuetify';
 
 const { mobile } = useDisplay();
-const drawer = ref(!mobile.value);
+const drawer = ref(true);
+const isExpanded = ref(false);
 const isMobile = computed(() => mobile.value);
 
 const menuItems = [
-  { text: "Cursos", route: "/cursos", icon: "mdi-school" },
-  { text: "Mis Cursos", route: "/mis-cursos", icon: "mdi-book-open-variant" },
-  { text: "Configuración", route: "/configuracion", icon: "mdi-cog" }
+  { text: "Cursos", route: "/cursos", icon: "md:home" },
+  { text: "Mis Cursos", route: "/mis-cursos", icon: "md:folder_open" },
+  { text: "Configuración", route: "/configuracion", icon: "md:home" }
 ];
+
+const toggleSidebar = () => {
+  isExpanded.value = !isExpanded.value;
+};
+
+const expandSidebar = () => {
+  isExpanded.value = true; // Solo expande el sidebar, no lo cierra si ya está abierto
+};
 </script>
 
 <style lang="scss" scoped>
 .sidebar {
-  background: #ffae6c;
+  background: #FF5500;
   color: white;
   min-height: 100vh;
-  position: fixed;
-  left: 0;
-  top:0;
-  bottom: 0;
-  z-index: 1000;
-  border-right: 3px solid #FF5500;
+  border-right: 3px solid #ffae6c;
+  transition: width 0.3s ease;
 }
-.v-list-item{
-  margin-top: 10%;
 
+.v-list-item {
+  margin-top: 10%;
 }
+
 .v-list-item-title {
   color: white;
   font-weight: bold;
