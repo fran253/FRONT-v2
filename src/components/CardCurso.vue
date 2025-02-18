@@ -1,45 +1,65 @@
-<script setup lang="ts">
-import { defineProps } from "vue";
-import { ref } from "vue";
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-        defineProps<{
-            curso: { 
-                nombre: string;
-                imagen: string;
-                descripcion: string;
-            }        
-        }>();
-    const show = ref(false);
+const router = useRouter();
+
+const curso = defineProps({
+  id: Number, 
+  titulo: String,
+  subtitulo: String,
+  descripcion: String,
+  imagen: String
+});
+
+const show = ref(false);
+const misCursos = ref(JSON.parse(localStorage.getItem('misCursos') || '[]'));
+
+const seleccionarCurso = () => {
+  if (curso.id) {
+    router.push(`/asignaturas/${curso.id}`);
+  } else {
+    console.error("⚠️ Error: El curso no tiene un ID asignado", curso);
+  }
+};
+
+const agregarAMisCursos = () => {
+  if (!misCursos.value.some(c => c.id === curso.id)) {
+    misCursos.value.push(curso);
+    localStorage.setItem('misCursos', JSON.stringify(misCursos.value));
+  }
+};
 </script>
 
 <template>
-    <v-card class="mx-auto" max-width="344">
-      <v-img height="200px" :src="curso.imagen" cover></v-img>
-  
-      <v-card-title>
-        {{ curso.nombre }}
-      </v-card-title>
-  
-      <v-card-subtitle>
-        {{ curso.descripcion }}
-      </v-card-subtitle>
-  
-      <v-card-actions>
-        <v-btn color="orange-lighten-2" text="Explorar"></v-btn>
-  
-        <v-spacer></v-spacer>
-  
-        <v-btn :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="show = !show"></v-btn>
-      </v-card-actions>
-  
-      <v-expand-transition>
-        <div v-show="show">
-          <v-divider></v-divider>
-  
-          <v-card-text>
-            Más información sobre el curso aquí.
-          </v-card-text>
-        </div>
-      </v-expand-transition>
-    </v-card>
+  <v-card class="curso-card" @click="seleccionarCurso">
+    <v-img :src="imagen" height="200px" cover></v-img>
+
+    <v-card-title>
+      {{ titulo }}
+    </v-card-title>
+
+    <v-card-subtitle>
+      {{ subtitulo }}
+    </v-card-subtitle>
+
+    <v-card-actions>
+      <v-btn icon="mdi-plus" variant="flat" color="orange" class="text-white" @click.stop="agregarAMisCursos">+</v-btn>
+
+    </v-card-actions>
+
+    <v-expand-transition>
+      <div v-show="show">
+        <v-divider></v-divider>
+        <v-card-text>{{ descripcion }}</v-card-text>
+      </div>
+    </v-expand-transition>
+  </v-card>
 </template>
+
+<style scoped>
+.text-white {
+  color: white;
+  font-size: 150%;
+}
+</style>
