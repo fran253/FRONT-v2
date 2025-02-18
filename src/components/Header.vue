@@ -8,10 +8,10 @@
   
       <v-spacer></v-spacer>
   
-      <!-- Buscador -->
+      <!-- Buscador universal -->
       <v-text-field
         v-model="search"
-        label="Buscar cursos..."
+        label="Buscar..."
         append-icon="mdi-magnify"
         single-line
         hide-details
@@ -24,7 +24,7 @@
   
 <script setup>
 import { ref } from 'vue';
-  
+
 const search = ref('');
 </script>
   
@@ -51,19 +51,6 @@ const search = ref('');
 
     ::v-deep(input) {
         color: #ff7424 !important; 
-    }
-}
-
-
-.perfil-link {
-    margin-left: 15px;
-    color: rgb(0, 0, 0);
-    text-decoration: none;
-    font-weight: bold;
-    transition: opacity 0.2s;
-
-    &:hover {
-      opacity: 0.7;
     }
 }
 
