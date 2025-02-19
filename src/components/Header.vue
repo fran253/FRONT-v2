@@ -32,6 +32,9 @@ const search = ref('');
 .header {
     background-color: #ff7424 !important; 
     padding: 0.1%;
+    position: fixed;
+    z-index: 1100;
+
 }
 
 .title {

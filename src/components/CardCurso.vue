@@ -19,11 +19,11 @@ const seleccionarCurso = () => {
   if (curso.id) {
     router.push(`/asignaturas/${curso.id}`);
   } else {
-    console.error("⚠️ Error: El curso no tiene un ID asignado", curso);
+    console.error(" falta id", curso);
   }
 };
 
-const agregarAMisCursos = () => {
+const añadirAMisCursos = () => {
   if (!misCursos.value.some(c => c.id === curso.id)) {
     misCursos.value.push(curso);
     localStorage.setItem('misCursos', JSON.stringify(misCursos.value));
@@ -44,7 +44,7 @@ const agregarAMisCursos = () => {
     </v-card-subtitle>
 
     <v-card-actions>
-      <v-btn icon="mdi-plus" variant="flat" color="orange" class="text-white" @click.stop="agregarAMisCursos">+</v-btn>
+      <v-btn icon="mdi-plus" variant="flat" color="orange" class="text-white" @click.stop="añadirAMisCursos">+</v-btn>
 
     </v-card-actions>
 
