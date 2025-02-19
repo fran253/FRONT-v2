@@ -1,3 +1,5 @@
+<script setup>
+</script>
 <template>
   <section class="login-section">
     <h2>Iniciar sesión</h2>
@@ -10,9 +12,9 @@
  
     </form>
   </section>
+
 </template>
 
-<script setup></script>
 
 <style lang="scss" scoped>
 .login-section {
