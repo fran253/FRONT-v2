@@ -1,50 +1,38 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
 const props = defineProps<{ 
-    temario: { 
-        id: number;
-        titulo: string;
-        subtitulo: string;
-        descripcion: string;
-        imagen: string;
-    } 
+  temario: { 
+    id: number;
+    titulo: string;
+    imagen: string;
+  } 
 }>();
 
 const seleccionarTemario = () => {
-    router.push(`/temarios/${props.temario.id}`);
+  router.push(`/temarios/${props.temario.id}/archivos-test`);
 };
 </script>
 
 <template>
-  <v-card class="mx-auto" max-width="500" @click="seleccionarTemario">
-    <v-container fluid>
-      <v-row dense>
-        <v-col cols="12">
-          <v-card>
-            <v-img
-              :src="temario.imagen"
-              class="align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-              height="200px"
-              cover
-            >
-              <v-card-title class="text-white">{{ temario.titulo }}</v-card-title>
-            </v-img>
+    <v-card class="mx-auto" max-width="400" @click="seleccionarTemario">
+      <v-img
+        class="align-end text-white"
+        height="200"
+        :src="temario.imagen"
+        cover
+      >
+        <v-card-title>{{ temario.titulo }}</v-card-title>
+      </v-img>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
+      <v-card-subtitle class="pt-4">
+        {{ temario.titulo }}
+      </v-card-subtitle>
 
-              <v-btn color="medium-emphasis" icon="mdi-heart" size="small"></v-btn>
-              <v-btn color="medium-emphasis" icon="mdi-bookmark" size="small"></v-btn>
-              <v-btn color="medium-emphasis" icon="mdi-share-variant" size="small"></v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-card>
+      <v-card-actions>
+      
+      </v-card-actions>
+    </v-card>
 </template>

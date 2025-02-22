@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
+  import CursosPage from "@/views/CursosPage.vue";
+  import { useRouter } from "vue-router";
 
-const router = useRouter();
+  const router = useRouter();
 
-const props = defineProps<{ 
-  asignatura: { 
-    id: number;
-    nombre: string;
-    imagen: string;
-  } 
-}>();
+  const props = defineProps<{ 
+    asignatura: { 
+      id: number;
+      nombre: string;
+      imagen: string;
+    } 
+  }>();
 
-const seleccionarAsignatura = () => {
-  router.push(`/temarios/${props.asignatura.id}`);
-};
+  const seleccionarAsignatura = () => {
+      router.push(`/temarios/${props.asignatura.id}`);
+  };
 </script>
 
 <template>
@@ -28,12 +29,11 @@ const seleccionarAsignatura = () => {
     </v-img>
 
     <v-card-subtitle class="pt-4">
-      Asignatura {{ asignatura.id }}
+      {{ asignatura.nombre }}
     </v-card-subtitle>
 
     <v-card-actions>
-      <v-btn color="orange" text>Compartir</v-btn>
-      <v-btn color="orange" text>Explorar</v-btn>
+
     </v-card-actions>
   </v-card>
 </template>

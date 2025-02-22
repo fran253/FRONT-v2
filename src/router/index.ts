@@ -5,18 +5,16 @@ import TemariosPage from "@/views/TemariosPage.vue";
 import CursosPage from "@/views/CursosPage.vue";
 import PerfilPage from "@/views/PerfilPage.vue";
 import MisCursosPage from "@/views/MisCursosPage.vue";
-import ArchivosPage from "@/views/ArchivosPage.vue";
-import TestsPage from "@/views/TestsPage.vue";
+import ArchivosyTestPage from "@/views/ArchivosyTestPage.vue";
 
 const routes = [
   { path: "/", component: HomeView },
   { path: "/asignaturas/:idCurso", component: AsignaturasPage, props: true },
   { path: "/temarios/:idAsignatura", component: TemariosPage, props: true },
+  { path: "/temarios/:id/archivos-test", component: ArchivosyTestPage, props: true },
   { path: "/cursos", component: CursosPage },
   { path: "/perfil", component: PerfilPage },
-  { path: "/mis-cursos", component: MisCursosPage },
-  { path: "/archivos", component: ArchivosPage},
-  { path: "/test", component: TestsPage}
+  { path: "/mis-cursos", component: MisCursosPage }
 ];
 
 const router = createRouter({

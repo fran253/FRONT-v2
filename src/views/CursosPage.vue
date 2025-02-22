@@ -41,56 +41,9 @@ const cursos = [
     subtitulo: 'Carreras universitarias', 
     descripcion: 'Programas académicos de nivel superior.', 
     imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
-  },
-  { 
-    id: 4,
-    titulo: 'Grado Universitario', 
-    subtitulo: 'Carreras universitarias', 
-    descripcion: 'Programas académicos de nivel superior.', 
-    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
-  },
-  { 
-    id: 4,
-    titulo: 'Grado Universitario', 
-    subtitulo: 'Carreras universitarias', 
-    descripcion: 'Programas académicos de nivel superior.', 
-    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
-  },
-  { 
-    id: 4,
-    titulo: 'Grado Universitario', 
-    subtitulo: 'Carreras universitarias', 
-    descripcion: 'Programas académicos de nivel superior.', 
-    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
-  },
-  { 
-    id: 4,
-    titulo: 'Grado Universitario', 
-    subtitulo: 'Carreras universitarias', 
-    descripcion: 'Programas académicos de nivel superior.', 
-    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
-  },
-  { 
-    id: 4,
-    titulo: 'Grado Universitario', 
-    subtitulo: 'Carreras universitarias', 
-    descripcion: 'Programas académicos de nivel superior.', 
-    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
-  },
-  { 
-    id: 4,
-    titulo: 'Grado Universitario', 
-    subtitulo: 'Carreras universitarias', 
-    descripcion: 'Programas académicos de nivel superior.', 
-    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
-  },
-  { 
-    id: 4,
-    titulo: 'Grado Universitario', 
-    subtitulo: 'Carreras universitarias', 
-    descripcion: 'Programas académicos de nivel superior.', 
-    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
   }
+
+  
 ];
 
 const cursosFiltrados = computed(() => {
