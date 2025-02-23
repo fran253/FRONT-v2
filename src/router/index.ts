@@ -6,6 +6,7 @@ import CursosPage from "@/views/CursosPage.vue";
 import PerfilPage from "@/views/PerfilPage.vue";
 import MisCursosPage from "@/views/MisCursosPage.vue";
 import ArchivosyTestPage from "@/views/ArchivosyTestPage.vue";
+import InfoPage from "@/views/InfoPage.vue";
 
 const routes = [
   { path: "/", component: HomeView },
@@ -14,7 +15,8 @@ const routes = [
   { path: "/temarios/:id/archivos-test", component: ArchivosyTestPage, props: true },
   { path: "/cursos", component: CursosPage },
   { path: "/perfil", component: PerfilPage },
-  { path: "/mis-cursos", component: MisCursosPage }
+  { path: "/mis-cursos", component: MisCursosPage },
+  { path: "/info", component: InfoPage }
 ];
 
 const router = createRouter({
