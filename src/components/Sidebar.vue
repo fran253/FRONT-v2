@@ -10,9 +10,10 @@
 
   const menuItems = [
     { text: "Cursos", route: "/cursos", icon: "mdi-home" },
-    { text: "Mis Cursos", route: "/mis-cursos", icon: "mdi-folder-open" },
-    { text: "Configuración", route: "/configuracion", icon: "mdi-cog" },
-    { text: "Perfil", route: "/perfil", icon: "mdi-account" }
+    { text: "Mis Cursos", route: "/mis-cursos", icon: "mdi-heart" },
+    { text: "Perfil", route: "/perfil", icon: "mdi-account" },
+    { text: "Info", route: "/info", icon: "mdi-information" }
+
   ];
 
 

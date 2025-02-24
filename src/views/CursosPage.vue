@@ -4,6 +4,8 @@ import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import Sidebar from '@/components/Sidebar.vue';
 import CardCurso from '@/components/CardCurso.vue';
+import Login from '@/components/Login.vue';
+
 
 const drawer = ref(false);
 const searchQuery = ref('');
@@ -39,56 +41,9 @@ const cursos = [
     subtitulo: 'Carreras universitarias', 
     descripcion: 'Programas académicos de nivel superior.', 
     imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
-  },
-  { 
-    id: 4,
-    titulo: 'Grado Universitario', 
-    subtitulo: 'Carreras universitarias', 
-    descripcion: 'Programas académicos de nivel superior.', 
-    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
-  },
-  { 
-    id: 4,
-    titulo: 'Grado Universitario', 
-    subtitulo: 'Carreras universitarias', 
-    descripcion: 'Programas académicos de nivel superior.', 
-    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
-  },
-  { 
-    id: 4,
-    titulo: 'Grado Universitario', 
-    subtitulo: 'Carreras universitarias', 
-    descripcion: 'Programas académicos de nivel superior.', 
-    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
-  },
-  { 
-    id: 4,
-    titulo: 'Grado Universitario', 
-    subtitulo: 'Carreras universitarias', 
-    descripcion: 'Programas académicos de nivel superior.', 
-    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
-  },
-  { 
-    id: 4,
-    titulo: 'Grado Universitario', 
-    subtitulo: 'Carreras universitarias', 
-    descripcion: 'Programas académicos de nivel superior.', 
-    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
-  },
-  { 
-    id: 4,
-    titulo: 'Grado Universitario', 
-    subtitulo: 'Carreras universitarias', 
-    descripcion: 'Programas académicos de nivel superior.', 
-    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
-  },
-  { 
-    id: 4,
-    titulo: 'Grado Universitario', 
-    subtitulo: 'Carreras universitarias', 
-    descripcion: 'Programas académicos de nivel superior.', 
-    imagen: 'https://cdn.vuetifyjs.com/images/cards/mountain.jpg' 
   }
+
+  
 ];
 
 const cursosFiltrados = computed(() => {
@@ -108,13 +63,14 @@ const filtrarCursos = (query) => {
   <v-app>
     <Header @toggle-sidebar="drawer = !drawer" @update-search="filtrarCursos" />
 
-      <!-- inicio breadcrumb -->
-      <v-breadcrumbs class="breadcrumbs" :items="items">
+    <!-- Inicio Breadcrumb -->
+    <v-breadcrumbs class="breadcrumbs" :items="items">
       <template v-slot:prepend>
-          <v-icon icon="$vuetify" size="small"></v-icon>
-        </template>
-      </v-breadcrumbs>
-      <!-- fin breadcrumb -->
+        <v-icon icon="$vuetify" size="small"></v-icon>
+      </template>
+    </v-breadcrumbs>
+    <!-- Fin Breadcrumb -->
+
     <v-container class="main-container">
       <Sidebar v-model="drawer" />
 
@@ -128,15 +84,18 @@ const filtrarCursos = (query) => {
                 :subtitulo="curso.subtitulo"
                 :descripcion="curso.descripcion"
                 :imagen="curso.imagen"
+                @click="intentarAgregarCurso(curso.id)"
               />
             </v-col>
-
           </v-row>
         </v-container>
       </div>
     </v-container>
 
     <Footer />
+
+    <!-- Modal de Login -->
+    <Login v-if="mostrarLogin" :mostrar="mostrarLogin" @cerrar="mostrarLogin = false" />
   </v-app>
 </template>
 

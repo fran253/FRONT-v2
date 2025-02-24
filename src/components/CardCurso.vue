@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -15,19 +15,24 @@ const curso = defineProps({
 const show = ref(false);
 const misCursos = ref(JSON.parse(localStorage.getItem('misCursos') || '[]'));
 
+// Computada para verificar si el curso ya está en la lista
+const estaEnMisCursos = computed(() => misCursos.value.some(c => c.id === curso.id));
+
 const seleccionarCurso = () => {
   if (curso.id) {
     router.push(`/asignaturas/${curso.id}`);
   } else {
-    console.error(" falta id", curso);
+    console.error("Falta id", curso);
   }
 };
 
 const añadirAMisCursos = () => {
-  if (!misCursos.value.some(c => c.id === curso.id)) {
+  if (estaEnMisCursos.value) {
+    misCursos.value = misCursos.value.filter(c => c.id !== curso.id);
+  } else {
     misCursos.value.push(curso);
-    localStorage.setItem('misCursos', JSON.stringify(misCursos.value));
   }
+  localStorage.setItem('misCursos', JSON.stringify(misCursos.value));
 };
 </script>
 
@@ -44,8 +49,11 @@ const añadirAMisCursos = () => {
     </v-card-subtitle>
 
     <v-card-actions>
-      <v-btn icon="mdi-plus" variant="flat" color="orange" class="text-white" @click.stop="añadirAMisCursos">+</v-btn>
-
+      <v-btn variant="flat" :color="estaEnMisCursos ? 'orange' : 'white'" class="boton__like" @click.stop="añadirAMisCursos">
+        <v-icon :color="estaEnMisCursos ? 'white' : 'orange'">
+          {{ estaEnMisCursos ? 'mdi-heart' : 'mdi-heart-outline' }}
+        </v-icon>
+      </v-btn>
     </v-card-actions>
 
     <v-expand-transition>
@@ -58,8 +66,8 @@ const añadirAMisCursos = () => {
 </template>
 
 <style scoped>
-.text-white {
-  color: white;
+.boton__like {
   font-size: 150%;
+  border: 2px solid orange;
 }
 </style>
