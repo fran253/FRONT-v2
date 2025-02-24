@@ -1,59 +1,65 @@
-<script>
-export default {
-  name: "Header",
-};
-</script>
-
 <template>
-  <header class="header">
-    <div class="logo">
-      <img src="../images/logo.png" alt="logo" class="logo-image">
-    </div>
-    <nav class="menu">
-      <router-link to="/peliculas">PELICULAS</router-link>
-      <router-link to="#">MENU</router-link>
-      <router-link to="#ENCUENTRANOS">
-        <img src="../images/chincheta.png" alt="Ubicación">
-      </router-link>
-    </nav>
-  </header>
+    <v-app-bar app class="header" height="80">
+      <v-btn icon @click="$emit('toggle-sidebar')" class="mobile-menu-btn">
+        <v-icon>mdi-menu</v-icon>
+      </v-btn>
+  
+      <v-toolbar-title class="title">Plataforma de Aprendizaje</v-toolbar-title>
+  
+      <v-spacer></v-spacer>
+  
+      <!-- Buscador universal -->
+      <v-text-field
+        v-model="search"
+        label="Buscar..."
+        append-icon="mdi-magnify"
+        single-line
+        hide-details
+        class="search-bar"
+        @input="$emit('update-search', search)"
+      ></v-text-field>
+
+    </v-app-bar>
 </template>
+  
+<script setup>
+import { ref } from 'vue';
 
-<style scoped>
+const search = ref('');
+</script>
+  
+<style lang="scss" scoped>
 .header {
-    margin-top: 4%;
-    margin-bottom: 1.5%;
-    padding: 1px 0;
+    background-color: #ff7424 !important; 
+    padding: 0.1%;
+    position: fixed;
+    z-index: 1100;
 
-    .logo {
-        .logo-image {
-            width: 250px; 
-            height: auto;
-        }
+}
+
+.title {
+    color: white; 
+}
+
+.search-bar {
+    max-width: 400px;
+    min-width: 300px;
+    background: transparent !important;  
+    border-radius: 8px;
+    color: #ff7424 !important; 
+
+    ::v-deep(.v-field) {
+        background: white !important; 
     }
 
-    .menu {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000; 
-        background-color: #FFC300;
-        display: flex;
-        justify-content: center; 
-        padding: 19px 0;
+    ::v-deep(input) {
+        color: #ff7424 !important; 
+    }
+}
 
-        a {
-            color: black;
-            text-decoration: none;
-            font-size: 1rem; 
-            font-family: 'Jura', sans-serif;
-            margin: 0 50px; 
-
-            &:hover {
-                color: #333333;
-            }
-        }
+.mobile-menu-btn {
+    @media (min-width: 769px) {
+      display: none;
     }
 }
 </style>
