@@ -23,8 +23,8 @@ watchEffect(() => {
 
 const temarios = ref([
   { id: 1, asignaturaId: 1, titulo: "Álgebra", subtitulo: "Unidad 1", descripcion: "Ecuaciones y polinomios", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" },
-  { id: 2, asignaturaId: 1, titulo: "Historia Antigua", subtitulo: "Unidad 2", descripcion: "Egipto y Mesopotamia", imagen: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" },
-  { id: 3, asignaturaId: 2, titulo: "Cinemática", subtitulo: "Unidad 3", descripcion: "Movimiento y velocidad", imagen: "https://cdn.vuetifyjs.com/images/cards/road.jpg" }
+  { id: 2, asignaturaId: 2, titulo: "Historia Antigua", subtitulo: "Unidad 2", descripcion: "Egipto y Mesopotamia", imagen: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" },
+  { id: 3, asignaturaId: 3, titulo: "Cinemática", subtitulo: "Unidad 3", descripcion: "Movimiento y velocidad", imagen: "https://cdn.vuetifyjs.com/images/cards/road.jpg" }
 ]);
 
 const temariosFiltrados = ref([]);

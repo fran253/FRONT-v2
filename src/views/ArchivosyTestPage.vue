@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import Header from '@/components/Header.vue';
-import Sidebar from '@/components/Sidebar.vue';
-import Footer from '@/components/Footer.vue';
-import Archivos from '@/components/Archivos.vue';
-import Test from '@/components/Test.vue';
+  import { ref, watch, onMounted } from 'vue';
+  import { useRoute } from 'vue-router';
+  import Header from '@/components/Header.vue';
+  import Sidebar from '@/components/Sidebar.vue';
+  import Footer from '@/components/Footer.vue';
+  import Archivos from '@/components/Archivos.vue';
+  import Test from '@/components/Test.vue';
 
-const route = useRoute();
-const drawer = ref(false);
-const tab = ref(1);
-const terminoBusqueda = ref("");
-const temarioId = ref<number | null>(null);
-const items = ref([
-  { title: 'Cursos', disabled: false, href: '/cursos' },
-  { title: 'Asignaturas', disabled: false },
-  { title: 'Temarios', disabled: true },
-  { title: "Archivos & Tests", disabled: false }
-]);
+  const route = useRoute();
+  const drawer = ref(false);
+  const tab = ref(1);
+  const terminoBusqueda = ref("");
+  const temarioId = ref<number | null>(null);
+  const items = ref([
+    { title: 'Cursos', disabled: false, href: '/cursos' },
+    { title: 'Asignaturas', disabled: false },
+    { title: 'Temarios', disabled: true },
+    { title: "Archivos & Tests", disabled: false }
+  ]);
 
-watch(() => route.params.id, (nuevoId) => {
-  temarioId.value = Number(nuevoId);
-});
+  watch(() => route.params.id, (nuevoId) => {
+    temarioId.value = Number(nuevoId);
+  });
 
-onMounted(() => {
-  temarioId.value = Number(route.params.id);
-});
+  onMounted(() => {
+    temarioId.value = Number(route.params.id);
+  });
 </script>
 
 <template>
@@ -71,34 +71,34 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-.breadcrumbs {
-  margin-left: 5%;
-  margin-top: 6%;
-}
-
-.content {
-  flex: 1;
-  padding: 20px;
-  margin-left: 1%;
-  margin-top: -4%;
-}
-
-.main-container {
-  display: flex;
-  gap: 20px;
-  min-height: 100vh;
-  padding-top: 64px;
-}
-
-.tab-container {
-  width: 100%;
-  min-height: 80vh;
-  padding: 20px;
-}
-
-@media (max-width: 768px) {
-  .content {
-    margin-left: 0;
+  .breadcrumbs {
+    margin-left: 5%;
+    margin-top: 6%;
   }
-}
+
+  .content {
+    flex: 1;
+    padding: 20px;
+    margin-left: 1%;
+    margin-top: -4%;
+  }
+
+  .main-container {
+    display: flex;
+    gap: 20px;
+    min-height: 100vh;  
+    padding-top: 64px;
+  }
+
+  .tab-container {
+    width: 100%;
+    min-height: 80vh;
+    padding: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .content {
+      margin-left: 0;
+    }
+  }
 </style>
