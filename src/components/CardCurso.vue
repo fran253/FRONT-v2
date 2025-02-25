@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-
+import type { CursoDTO } from "@/stores/dtos/CursoDTO";
 const router = useRouter();
 
 const curso = defineProps({
