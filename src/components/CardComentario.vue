@@ -1,13 +1,15 @@
 <script setup lang="ts">
-defineProps<{
-  comentario: {
-    id: number;
-    usuario: string;
-    avatar: string;
-    texto: string;
-    fecha: string;
-  };
-}>();
+
+  //props
+  defineProps<{
+    comentario: {
+      id: number;
+      usuario: string;
+      avatar: string;
+      texto: string;
+      fecha: string;
+    };
+  }>();
 </script>
 
 <template>

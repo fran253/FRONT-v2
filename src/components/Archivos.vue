@@ -1,36 +1,44 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import ModalArchivoComentario from '@/components/ModalArchivoComentarios.vue';
+  //IMPORTS
+  import { ref, computed } from 'vue';
+  import ModalArchivoComentario from '@/components/ModalArchivoComentarios.vue';
+  import { Archivo } from "@/types/archivo";
 
-const props = defineProps<{ temarioId: number | null; terminoBusqueda: string }>();
+  //propiedades
+  const props = defineProps<{ temarioId: number | null; terminoBusqueda: string }>();
 
+  //lista archivos
+  const archivosHardcoded: Archivo[] = [
+    { id: 1, temarioId: 1, nombre: "Guía de Vue", url: "https://www.orimi.com/pdf-test.pdf" },
+    { id: 2, temarioId: 1, nombre: "Manual de Vuetify", url: "https://www.orimi.com/pdf-test.pdf" },
+    { id: 3, temarioId: 2, nombre: "Documentación TypeScript", url: "https://www.orimi.com/pdf-test.pdf" }
+  ];
 
-// Archivos
-const archivosHardcoded = [
-  { id: 1, temarioId: 1, nombre: "Guía de Vue", url: "https://www.orimi.com/pdf-test.pdf" },
-  { id: 2, temarioId: 1, nombre: "Manual de Vuetify", url: "https://www.orimi.com/pdf-test.pdf" },
-  { id: 3, temarioId: 2, nombre: "Documentación TypeScript", url: "https://www.orimi.com/pdf-test.pdf" }
-];
-const archivosFiltrados = computed(() => {
-  if (props.temarioId === null) return archivosHardcoded;
-  return archivosHardcoded.filter(archivo =>
-    archivo.temarioId === props.temarioId &&
-    archivo.nombre.toLowerCase().includes(props.terminoBusqueda.toLowerCase())
-  );
-});
+  //filtrar archivos
+  const archivosFiltrados = computed(() => {
+    if (props.temarioId === null) return archivosHardcoded;
+    return archivosHardcoded.filter(archivo =>
+      archivo.temarioId === props.temarioId &&
+      (props.terminoBusqueda ? archivo.nombre.toLowerCase().includes(props.terminoBusqueda.toLowerCase()) : true)
+    );
+  });
 
-const visorAbierto = ref(false);
-const archivoSeleccionado = ref<{ id: number; nombre: string; url: string } | null>(null);
+  //Archivo funciones
+  const visorAbierto = ref(false);
+  const archivoSeleccionado = ref<Archivo | null>(null);
 
-const verArchivo = (archivo: { id: number; nombre: string; url: string }) => {
-  archivoSeleccionado.value = archivo;
-  visorAbierto.value = true;
-};
+  //abrir
+  const verArchivo = (archivo: Archivo) => {
+    archivoSeleccionado.value = archivo;
+    visorAbierto.value = true;
+  };
 
-const cerrarModal = () => {
-  visorAbierto.value = false;
-};
+  //cerrar
+  const cerrarModal = () => {
+    visorAbierto.value = false;
+  };
 </script>
+
 
 <template>
   <v-container fluid>
@@ -68,20 +76,20 @@ const cerrarModal = () => {
 </template>
 
 <style lang="scss" scoped>
-.button-group {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
+  .button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
 
-.circular-btn {
-  width: 50px;
-  height: 50px;
-  min-width: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: orange;
-}
+  .circular-btn {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: orange;
+  }
 </style>

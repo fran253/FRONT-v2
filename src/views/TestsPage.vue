@@ -1,3 +1,39 @@
+<script setup lang="ts">
+  //imports
+  import { ref, computed } from 'vue';
+  import Header from '@/components/Header.vue';
+  import Sidebar from '@/components/Sidebar.vue';
+  import Footer from '@/components/Footer.vue';
+  import CardTest from '@/components/CardTest.vue';
+
+  //datos hardcodeados
+  const tests = ref([
+    { id: 1, nombre: "Test de Vue", url: "https://www.orimi.com/pdf-test.pdf" },
+    { id: 2, nombre: "Test de Vuetify", url: "https://www.orimi.com/pdf-test.pdf" },
+    { id: 3, nombre: "Test de TypeScript", url: "https://www.orimi.com/pdf-test.pdf" }
+  ]);
+
+  const visorAbierto = ref(false);
+  const testSeleccionado = ref<{ id: number; nombre: string; url: string } | null>(null);
+  const terminoBusqueda = ref("");
+
+  const verTest = (test: any) => {
+    testSeleccionado.value = test;
+    visorAbierto.value = true;
+  };
+
+  //filtrar tests
+  const testsFiltrados = computed(() => {
+    return tests.value.filter(test =>
+      test.nombre.toLowerCase().includes(terminoBusqueda.value.toLowerCase())
+    );
+  });
+
+  const filtrarTests = (busqueda: string) => {
+    terminoBusqueda.value = busqueda;
+  };
+</script>
+
 <template>
   <v-app>
     <Header @update-search="filtrarTests" />
@@ -52,47 +88,14 @@
   </v-app>
 </template>
 
-<script setup lang="ts">
-import { ref, computed } from 'vue';
-import Header from '@/components/Header.vue';
-import Sidebar from '@/components/Sidebar.vue';
-import Footer from '@/components/Footer.vue';
-import CardTest from '@/components/CardTest.vue';
-
-const tests = ref([
-  { id: 1, nombre: "Test de Vue", url: "https://www.orimi.com/pdf-test.pdf" },
-  { id: 2, nombre: "Test de Vuetify", url: "https://www.orimi.com/pdf-test.pdf" },
-  { id: 3, nombre: "Test de TypeScript", url: "https://www.orimi.com/pdf-test.pdf" }
-]);
-
-const visorAbierto = ref(false);
-const testSeleccionado = ref<{ id: number; nombre: string; url: string } | null>(null);
-const terminoBusqueda = ref("");
-
-const verTest = (test: any) => {
-  testSeleccionado.value = test;
-  visorAbierto.value = true;
-};
-
-const testsFiltrados = computed(() => {
-  return tests.value.filter(test =>
-    test.nombre.toLowerCase().includes(terminoBusqueda.value.toLowerCase())
-  );
-});
-
-const filtrarTests = (busqueda: string) => {
-  terminoBusqueda.value = busqueda;
-};
-</script>
-
 <style scoped>
-.content {
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 80px);
-}
+  .content {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 80px);
+  }
 
-.footer {
-  width: 100%;
-}
+  .footer {
+    width: 100%;
+  }
 </style>

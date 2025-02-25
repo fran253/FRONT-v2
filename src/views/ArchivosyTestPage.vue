@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  //imports
   import { ref, watch, onMounted } from 'vue';
   import { useRoute } from 'vue-router';
   import Header from '@/components/Header.vue';
@@ -7,11 +8,14 @@
   import Archivos from '@/components/Archivos.vue';
   import Test from '@/components/Test.vue';
 
+  //variables
   const route = useRoute();
   const drawer = ref(false);
   const tab = ref(1);
   const terminoBusqueda = ref("");
   const temarioId = ref<number | null>(null);
+
+  //datos para el breadcrumb
   const items = ref([
     { title: 'Cursos', disabled: false, href: '/cursos' },
     { title: 'Asignaturas', disabled: false },
@@ -19,10 +23,11 @@
     { title: "Archivos & Tests", disabled: false }
   ]);
 
+  //ver archivo o test
   watch(() => route.params.id, (nuevoId) => {
     temarioId.value = Number(nuevoId);
   });
-
+  //obtener el id del temario
   onMounted(() => {
     temarioId.value = Number(route.params.id);
   });

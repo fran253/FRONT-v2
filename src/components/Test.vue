@@ -1,21 +1,24 @@
 <script setup lang="ts">
-import { ref, computed, defineProps } from 'vue';
+  //imports
+  import { ref, computed, defineProps } from 'vue';
 
-const props = defineProps<{ temarioId: number | null; terminoBusqueda: string }>();
+  //propiedades
+  const props = defineProps<{ temarioId: number | null; terminoBusqueda: string }>();
 
-const testsHardcoded = [
-  { id: 1, temarioId: 1, nombre: "Test de Vue", url: "https://www.orimi.com/pdf-test.pdf" },
-  { id: 2, temarioId: 1, nombre: "Test de Vuetify", url: "https://www.orimi.com/pdf-test.pdf" },
-  { id: 3, temarioId: 2, nombre: "Test de TypeScript", url: "https://www.orimi.com/pdf-test.pdf" }
-];
+  //datos hardcodeados
+  const testsHardcoded = [
+    { id: 1, temarioId: 1, nombre: "Test de Vue", url: "https://www.orimi.com/pdf-test.pdf" },
+    { id: 2, temarioId: 1, nombre: "Test de Vuetify", url: "https://www.orimi.com/pdf-test.pdf" },
+    { id: 3, temarioId: 2, nombre: "Test de TypeScript", url: "https://www.orimi.com/pdf-test.pdf" }
+  ];
 
-// Filtra tests por temario y búsqueda
-const testsFiltrados = computed(() => {
-  return testsHardcoded.filter(test =>
-    test.temarioId === props.temarioId &&
-    test.nombre.toLowerCase().includes(props.terminoBusqueda.toLowerCase())
-  );
-});
+  // Filtra tests por temario y búsqueda
+  const testsFiltrados = computed(() => {
+    return testsHardcoded.filter(test =>
+      test.temarioId === props.temarioId &&
+      test.nombre.toLowerCase().includes(props.terminoBusqueda.toLowerCase())
+    );
+  });
 </script>
 
 <template>
@@ -47,15 +50,14 @@ const testsFiltrados = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-.circular-btn {
-  width: 50px;
-  height: 50px;
-  min-width: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: orange;
-}
-
+  .circular-btn {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: orange;
+  }
 </style>
