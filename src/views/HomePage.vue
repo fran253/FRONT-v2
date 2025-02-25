@@ -1,3 +1,41 @@
+<script setup>
+  //imports
+  import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
+  import HomeHeader from '@/components/HomeHeader.vue';
+  import LoginForm from '@/components/LoginForm.vue';
+  import InfoSection from '@/components/InfoSection.vue';
+
+  // Variables
+  const router = useRouter();
+  const mostrarLogin = ref(true);
+  const step = ref(1);
+  const nombre = ref('');
+  const email = ref('');
+  const password = ref('');
+  const confirmPassword = ref('');
+  const tipoUsuario = ref('');
+
+  // Funciones
+  const toggleRegistro = () => (mostrarLogin.value = false);
+
+  const registrarUsuario = () => {
+    if (password.value !== confirmPassword.value) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+    console.log({
+      nombre: nombre.value,
+      email: email.value,
+      password: password.value,
+      tipoUsuario: tipoUsuario.value,
+    });
+
+    alert("Registro completado");
+    router.push('/cursos'); 
+  };
+</script>
+
 <template>
   <div class="container">
     <HomeHeader />
@@ -37,47 +75,12 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import HomeHeader from '@/components/HomeHeader.vue';
-import LoginForm from '@/components/LoginForm.vue';
-import InfoSection from '@/components/InfoSection.vue';
-
-const router = useRouter();
-const mostrarLogin = ref(true);
-const step = ref(1);
-const nombre = ref('');
-const email = ref('');
-const password = ref('');
-const confirmPassword = ref('');
-const tipoUsuario = ref('');
-
-const toggleRegistro = () => (mostrarLogin.value = false);
-
-const registrarUsuario = () => {
-  if (password.value !== confirmPassword.value) {
-    alert("Las contraseñas no coinciden");
-    return;
-  }
-  console.log({
-    nombre: nombre.value,
-    email: email.value,
-    password: password.value,
-    tipoUsuario: tipoUsuario.value,
-  });
-
-  alert("Registro completado");
-  router.push('/cursos'); // Redirige a la página de cursos
-};
-</script>
-
 
 <style lang="scss" scoped>
-.container {
-  max-width: 800px;
-  margin: auto;
-  flex: 1;
-  margin-top: 10%;
-}
+  .container {
+    max-width: 800px;
+    margin: auto;
+    flex: 1;
+    margin-top: 10%;
+  }
 </style>
