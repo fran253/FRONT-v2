@@ -1,44 +1,40 @@
-<script setup lang="ts">
-  // Imports
-  import { ref, computed } from 'vue';
-  import { useRouter } from 'vue-router';
-  import type { Curso } from '@/types/curso'; // IMPORTAMOS con `type`
+<script setup>
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 
-  // router
-  const router = useRouter();
+const router = useRouter();
 
-  // props
-  const props = defineProps<{ id: number; titulo: string; subtitulo: string; descripcion: string; imagen: string }>();
+const curso = defineProps({
+  id: Number, 
+  titulo: String,
+  subtitulo: String,
+  descripcion: String,
+  imagen: String
+});
 
-  // variables 
-  const show = ref(false);
-  const misCursos = ref<Curso[]>(JSON.parse(localStorage.getItem('misCursos') || '[]'));
+const show = ref(false);
+const misCursos = ref(JSON.parse(localStorage.getItem('misCursos') || '[]'));
 
-  // verificar la existencia del curso en "Mis Cursos"
-  const estaEnMisCursos = computed(() => misCursos.value.some(c => c.id === props.id));
+// Computada para verificar si el curso ya está en la lista
+const estaEnMisCursos = computed(() => misCursos.value.some(c => c.id === curso.id));
 
-  // metodo seleccionar curso
-  const seleccionarCurso = () => {
-    if (props.id) {
-      router.push(`/asignaturas/${props.id}`);
-    } else {
-      console.error("Falta id", props);
-    }
-  };
+const seleccionarCurso = () => {
+  if (curso.id) {
+    router.push(`/asignaturas/${curso.id}`);
+  } else {
+    console.error("Falta id", curso);
+  }
+};
 
-  // metodo añadir / quitar de miscursos
-  const añadirAMisCursos = () => {
-    if (estaEnMisCursos.value) {
-      misCursos.value = misCursos.value.filter(c => c.id !== props.id);
-    } else {
-      const nuevoCurso: Curso = { ...props };
-      misCursos.value.push(nuevoCurso);
-    }
-    localStorage.setItem('misCursos', JSON.stringify(misCursos.value));
-  };
+const añadirAMisCursos = () => {
+  if (estaEnMisCursos.value) {
+    misCursos.value = misCursos.value.filter(c => c.id !== curso.id);
+  } else {
+    misCursos.value.push(curso);
+  }
+  localStorage.setItem('misCursos', JSON.stringify(misCursos.value));
+};
 </script>
-
-
 
 <template>
   <v-card class="curso-card" @click="seleccionarCurso">

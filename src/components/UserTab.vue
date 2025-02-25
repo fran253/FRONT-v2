@@ -1,11 +1,10 @@
 <script setup>
-  //imports
-  import { ref } from 'vue';
-  import MisCursos from '@/components/MisCursos.vue';
+    import { ref } from 'vue';
 
-  const tab = ref("one");
+    import MisCursos from '@/components/MisCursos.vue';
+
+    const tab = ref("one");
 </script>
-
 <template>
     <v-card class="tabs-card">
       <v-tabs v-model="tab" bg-color="primary">
@@ -31,7 +30,7 @@
         </v-tabs-window>
       </v-card-text>
     </v-card>
-</template>
+  </template>
   
 
   

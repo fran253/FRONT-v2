@@ -1,10 +1,3 @@
-<script setup>
-  //import
-  import { ref } from 'vue';
-
-  const search = ref('');
-</script>
-
 <template>
     <v-app-bar app class="header" height="80">
       <v-btn icon @click="$emit('toggle-sidebar')" class="mobile-menu-btn">
@@ -29,38 +22,44 @@
     </v-app-bar>
 </template>
   
+<script setup>
+import { ref } from 'vue';
+
+const search = ref('');
+</script>
+  
 <style lang="scss" scoped>
-  .header {
-      background-color: #ff7424 !important; 
-      padding: 0.1%;
-      position: fixed;
-      z-index: 1100;
+.header {
+    background-color: #ff7424 !important; 
+    padding: 0.1%;
+    position: fixed;
+    z-index: 1100;
 
-  }
+}
 
-  .title {
-      color: white; 
-  }
+.title {
+    color: white; 
+}
 
-  .search-bar {
-      max-width: 400px;
-      min-width: 300px;
-      background: transparent !important;  
-      border-radius: 8px;
-      color: #ff7424 !important; 
+.search-bar {
+    max-width: 400px;
+    min-width: 300px;
+    background: transparent !important;  
+    border-radius: 8px;
+    color: #ff7424 !important; 
 
-      ::v-deep(.v-field) {
-          background: white !important; 
-      }
+    ::v-deep(.v-field) {
+        background: white !important; 
+    }
 
-      ::v-deep(input) {
-          color: #ff7424 !important; 
-      }
-  }
+    ::v-deep(input) {
+        color: #ff7424 !important; 
+    }
+}
 
-  .mobile-menu-btn {
-      @media (min-width: 769px) {
-        display: none;
-      }
-  }
+.mobile-menu-btn {
+    @media (min-width: 769px) {
+      display: none;
+    }
+}
 </style>
