@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import TestModal from "@/components/ModalTest.vue";
-  import type { Pregunta } from "@/types/test";
+  import { obtenerPreguntasPorTest } from "@/types/pregunta";
 
   // Propiedades
   const props = defineProps<{ idTest: number; nombre: string; url: string }>();
@@ -9,31 +9,8 @@
   // Estado del modal de test
   const modalAbierto = ref(false);
 
-  // Preguntas hardcodeadas (temporal)
-  const preguntas: Pregunta[] = [
-    {
-      idPregunta: 1,
-      enunciado: "¿Cuál es el color de Vue?",
-      idTest: props.idTest,
-      opciones: [
-        { idOpcion: 1, texto: "Rojo", esCorrecta: false },
-        { idOpcion: 2, texto: "Verde", esCorrecta: true },
-        { idOpcion: 3, texto: "Azul", esCorrecta: false },
-        { idOpcion: 4, texto: "Amarillo", esCorrecta: false },
-      ],
-    },
-    {
-      idPregunta: 1,
-      enunciado: "¿Cuál es el color de platano?",
-      idTest: props.idTest,
-      opciones: [
-        { idOpcion: 1, texto: "Rojo", esCorrecta: false },
-        { idOpcion: 2, texto: "Verde", esCorrecta: false },
-        { idOpcion: 3, texto: "Azul", esCorrecta: false },
-        { idOpcion: 4, texto: "Amarillo", esCorrecta: true },
-      ],
-    }
-  ];
+  // Obtener las preguntas específicas para este test
+  const preguntas = obtenerPreguntasPorTest(props.idTest);
 </script>
 
 <template>
