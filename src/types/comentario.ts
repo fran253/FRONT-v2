@@ -5,4 +5,3 @@ export interface Comentario {
     texto: string;
     fecha: string;
 }
-  

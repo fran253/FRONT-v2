@@ -4,7 +4,7 @@
   import { useDisplay } from "vuetify";
 
   // estado del usuario 
-  const usuarioAutenticado = ref(false);
+  const usuarioAutenticado = ref(true);
 
   // sidebar abierto cerrado
   const drawer = ref(true);

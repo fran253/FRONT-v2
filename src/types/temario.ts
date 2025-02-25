@@ -3,4 +3,5 @@ export interface Temario {
     titulo: string;
     imagen: string;
 }
+
   

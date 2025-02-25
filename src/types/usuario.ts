@@ -4,4 +4,3 @@ export interface Usuario {
     password: string;
     tipoUsuario: string;
 }
-  

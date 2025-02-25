@@ -2,7 +2,7 @@
   // Imports
   import { ref, computed } from 'vue';
   import { useRouter } from 'vue-router';
-  import type { Curso } from '@/types/curso'; // IMPORTAMOS con `type`
+  import type { Curso } from '@/types/curso'; 
 
   // router
   const router = useRouter();
