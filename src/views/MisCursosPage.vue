@@ -1,15 +1,15 @@
 <script setup lang="ts">
+    //imports
     import { ref } from "vue";
     import Header from "@/components/Header.vue";
     import Footer from "@/components/Footer.vue";
     import Sidebar from "@/components/Sidebar.vue";
     import MisCursos from "@/components/MisCursos.vue";
 
+    // Variables
     const drawer = ref(false);
     const searchQuery = ref('');
-    const items = ref([
-    { title: 'Mis Cursos', disabled: false },
-    ]);
+    const items = ref([{ title: 'Mis Cursos', disabled: false },]);
 </script>
 
 <template>

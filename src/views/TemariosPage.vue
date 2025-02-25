@@ -1,38 +1,43 @@
 <script setup lang="ts">
-import { ref, watchEffect } from "vue";
-import { useRoute } from "vue-router";
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
-import Sidebar from "@/components/Sidebar.vue";
-import CardTemario from "@/components/CardTemario.vue";
+    //imports
+    import { ref, watchEffect } from "vue";
+    import { useRoute } from "vue-router";
+    import Header from "@/components/Header.vue";
+    import Footer from "@/components/Footer.vue";
+    import Sidebar from "@/components/Sidebar.vue";
+    import CardTemario from "@/components/CardTemario.vue";
 
-const route = useRoute();
-const drawer = ref(false);
-const idAsignatura = ref("");
+    //variables
+    const route = useRoute();
+    const drawer = ref(false);
+    const idAsignatura = ref("");
 
-const items = ref([
-  { title: 'Cursos', disabled: false, href: '/cursos' },
-  { title: 'Asignaturas', disabled: false },
-  { title: 'Temarios', disabled: true },
-]);
+    //datos para breadcrumb
+    const items = ref([
+    { title: 'Cursos', disabled: false, href: '/cursos' },
+    { title: 'Asignaturas', disabled: false },
+    { title: 'Temarios', disabled: true },
+    ]);
 
+    // cambios en la ruta
+    watchEffect(() => {
+        idAsignatura.value = route.params.idAsignatura as string;
+    });
 
-watchEffect(() => {
-    idAsignatura.value = route.params.idAsignatura as string;
-});
+    // datos hardcodeaods
+    const temarios = ref([
+    { id: 1, asignaturaId: 1, titulo: "Álgebra", subtitulo: "Unidad 1", descripcion: "Ecuaciones y polinomios", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" },
+    { id: 2, asignaturaId: 2, titulo: "Historia Antigua", subtitulo: "Unidad 2", descripcion: "Egipto y Mesopotamia", imagen: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" },
+    { id: 3, asignaturaId: 3, titulo: "Cinemática", subtitulo: "Unidad 3", descripcion: "Movimiento y velocidad", imagen: "https://cdn.vuetifyjs.com/images/cards/road.jpg" }
+    ]);
 
-const temarios = ref([
-  { id: 1, asignaturaId: 1, titulo: "Álgebra", subtitulo: "Unidad 1", descripcion: "Ecuaciones y polinomios", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" },
-  { id: 2, asignaturaId: 1, titulo: "Historia Antigua", subtitulo: "Unidad 2", descripcion: "Egipto y Mesopotamia", imagen: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" },
-  { id: 3, asignaturaId: 2, titulo: "Cinemática", subtitulo: "Unidad 3", descripcion: "Movimiento y velocidad", imagen: "https://cdn.vuetifyjs.com/images/cards/road.jpg" }
-]);
+    // filtrar temarios por asignatura
+    const temariosFiltrados = ref([]);
 
-const temariosFiltrados = ref([]);
-
-watchEffect(() => {
-    console.log("🔎 Filtrando temarios para asignatura ID:", idAsignatura.value);
-    temariosFiltrados.value = temarios.value.filter(t => t.asignaturaId === Number(idAsignatura.value));
-});
+    watchEffect(() => {
+        console.log(" Filtrando temarios para asignatura ID:", idAsignatura.value);
+        temariosFiltrados.value = temarios.value.filter(t => t.asignaturaId === Number(idAsignatura.value));
+    });
 </script>
 
 <template>
@@ -64,33 +69,33 @@ watchEffect(() => {
 </template>
 
 <style lang="scss" scoped>
-.breadcrumbs{
-  margin-left:5% ;
-  margin-top: 6%;
-}
-
-.content {
-  margin-top: -4%;
-  flex: 1;
-  padding: 20px;
-  margin-left: 1%;
-}
-
-.main-container {
-    display: flex;
-    gap: 20px;
-    min-height: 100vh;
-    padding-top: 64px;
-}
-
-
-.temarios-container {
-    padding: 20px;
-}
-
-@media (max-width: 768px) {
-    .content {
-        margin-left: 0;
+    .breadcrumbs{
+        margin-left:5% ;
+        margin-top: 6%;
     }
-}
+
+    .content {
+        margin-top: -4%;
+        flex: 1;
+        padding: 20px;
+        margin-left: 1%;
+    }
+
+    .main-container {
+        display: flex;
+        gap: 20px;
+        min-height: 100vh;
+        padding-top: 64px;
+    }
+
+
+    .temarios-container {
+        padding: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .content {
+            margin-left: 0;
+        }
+    }
 </style>

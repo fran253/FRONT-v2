@@ -1,9 +1,11 @@
 <script setup lang="ts">
+  //Imports
   import CursosPage from "@/views/CursosPage.vue";
   import { useRouter } from "vue-router";
 
+  //router
   const router = useRouter();
-
+  //props
   const props = defineProps<{ 
     asignatura: { 
       id: number;
@@ -12,6 +14,7 @@
     } 
   }>();
 
+  //metodo seleccionarAsignatura
   const seleccionarAsignatura = () => {
       router.push(`/temarios/${props.asignatura.id}`);
   };
@@ -19,12 +22,7 @@
 
 <template>
   <v-card class="mx-auto" max-width="400" @click="seleccionarAsignatura">
-    <v-img
-      class="align-end text-white"
-      height="200"
-      :src="asignatura.imagen"
-      cover
-    >
+    <v-img class="align-end text-white" height="200" :src="asignatura.imagen" cover>
       <v-card-title>{{ asignatura.nombre }}</v-card-title>
     </v-img>
 

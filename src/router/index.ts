@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "@/views/HomePage.vue";
+// import HomeView from "@/views/HomePage.vue";
 import AsignaturasPage from "@/views/AsignaturasPage.vue";
 import TemariosPage from "@/views/TemariosPage.vue";
 import CursosPage from "@/views/CursosPage.vue";
@@ -9,7 +9,7 @@ import ArchivosyTestPage from "@/views/ArchivosyTestPage.vue";
 import InfoPage from "@/views/InfoPage.vue";
 
 const routes = [
-  { path: "/", component: HomeView },
+  { path: "/", component: CursosPage },
   { path: "/asignaturas/:idCurso", component: AsignaturasPage, props: true },
   { path: "/temarios/:idAsignatura", component: TemariosPage, props: true },
   { path: "/temarios/:id/archivos-test", component: ArchivosyTestPage, props: true },

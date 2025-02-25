@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
+  //imports
+  import { useRouter } from "vue-router";
+  import type { Temario } from "@/types/temario"; // Importamos el tipo
 
-const router = useRouter();
+  //router
+  const router = useRouter();
 
-const props = defineProps<{ 
-  temario: { 
-    id: number;
-    titulo: string;
-    imagen: string;
-  } 
-}>();
+  // propiedades temario
+  const props = defineProps<{ temario: Temario }>();
 
-const seleccionarTemario = () => {
-  router.push(`/temarios/${props.temario.id}/archivos-test`);
-};
+  //metodo seleccionar temario
+  const seleccionarTemario = () => {
+    router.push(`/temarios/${props.temario.id}/archivos-test`);
+  };
 </script>
+
 
 <template>
     <v-card class="mx-auto" max-width="400" @click="seleccionarTemario">
