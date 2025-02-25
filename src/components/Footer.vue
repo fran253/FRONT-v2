@@ -2,11 +2,9 @@
     <v-footer class="footer">
       <p class="texto__footer">&copy; 2025 Plataforma de Aprendizaje. Todos los derechos reservados.</p>
     </v-footer>
-  </template>
-  
-  <script setup></script>
-  
-  <style lang="scss" scoped>
+</template>
+
+<style lang="scss" scoped>
   .footer {
     background: #FB7C3C;
     padding: 20px;
@@ -25,5 +23,5 @@
 
     margin-left: 40%;
   }
-  </style>
+</style>
   
