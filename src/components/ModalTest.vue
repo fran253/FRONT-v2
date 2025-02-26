@@ -1,3 +1,5 @@
+//ModalTest.vue es la ventana que aparece en cada test cuando se vaya a realizar, con sus preguntas dentro
+
 <script setup lang="ts">
   import { ref } from "vue";
   import PreguntaCard from "@/components/CardPregunta.vue";
