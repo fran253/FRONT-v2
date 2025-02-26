@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
   import { ref, computed, defineProps } from "vue";
-  import TestCard from "@/components/TestList.vue";
+  import TestCard from "@/components/CardTest.vue";
 
   // Propiedades recibidas del padre (temarioId y búsqueda)
   const props = defineProps<{ temarioId: number | null; terminoBusqueda: string }>();
