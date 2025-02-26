@@ -19,7 +19,6 @@ async function fetchCursos() {
 
     cursos.value = await response.json();
 
-    // Emitimos los cursos al padre (opcional, si se quiere manejar en otro lugar)
     emit("cursosCargados", cursos.value);
   } catch (error) {
     console.error("Error al obtener cursos:", error);

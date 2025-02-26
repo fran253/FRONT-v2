@@ -1,35 +1,55 @@
 <script setup lang="ts">
-  //imports
-  import { ref, watchEffect } from "vue";
-  import { useRoute } from "vue-router";
-  import Header from "@/components/Header.vue";
-  import Footer from "@/components/Footer.vue";
-  import Sidebar from "@/components/Sidebar.vue";
-  import CardAsignatura from "@/components/CardAsignatura.vue";
 
-  //variables
-  const route = useRoute();
-  const drawer = ref(false);
-  const idCurso = ref(route.params.idCurso); 
-  //datos para el breadcrumb
-  const items = ref([
-    { title: 'Cursos', disabled: false, href: '/cursos' },
-    { title: 'Asignaturas', disabled: false },
-  ]);
-  //datos hardcodeados
-  const asignaturas = ref([
-    { id: 1, cursoId: 1, nombre: "Matemáticas", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" },
-    { id: 2, cursoId: 1, nombre: "Historia", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" },
-    { id: 3, cursoId: 2, nombre: "Ciencias", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" }
-  ]);
+//imports
+import { ref, onMounted, computed, watchEffect } from "vue";
+import { useRoute } from "vue-router";
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
+import Sidebar from "@/components/Sidebar.vue";
+import CardAsignatura from "@/components/CardAsignatura.vue";
 
-  const asignaturasFiltradas = ref([]);
+//variables
+const route = useRoute();
+const drawer = ref(false);
+const errorMessage = ref<string>("");
+const asignaturas = ref([]);
 
-  //filtrar asignaturas por curso
-  watchEffect(() => {
-    asignaturasFiltradas.value = asignaturas.value.filter(a => a.cursoId.toString() === idCurso.value);
-  });
+// idCurso
+const idCurso = computed(() => route.params.idCurso ?? "");
+
+// Datos para el breadcrumb
+const items = ref([
+  { title: "Cursos", disabled: false, href: "/cursos" },
+  { title: "Asignaturas", disabled: false },
+]);
+
+// Fetch a la API
+async function fetchAsignaturasByCurso(idCurso: string) {
+  if (!idCurso) return; // Evitar llamadas con ID vacío
+
+  try {
+    const response = await fetch(`/api/Asignatura/curso/${idCurso}`);
+    if (!response.ok) throw new Error("Error al obtener las asignaturas del curso");
+
+    asignaturas.value = await response.json();
+  } catch (error: any) {
+    errorMessage.value = error.message;
+    console.error("Error al obtener asignaturas del curso:", error);
+  }
+}
+
+watchEffect(() => {
+  if (idCurso.value) {
+    fetchAsignaturasByCurso(idCurso.value);
+  }
+});
+
+// Filtrar asignaturas 
+const asignaturasFiltradas = computed(() => asignaturas.value ?? []);
+
 </script>
+
+
 
 <template>
   <v-app>

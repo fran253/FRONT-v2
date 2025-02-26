@@ -1,4 +1,5 @@
 <script setup>
+//imports
 import { ref, computed, onMounted } from 'vue';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
@@ -6,6 +7,7 @@ import Sidebar from '@/components/Sidebar.vue';
 import CardCurso from '@/components/CardCurso.vue';
 import Login from '@/components/Login.vue';
 
+//variables
 const drawer = ref(false);
 const searchQuery = ref('');
 const mostrarLogin = ref(false);

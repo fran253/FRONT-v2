@@ -9,7 +9,7 @@ export const useAsignaturaStore = defineStore("asignatura", () => {
   //find all classiccooo
   async function fetchAllAsignaturas() {
     try {
-      const response = await fetch("https://localhost:7278/api/Asignatura");
+      const response = await fetch("/api/Asignatura");
       if (!response.ok) throw new Error("Error al obtener todas las asignaturas");
 
       asignaturas.value = await response.json();
@@ -22,7 +22,7 @@ export const useAsignaturaStore = defineStore("asignatura", () => {
   // filtrado viniendo de curso "id curso"
   async function fetchAsignaturasByCurso(idCurso: number) {
     try {
-      const response = await fetch(`https://localhost:7278/api/Asignatura/curso/${idCurso}`);
+      const response = await fetch(`/api/Asignatura/curso/${idCurso}`);
       if (!response.ok) throw new Error("Error al obtener las asignaturas del curso");
 
       asignaturas.value = await response.json();
