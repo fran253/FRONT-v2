@@ -22,13 +22,7 @@
     "Alumno sin igual"
   ];
 
-  const usuarioAutenticado = ref(false);
-  const mostrarLogin = ref(!usuarioAutenticado.value);
 
-  // Observar cambios en autenticación
-  watch(usuarioAutenticado, (nuevoValor) => {
-    if (nuevoValor) mostrarLogin.value = false;
-  });
 </script>
 
 <template>
@@ -64,9 +58,6 @@
     </v-container>
 
     <Footer />
-
-    <!--  Modal de Login Obligatorio -->
-    <Login v-if="mostrarLogin" :mostrar="mostrarLogin" @cerrar="mostrarLogin = false" />
   </v-app>
 </template>
 
