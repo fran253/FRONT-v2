@@ -8,7 +8,7 @@ export const useCursoStore = defineStore("curso", () => {
 
   async function fetchCursos() {
     try {
-      const response = await fetch("http://localhost:5167/api/Curso");
+      const response = await fetch("/api/Curso");
       if (!response.ok) throw new Error("Error al obtener los cursos");
 
       cursos.value = await response.json();
