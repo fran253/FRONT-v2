@@ -1,30 +1,34 @@
 <script setup lang="ts">
-import { ref, watchEffect } from "vue";
-import { useRoute } from "vue-router";
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
-import Sidebar from "@/components/Sidebar.vue";
-import CardAsignatura from "@/components/CardAsignatura.vue";
+  //imports
+  import { ref, watchEffect } from "vue";
+  import { useRoute } from "vue-router";
+  import Header from "@/components/Header.vue";
+  import Footer from "@/components/Footer.vue";
+  import Sidebar from "@/components/Sidebar.vue";
+  import CardAsignatura from "@/components/CardAsignatura.vue";
 
-const route = useRoute();
-const drawer = ref(false);
-const idCurso = ref(route.params.idCurso); 
-const items = ref([
-  { title: 'Cursos', disabled: false, href: '/cursos' },
-  { title: 'Asignaturas', disabled: false },
-]);
+  //variables
+  const route = useRoute();
+  const drawer = ref(false);
+  const idCurso = ref(route.params.idCurso); 
+  //datos para el breadcrumb
+  const items = ref([
+    { title: 'Cursos', disabled: false, href: '/cursos' },
+    { title: 'Asignaturas', disabled: false },
+  ]);
+  //datos hardcodeados
+  const asignaturas = ref([
+    { id: 1, cursoId: 1, nombre: "Matemáticas", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" },
+    { id: 2, cursoId: 1, nombre: "Historia", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" },
+    { id: 3, cursoId: 2, nombre: "Ciencias", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" }
+  ]);
 
-const asignaturas = ref([
-  { id: 1, cursoId: 1, nombre: "Matemáticas", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" },
-  { id: 2, cursoId: 1, nombre: "Historia", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" },
-  { id: 3, cursoId: 2, nombre: "Ciencias", imagen: "https://cdn.vuetifyjs.com/images/cards/docks.jpg" }
-]);
+  const asignaturasFiltradas = ref([]);
 
-const asignaturasFiltradas = ref([]);
-
-watchEffect(() => {
-  asignaturasFiltradas.value = asignaturas.value.filter(a => a.cursoId.toString() === idCurso.value);
-});
+  //filtrar asignaturas por curso
+  watchEffect(() => {
+    asignaturasFiltradas.value = asignaturas.value.filter(a => a.cursoId.toString() === idCurso.value);
+  });
 </script>
 
 <template>
@@ -58,33 +62,33 @@ watchEffect(() => {
 
 
 <style lang="scss" scoped>
-.breadcrumbs{
-  margin-left:5% ;
-  margin-top: 6%;
-}
-
-.content {
-  margin-top: -4%;
-  flex: 1;
-  padding: 20px;
-  margin-left: 1%;
-}
-
-.main-container {
-  display: flex;
-  gap: 20px;
-  min-height: 100vh;
-  padding-top: 64px;
-}
-
-
-.asignaturas-container {
-  padding: 20px;
-}
-
-@media (max-width: 768px) {
-  .content {
-    margin-left: 0;
+  .breadcrumbs{
+    margin-left:5% ;
+    margin-top: 6%;
   }
-}
+
+  .content {
+    margin-top: -4%;
+    flex: 1;
+    padding: 20px;
+    margin-left: 1%;
+  }
+
+  .main-container {
+    display: flex;
+    gap: 20px;
+    min-height: 100vh;
+    padding-top: 64px;
+  }
+
+
+  .asignaturas-container {
+    padding: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .content {
+      margin-left: 0;
+    }
+  }
 </style>

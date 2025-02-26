@@ -1,17 +1,18 @@
 <script setup>
-  import { ref } from 'vue';
+  //imports
+  import { ref, watch } from 'vue';
   import Header from '@/components/Header.vue';
   import Footer from '@/components/Footer.vue';
   import Sidebar from '@/components/Sidebar.vue';
   import UserTab from '@/components/UserTab.vue';
+  import Login from '@/components/Login.vue';
 
+  // Variables
   const drawer = ref(false);
   const nombre = ref("Sandra Adams");
-  const searchQuery = ref('');
-  const items = ref([
-    { title: 'Perfil', disabled: false },
-  ]);
+  const items = ref([{ title: 'Perfil', disabled: false }]);
 
+  // frases celebres
   const estados = [
     "Me encanta Estudiar",
     "Soy una persona aplicada",
@@ -20,23 +21,31 @@
     "Fan de literatura",
     "Alumno sin igual"
   ];
+
+  const usuarioAutenticado = ref(false);
+  const mostrarLogin = ref(!usuarioAutenticado.value);
+
+  // Observar cambios en autenticación
+  watch(usuarioAutenticado, (nuevoValor) => {
+    if (nuevoValor) mostrarLogin.value = false;
+  });
 </script>
 
 <template>
   <v-app>
     <Header @toggle-sidebar="drawer = !drawer" />
-    <!-- inicio breadcrumb -->
-            <v-breadcrumbs class="breadcrumbs" :items="items">
-                <template v-slot:prepend>
-                  <v-icon icon="$vuetify" size="small"></v-icon>
-                </template>
-            </v-breadcrumbs>
-        <!-- fin breadcrumb -->
+    
+    <!-- Breadcrumb -->
+    <v-breadcrumbs class="breadcrumbs" :items="items">
+      <template v-slot:prepend>
+        <v-icon icon="$vuetify" size="small"></v-icon>
+      </template>
+    </v-breadcrumbs>
+
     <v-container class="main-container">
       <Sidebar v-model="drawer" />
 
       <v-row class="perfil__container">
-
         <!-- Avatar, Nombre y Frase -->
         <v-col cols="12" md="6" class="left__panel">
           <div class="avatar-container">
@@ -55,16 +64,18 @@
     </v-container>
 
     <Footer />
+
+    <!--  Modal de Login Obligatorio -->
+    <Login v-if="mostrarLogin" :mostrar="mostrarLogin" @cerrar="mostrarLogin = false" />
   </v-app>
 </template>
 
-
-
 <style lang="scss" scoped>
-  .breadcrumbs{
-    margin-left:5% ;
+  .breadcrumbs {
+    margin-left: 5%;
     margin-top: 6%;
   }
+
   .main-container {
     display: flex;
     gap: 20px;
