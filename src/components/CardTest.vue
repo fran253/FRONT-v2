@@ -1,3 +1,5 @@
+//CardTest es el diseño de cada recuadro de test que aparecera en la pagina
+
 <script setup lang="ts">
   import { ref } from "vue";
   import TestModal from "@/components/ModalTest.vue";
