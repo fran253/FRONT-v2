@@ -1,3 +1,5 @@
+// FiltrarTest.vue es el archivo que selecciona los datos y los filtra dependiendo del temario al que pertenecen
+
 <script setup lang="ts">
   import { ref, computed, defineProps } from "vue";
   import TestCard from "@/components/TestList.vue";
