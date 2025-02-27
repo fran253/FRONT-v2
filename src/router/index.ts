@@ -7,9 +7,10 @@ import PerfilPage from "@/views/PerfilPage.vue";
 import MisCursosPage from "@/views/MisCursosPage.vue";
 import ArchivosyTestPage from "@/views/ArchivosyTestPage.vue";
 import InfoPage from "@/views/InfoPage.vue";
+import HomePage from "@/views/HomePage.vue";
 
 const routes = [
-  { path: "/", component: CursosPage },
+  { path: "/", component: HomePage },
   { path: "/asignaturas/:idCurso", component: AsignaturasPage, props: true },
   { path: "/temarios/:idAsignatura", component: TemariosPage, props: true },
   { path: "/temarios/:id/archivos-test", component: ArchivosyTestPage, props: true },

@@ -16,7 +16,8 @@
 
   // menu para usuarios no logeados
   const menuPublico = [
-    { text: "Cursos", route: "/cursos", icon: "mdi-home" },
+    { text: "Cursos", route: "/", icon: "mdi-home" },
+    { text: "Cursos", route: "/cursos", icon: "mdi-school" },
     { text: "Info", route: "/info", icon: "mdi-information" }
   ];
 

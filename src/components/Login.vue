@@ -2,7 +2,7 @@
   // Imports
   import { ref, defineProps, defineEmits } from "vue";
   import { useRouter } from "vue-router";
-  import type { Usuario } from "@/types/usuario"; // Importamos la interfaz Usuario
+  import type { Usuario } from "@/types/usuario";
 
   //propiedades y eventos
   const props = defineProps<{ mostrar: boolean }>();
