@@ -1,11 +1,15 @@
 <script setup>
 //imports
 import { ref, computed, onMounted } from 'vue';
+import { useUsuarioLogeadoStore } from '@/stores/UsuarioLogeado';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import Sidebar from '@/components/Sidebar.vue';
 import CardCurso from '@/components/CardCurso.vue';
 import Login from '@/components/Login.vue';
+
+// Stores
+const usuarioLogeadoStore = useUsuarioLogeadoStore();
 
 //variables
 const drawer = ref(false);
@@ -19,7 +23,13 @@ const cursos = ref([]);
 // Función para obtener los cursos desde la API
 const fetchCursos = async () => {
   try {
-    const response = await fetch("/api/Curso");
+    const response = await fetch("/api/Curso", {
+      // Si hay un usuario autenticado, incluir el token de autorización
+      headers: usuarioLogeadoStore.usuarioActual 
+        ? { 'Authorization': `Bearer ${usuarioLogeadoStore.usuarioActual.token}` }
+        : {}
+    });
+    
     if (!response.ok) throw new Error("Error al obtener los cursos");
 
     cursos.value = await response.json();
@@ -36,8 +46,35 @@ const cursosFiltrados = computed(() => {
   );
 });
 
-// Cargar los cursos al montar el componente
-onMounted(fetchCursos);
+// Verificar autenticación al montar el componente
+onMounted(async () => {
+  // Verificar si hay un usuario guardado en localStorage
+  const usuarioGuardado = localStorage.getItem('usuario');
+  
+  if (usuarioGuardado) {
+    const usuario = JSON.parse(usuarioGuardado);
+    
+    // Verificar si el usuario existe en la base de datos
+    const existe = await usuarioLogeadoStore.verificarUsuario(usuario.email);
+    
+    if (existe) {
+      // Si existe, establecer como usuario actual
+      usuarioLogeadoStore.usuarioActual = usuario;
+      usuarioLogeadoStore.estaAutenticado = true;
+      
+      // Cargar cursos
+      await fetchCursos();
+    } else {
+      // Si no existe, mostrar login
+      mostrarLogin.value = true;
+      // Limpiar localStorage
+      localStorage.removeItem('usuario');
+    }
+  } else {
+    // Si no hay usuario guardado, mostrar login
+    mostrarLogin.value = true;
+  }
+});
 </script>
 
 <template>
@@ -74,7 +111,11 @@ onMounted(fetchCursos);
     <Footer />
 
     <!-- Modal de Login -->
-    <Login v-if="mostrarLogin" :mostrar="mostrarLogin" @cerrar="mostrarLogin = false" />
+    <Login 
+      v-if="mostrarLogin" 
+      :mostrar="mostrarLogin" 
+      @cerrar="mostrarLogin = false" 
+    />
   </v-app>
 </template>
 

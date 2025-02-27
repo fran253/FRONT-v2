@@ -2,9 +2,10 @@
   // Imports
   import { ref, computed } from "vue";
   import { useDisplay } from "vuetify";
+  import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
 
-  // estado del usuario 
-  const usuarioAutenticado = ref(true);
+  // Stores
+  const usuarioLogeadoStore = useUsuarioLogeadoStore();
 
   // sidebar abierto cerrado
   const drawer = ref(true);
@@ -13,6 +14,10 @@
   // Pantalla movil
   const { mobile } = useDisplay();
   const isMobile = computed(() => mobile.value);
+
+  // Usuario actual y estado de autenticación
+  const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
+  const estaAutenticado = computed(() => usuarioLogeadoStore.estaAutenticado);
 
   // menu para usuarios no logeados
   const menuPublico = [
@@ -32,14 +37,13 @@
   const expandSidebar = () => (isExpanded.value = true);
 </script>
 
-
 <template>
   <v-navigation-drawer v-model="drawer" :width="isExpanded ? 250 : 80" :rail="!isExpanded" app class="sidebar">
     <v-list>
       <v-list-item
-        prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-        subtitle="sandra_a88@gmail.com"
-        title="Sandra Adams"
+        :prepend-avatar="usuarioActual?.avatar || 'https://randomuser.me/api/portraits/women/85.jpg'"
+        :subtitle="usuarioActual?.email || 'Invitado'"
+        :title="usuarioActual?.nombre || 'Usuario'"
         @click="expandSidebar">
         
         <template v-slot:append>
@@ -67,8 +71,8 @@
       </template>
     </v-list>
 
-    <!-- menu con sesion inciadann -->
-    <v-list density="compact" nav v-if="usuarioAutenticado">
+    <!-- menu con sesion iniciada -->
+    <v-list v-if="estaAutenticado" density="compact" nav>
       <template v-for="(item, index) in menuPrivado" :key="item.text">
         <v-list-item link :to="item.route" :prepend-icon="item.icon">
           <v-list-item-title v-if="isExpanded">{{ item.text }}</v-list-item-title>
@@ -79,8 +83,7 @@
     </v-list>
   </v-navigation-drawer>
 
-  <v-btn v-if="isMobile" icon @click="drawer = !drawer" class="menu-btn">
-    <v-icon>mdi-menu</v-icon>
+  <v-btn v-if="isMobile" icon @click="drawer = !drawer" class="menu-btn"><v-icon>mdi-menu</v-icon>
   </v-btn>
 </template>
 
