@@ -24,7 +24,6 @@ const cursos = ref([]);
 const fetchCursos = async () => {
   try {
     const response = await fetch("/api/Curso", {
-      // Si hay un usuario autenticado, incluir el token de autorización
       headers: usuarioLogeadoStore.usuarioActual 
         ? { 'Authorization': `Bearer ${usuarioLogeadoStore.usuarioActual.token}` }
         : {}
@@ -45,35 +44,29 @@ const cursosFiltrados = computed(() => {
     curso.nombre.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 });
+
 onMounted(fetchCursos);
 
 // Verificar autenticación al montar el componente
 onMounted(async () => {
-  // Verificar si hay un usuario guardado en localStorage
   const usuarioGuardado = localStorage.getItem('usuario');
-  
+  const yaMostroLogin = localStorage.getItem('yaMostroLogin');
+
   if (usuarioGuardado) {
     const usuario = JSON.parse(usuarioGuardado);
-    
-    // Verificar si el usuario existe en la base de datos
     const existe = await usuarioLogeadoStore.verificarUsuario(usuario.email);
     
     if (existe) {
-      // Si existe, establecer como usuario actual
       usuarioLogeadoStore.usuarioActual = usuario;
       usuarioLogeadoStore.estaAutenticado = true;
-      
-      // Cargar cursos
       await fetchCursos();
     } else {
-      // Si no existe, mostrar login
       mostrarLogin.value = true;
-      // Limpiar localStorage
       localStorage.removeItem('usuario');
     }
-  } else {
-    // Si no hay usuario guardado, mostrar login
+  } else if (!yaMostroLogin) {
     mostrarLogin.value = true;
+    localStorage.setItem('yaMostroLogin', 'true');
   }
 });
 </script>
@@ -82,7 +75,6 @@ onMounted(async () => {
   <v-app>
     <Header @toggle-sidebar="drawer = !drawer" @update-search="searchQuery = $event" />
 
-    <!-- Breadcrumb -->
     <v-breadcrumbs class="breadcrumbs" :items="items">
       <template v-slot:prepend>
         <v-icon icon="$vuetify" size="small"></v-icon>
@@ -90,7 +82,7 @@ onMounted(async () => {
     </v-breadcrumbs>
 
     <v-container class="main-container">
-      <Sidebar v-model="drawer" />
+      <Sidebar v-model="drawer" @mostrar-login="mostrarLogin = true" />
 
       <div class="content">
         <v-container class="cursos-container">
@@ -111,7 +103,6 @@ onMounted(async () => {
 
     <Footer />
 
-    <!-- Modal de Login -->
     <Login 
       v-if="mostrarLogin" 
       :mostrar="mostrarLogin" 

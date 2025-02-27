@@ -1,40 +1,36 @@
 <script setup lang="ts">
-  // Imports
-  import { ref, computed } from "vue";
+  import { ref, computed, defineEmits } from "vue";
   import { useDisplay } from "vuetify";
   import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
 
-  // Stores
+  const emit = defineEmits(["mostrar-login"]);
   const usuarioLogeadoStore = useUsuarioLogeadoStore();
-
-  // sidebar abierto cerrado
   const drawer = ref(true);
   const isExpanded = ref(false);
-
-  // Pantalla movil
   const { mobile } = useDisplay();
   const isMobile = computed(() => mobile.value);
-
-  // Usuario actual y estado de autenticación
   const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
   const estaAutenticado = computed(() => usuarioLogeadoStore.estaAutenticado);
-
-  // menu para usuarios no logeados
+  
   const menuPublico = [
-    { text: "Cursos", route: "/", icon: "mdi-home" },
+    { text: "Inicio", route: "/", icon: "mdi-home" },
     { text: "Cursos", route: "/cursos", icon: "mdi-school" },
-    { text: "Info", route: "/info", icon: "mdi-information" }
+    { text: "Info", route: "info", icon: "mdi-information" },
+    { text: "Login", action: () => mostrarLogin(), icon: "mdi-login" }
   ];
 
-  // menu para usuarios logeados
   const menuPrivado = [
     { text: "Mis Cursos", route: "/mis-cursos", icon: "mdi-heart" },
     { text: "Perfil", route: "/perfil", icon: "mdi-account" }
   ];
 
-  // metodos para abrir o cerrar sidebar
   const toggleSidebar = () => (isExpanded.value = false);
   const expandSidebar = () => (isExpanded.value = true);
+
+  const mostrarLogin = () => {
+    localStorage.setItem('yaMostroLogin', 'true');
+    emit("mostrar-login");
+  };
 </script>
 
 <template>
@@ -60,10 +56,13 @@
 
     <v-divider class="border-opacity-100"></v-divider>
 
-    <!-- menu sin sesion iniciada -->
     <v-list density="compact" nav>
       <template v-for="(item, index) in menuPublico" :key="item.text">
-        <v-list-item link :to="item.route" :prepend-icon="item.icon">
+        <v-list-item v-if="item.route" link :to="item.route" :prepend-icon="item.icon">
+          <v-list-item-title v-if="isExpanded">{{ item.text }}</v-list-item-title>
+        </v-list-item>
+        
+        <v-list-item v-else @click="item.action" :prepend-icon="item.icon">
           <v-list-item-title v-if="isExpanded">{{ item.text }}</v-list-item-title>
         </v-list-item>
 
@@ -71,7 +70,6 @@
       </template>
     </v-list>
 
-    <!-- menu con sesion iniciada -->
     <v-list v-if="estaAutenticado" density="compact" nav>
       <template v-for="(item, index) in menuPrivado" :key="item.text">
         <v-list-item link :to="item.route" :prepend-icon="item.icon">
@@ -83,7 +81,8 @@
     </v-list>
   </v-navigation-drawer>
 
-  <v-btn v-if="isMobile" icon @click="drawer = !drawer" class="menu-btn"><v-icon>mdi-menu</v-icon>
+  <v-btn v-if="isMobile" icon @click="drawer = !drawer" class="menu-btn">
+    <v-icon>mdi-menu</v-icon>
   </v-btn>
 </template>
 
