@@ -45,6 +45,7 @@ const cursosFiltrados = computed(() => {
     curso.nombre.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 });
+onMounted(fetchCursos);
 
 // Verificar autenticación al montar el componente
 onMounted(async () => {
