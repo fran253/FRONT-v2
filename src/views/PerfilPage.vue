@@ -22,9 +22,6 @@
     "Alumno sin igual"
   ];
 
-
-
-
 </script>
 
 <template>

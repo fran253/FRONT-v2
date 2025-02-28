@@ -1,17 +1,9 @@
 <script setup>
+//imports
 import { ref, onMounted, computed } from 'vue';
 
-// Prop para recibir la búsqueda desde el padre
-defineProps({
-  searchQuery: String
-});
 
-const emit = defineEmits(["cursosCargados"]);
-
-// Estado para almacenar los cursos
-const cursos = ref([]);
-
-// Método para obtener los cursos desde la API
+// fetch a la API
 async function fetchCursos() {
   try {
     const response = await fetch("/api/Curso");
@@ -25,7 +17,7 @@ async function fetchCursos() {
   }
 }
 
-// Computed para filtrar los cursos dinámicamente
+// filtrar los cursos dinámicamente
 const cursosFiltrados = computed(() => {
   if (!props.searchQuery) return cursos.value;
   return cursos.value.filter(curso =>
@@ -33,10 +25,19 @@ const cursosFiltrados = computed(() => {
   );
 });
 
-// Llamamos a la API cuando se monte el componente
-onMounted(() => {
-  fetchCursos();
+// Prop para recibir la búsqueda desde el padre
+defineProps({
+  searchQuery: String
 });
+
+
+const emit = defineEmits(["cursosCargados"]);
+
+// almacenar los cursos
+const cursos = ref([]);
+
+// Llamamos a la API
+onMounted(fetchCursos);
 </script>
 
 <template>

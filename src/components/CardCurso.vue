@@ -1,8 +1,21 @@
 <script setup>
+//Imports
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-const router = useRouter();
 
+//Evento de clickar en el curso para ir a la página de asignaturas
+const seleccionarCurso = () => {
+  if (curso.id) {
+    router.push(`/asignaturas/${curso.id}`);
+  } else {
+    console.error("Falta id", curso);
+  }
+};
+
+
+//router
+const router = useRouter();
+//propiedades del curso
 const curso = defineProps({
   id: Number, 
   titulo: String,
@@ -17,14 +30,8 @@ const misCursos = ref(JSON.parse(localStorage.getItem('misCursos') || '[]'));
 // Computada para verificar si el curso ya está en la lista
 const estaEnMisCursos = computed(() => misCursos.value.some(c => c.id === curso.id));
 
-const seleccionarCurso = () => {
-  if (curso.id) {
-    router.push(`/asignaturas/${curso.id}`);
-  } else {
-    console.error("Falta id", curso);
-  }
-};
 
+//Metodo para añadir o quitar un curso de la lista de mis cursos
 const añadirAMisCursos = () => {
   if (estaEnMisCursos.value) {
     misCursos.value = misCursos.value.filter(c => c.id !== curso.id);

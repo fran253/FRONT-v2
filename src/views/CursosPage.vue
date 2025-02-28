@@ -8,22 +8,13 @@ import Sidebar from '@/components/Sidebar.vue';
 import CardCurso from '@/components/CardCurso.vue';
 import Login from '@/components/Login.vue';
 
-// Stores
-const usuarioLogeadoStore = useUsuarioLogeadoStore();
 
-//variables
-const drawer = ref(false);
-const searchQuery = ref('');
-const mostrarLogin = ref(false);
+//breadcrumb
 const items = ref([{ title: 'Cursos', disabled: false, href: '/cursos' }]);
 
-// Estado para almacenar los cursos obtenidos de la API
-const cursos = ref([]);
-
-// Función para obtener los cursos desde la API
+// Fetch a la API
 const fetchCursos = async () => {
   try {
-    // Usar la URL completa del backend en lugar de la ruta relativa
     const response = await fetch("/api/Curso", {
       headers: usuarioLogeadoStore.usuarioActual 
         ? { 'Authorization': `Bearer ${usuarioLogeadoStore.usuarioActual.token}` }
@@ -38,7 +29,9 @@ const fetchCursos = async () => {
   }
 };
 
-// Filtrado de cursos según la búsqueda
+
+//Buscador
+const searchQuery = ref('');
 const cursosFiltrados = computed(() => {
   if (!searchQuery.value) return cursos.value;
   return cursos.value.filter(curso =>
@@ -46,9 +39,20 @@ const cursosFiltrados = computed(() => {
   );
 });
 
+//almacenar datos del curso
+const cursos = ref([]);
+
+//variables
+const drawer = ref(false);
+const mostrarLogin = ref(false); 
+// llamada al metodo de Usuario.ts
+const usuarioLogeadoStore = useUsuarioLogeadoStore();
+
+
+//llamada ametodo de mostrar los cursos
 onMounted(fetchCursos);
 
-// Verificar autenticación al montar el componente
+// Verificar login usuario
 onMounted(async () => {
   const usuarioGuardado = localStorage.getItem('usuario');
   const yaMostroLogin = localStorage.getItem('yaMostroLogin');
@@ -70,6 +74,7 @@ onMounted(async () => {
     localStorage.setItem('yaMostroLogin', 'true');
   }
 });
+
 </script>
 
 <template>

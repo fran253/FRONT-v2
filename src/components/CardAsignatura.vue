@@ -1,30 +1,34 @@
 <script setup lang="ts">
-  //Imports
-  import CursosPage from "@/views/CursosPage.vue";
-  import { useRouter } from "vue-router";
+//Imports
+import CursosPage from "@/views/CursosPage.vue";
+import { useRouter } from "vue-router";
 
-  //router
-  const router = useRouter();
-  //props
-  const props = defineProps<{ 
-    asignatura: { 
-      idAsignatura: number;
-      nombre: string;
-      imagen: string;
-    } 
-  }>();
 
-  //metodo seleccionarAsignatura
-  const seleccionarAsignatura = () => {
-    console.log('Asignatura completa:', props.asignatura);
-    console.log('ID de la asignatura:', props.asignatura.idAsignatura);
-    
-    if (props.asignatura && props.asignatura.idAsignatura) {
-        router.push(`/temarios/${props.asignatura.idAsignatura}`);
-    } else {
-        console.error('Error: la asignatura o su ID no están definidos');
-    }
+//Evento de clickar en la asignatura para ir a la página de temarios
+const seleccionarAsignatura = () => {
+  console.log('Asignatura completa:', props.asignatura);
+  console.log('ID de la asignatura:', props.asignatura.idAsignatura);
+  
+  if (props.asignatura && props.asignatura.idAsignatura) {
+      router.push(`/temarios/${props.asignatura.idAsignatura}`);
+  } else {
+      console.error('Error: la asignatura o su ID no están definidos');
+  }
 };
+
+
+//router
+const router = useRouter();
+//Propiedades de la asignatura
+const props = defineProps<{ 
+  asignatura: { 
+    idAsignatura: number;
+    nombre: string;
+    imagen: string;
+  } 
+}>();
+
+
 </script>
 
 <template>

@@ -22,6 +22,7 @@
     setTimeout(generarLikes, 2000);
   };
 
+  //gilipollez
   generarLikes();
 </script>
 

@@ -1,18 +1,9 @@
 <script setup>
+//imports
 import { ref, onMounted, computed } from "vue";
 
 
-// Props para recibir la búsqueda desde el padre
-defineProps({
-  searchQuery: String
-});
-
-const emit = defineEmits(["asignaturasCargadas"]);
-
-// Estado para almacenar las asignaturas
-const asignaturas = ref([]);
-
-// Método para obtener las asignaturas desde la API
+// fetch a la API
 async function fetchAsignaturas() {
   if (!props.idCurso) return; 
   try {
@@ -27,7 +18,7 @@ async function fetchAsignaturas() {
   }
 }
 
-// filtrar las asignaturas dinámicamente
+// filtrar las asignaturas dinámicamente 
 const asignaturasFiltradas = computed(() => {
   if (!props.searchQuery) return asignaturas.value;
   return asignaturas.value.filter(asignatura =>
@@ -35,7 +26,18 @@ const asignaturasFiltradas = computed(() => {
   );
 });
 
-// Llamamos a la API cuando se monte el componente
+// Propiedades para filtrar los datos
+defineProps({
+  searchQuery: String
+});
+
+
+const emit = defineEmits(["asignaturasCargadas"]);
+
+// almacenar las asignaturas
+const asignaturas = ref([]);
+
+// Llamamos a la API
 onMounted(fetchAsignaturas);
 </script>
 

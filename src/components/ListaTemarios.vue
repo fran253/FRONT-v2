@@ -3,24 +3,8 @@
 import { ref, onMounted, computed, watch } from "vue";
 import CardTemario from "@/components/CardTemario.vue";
 
-// Propiedades 
-const props = defineProps({
-  searchQuery: {
-    type: String,
-    default: ""
-  },
-  idAsignatura: {
-    type: String,
-    required: true
-  }
-});
 
-const emit = defineEmits(["temariosCargados"]);
-
-// almacenar los temarios
-const temarios = ref([]);
-
-// metodo obener temarios de la asignatura
+// fetch a la API
 async function fetchTemarios() {
   if (!props.idAsignatura || props.idAsignatura === "undefined") return;
   try {
@@ -43,13 +27,43 @@ async function fetchTemarios() {
   }
 }
 
-// Filtrado de temarios
+// filtrar los temarios dinámicamente 
 const temariosFiltrados = computed(() => {
   if (!props.searchQuery) return temarios.value;
   return temarios.value.filter(temario =>
     temario.titulo.toLowerCase().includes(props.searchQuery.toLowerCase())
   );
 });
+
+
+
+// Propiedades para filtrar los datos
+const props = defineProps({
+  searchQuery: {
+    type: String,
+    default: ""
+  },
+  idAsignatura: {
+    type: String,
+    required: true
+  }
+});
+
+
+
+const emit = defineEmits(["temariosCargados"]);
+
+// almacenar los temarios
+const temarios = ref([]);
+
+// LLamamos a la API
+onMounted(fetchTemarios);
+
+// onMounted(() => {
+//   if (props.idAsignatura && props.idAsignatura !== "undefined") {
+//     fetchTemarios();
+//   }
+// });
 
 // Llamamos a la API cuando cambie el ID de la asignatura
 watch(() => props.idAsignatura, (newVal) => {
@@ -58,12 +72,6 @@ watch(() => props.idAsignatura, (newVal) => {
   }
 }, { immediate: true });
 
-
-onMounted(() => {
-  if (props.idAsignatura && props.idAsignatura !== "undefined") {
-    fetchTemarios();
-  }
-});
 </script>
 
 <template>

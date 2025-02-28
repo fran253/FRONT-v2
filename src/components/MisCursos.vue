@@ -1,19 +1,21 @@
 <script setup lang="ts">
-    //imports
-    import { ref, onMounted } from "vue";
-    import CardCurso from "@/components/CardCurso.vue";
+//imports
+import { ref, onMounted } from "vue";
+import CardCurso from "@/components/CardCurso.vue";
 
-    const misCursos = ref([]);
 
-    //fetch mis cursos
-    const fetchMisCursos = () => {
-        const storedCursos = localStorage.getItem("misCursos");
-        if (storedCursos) {
-            misCursos.value = JSON.parse(storedCursos);
-        }
-    };
+//fetch mis cursos
+const fetchMisCursos = () => {
+    const storedCursos = localStorage.getItem("misCursos");
+    if (storedCursos) {
+        misCursos.value = JSON.parse(storedCursos);
+    }
+};
 
-    onMounted(fetchMisCursos);
+const misCursos = ref([]);
+
+//llamar al fetch con los cursos guardados
+onMounted(fetchMisCursos);
 </script>
 
 <template>

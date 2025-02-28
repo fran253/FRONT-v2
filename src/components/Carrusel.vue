@@ -1,10 +1,12 @@
 <script setup lang="ts">
-    import { ref } from "vue";
-    import img1 from "@/assets/images/GradoMedioInformatica.jpg";
-    import img2 from "@/assets/images/GradoSuperiorInformatica.jpg";
-    import img3 from "@/assets/images/GradoMedicina.jpg";
+//imports
+import { ref } from "vue";
+import img1 from "@/assets/images/GradoMedioInformatica.jpg";
+import img2 from "@/assets/images/GradoSuperiorInformatica.jpg";
+import img3 from "@/assets/images/GradoMedicina.jpg";
 
-    const slides = ref([img1, img2, img3]);
+//imagenes en el carrusel
+const slides = ref([img1, img2, img3]);
 </script>
 
 <template>

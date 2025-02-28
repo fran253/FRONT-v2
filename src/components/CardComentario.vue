@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-  //props
+  //propiedades comentario
   defineProps<{
     comentario: {
       id: number;
