@@ -4,7 +4,7 @@
   import Header from '@/components/Header.vue';
   import Sidebar from '@/components/Sidebar.vue';
   import Footer from '@/components/Footer.vue';
-  import CardTest from '@/components/CardTest.vue';
+  import Test from '@/components/CardTest.vue';
 
   //datos hardcodeados
   const tests = ref([
@@ -55,7 +55,7 @@
                   md="6"
                   lg="4"
                 >
-                  <CardTest :test="test" @ver="verTest" />
+                  <Test :test="test" @ver="verTest" />
                 </v-col>
               </v-row>
             </v-card>

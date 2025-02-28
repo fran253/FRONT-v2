@@ -6,10 +6,10 @@ export const useTestStore = defineStore("test", () => {
   const tests = ref<TestDTO[]>([]);
   const errorMessage = ref<string>("");
 
-  // findeao todo
+  // Obtener todos los tests
   async function fetchAllTests() {
     try {
-      const response = await fetch("https://localhost:7278/api/Test");
+      const response = await fetch("/api/Test");
       if (!response.ok) throw new Error("Error al obtener todos los tests");
 
       tests.value = await response.json();
@@ -19,10 +19,10 @@ export const useTestStore = defineStore("test", () => {
     }
   }
 
-  // findea por id
+  // Obtener test por ID
   async function fetchTestById(idTest: number) {
     try {
-      const response = await fetch(`https://localhost:7278/api/Test/${idTest}`);
+      const response = await fetch(`/api/Test/${idTest}`);
       if (!response.ok) throw new Error("Error al obtener el test");
 
       return await response.json();
@@ -33,10 +33,10 @@ export const useTestStore = defineStore("test", () => {
     }
   }
 
-  // findea por id del temario
+  // Obtener tests por ID de temario
   async function fetchTestsByTemario(idTemario: number) {
     try {
-      const response = await fetch(`https://localhost:7278/api/Test/temario/${idTemario}`);
+      const response = await fetch(`/api/Test/temario/${idTemario}`);
       if (!response.ok) throw new Error("Error al obtener los tests del temario");
 
       tests.value = await response.json();
@@ -46,7 +46,7 @@ export const useTestStore = defineStore("test", () => {
     }
   }
 
-  //findeo por nombre
+  // Filtrar tests por término de búsqueda
   const testsFiltrados = computed(() => (searchQuery: string) => {
     if (!searchQuery) return tests.value;
     return tests.value.filter(test =>

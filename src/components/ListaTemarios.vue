@@ -1,32 +1,49 @@
-<script setup>
-import { ref, onMounted, computed } from "vue";
+<script setup lang="ts">
+// Imports
+import { ref, onMounted, computed, watch } from "vue";
+import CardTemario from "@/components/CardTemario.vue";
 
-//  props para recibir el ID de la asignatura y la búsqueda
-defineProps({
-  searchQuery: String
+// Propiedades 
+const props = defineProps({
+  searchQuery: {
+    type: String,
+    default: ""
+  },
+  idAsignatura: {
+    type: String,
+    required: true
+  }
 });
 
 const emit = defineEmits(["temariosCargados"]);
 
-// Estado para almacenar los temarios
+// almacenar los temarios
 const temarios = ref([]);
 
-// Método para obtener los temarios desde la API
+// metodo obener temarios de la asignatura
 async function fetchTemarios() {
-  if (!props.idAsignatura) return; 
+  if (!props.idAsignatura || props.idAsignatura === "undefined") return;
   try {
     const response = await fetch(`/api/Temario/asignatura/${props.idAsignatura}`);
     if (!response.ok) throw new Error("Error al obtener los temarios");
 
-    temarios.value = await response.json();
+    const data = await response.json();
+    console.log('Datos recibidos de la API:', data);
+    
+    // verificar id temario
+    temarios.value = data.map(temario => ({
+      ...temario,
+      id: temario.id || temario.idTemario || temario.temarioId || null
+    }));
 
+    console.log('Temarios procesados:', temarios.value);
     emit("temariosCargados", temarios.value);
   } catch (error) {
     console.error("Error al obtener temarios:", error);
   }
 }
 
-// Filtrar los temarios dinámicamente según la búsqueda
+// Filtrado de temarios
 const temariosFiltrados = computed(() => {
   if (!props.searchQuery) return temarios.value;
   return temarios.value.filter(temario =>
@@ -34,19 +51,32 @@ const temariosFiltrados = computed(() => {
   );
 });
 
-// Llamamos a la API cuando se monte el componente
-onMounted(fetchTemarios);
+// Llamamos a la API cuando cambie el ID de la asignatura
+watch(() => props.idAsignatura, (newVal) => {
+  if (newVal && newVal !== "undefined") {
+    fetchTemarios();
+  }
+}, { immediate: true });
+
+
+onMounted(() => {
+  if (props.idAsignatura && props.idAsignatura !== "undefined") {
+    fetchTemarios();
+  }
+});
 </script>
 
 <template>
   <v-container class="temarios-container">
+    <!-- cuando no hayan temarios aparece mensaje de error -->
+    <div v-if="temarios.length === 0" class="text-center my-4">
+      <p>No hay temarios disponibles para esta asignatura</p>
+    </div>
+  
+
     <v-row align="start" justify="start">
-      <v-col v-for="temario in temariosFiltrados" :key="temario.idTemario" cols="12" sm="6" md="4" lg="3">
-        <CardTemario 
-          :id="temario.idTemario"
-          :titulo="temario.titulo"
-          :descripcion="temario.descripcion"
-        />
+      <v-col v-for="temario in temariosFiltrados" :key="temario.id || index" cols="12" sm="6" md="4" lg="3">
+        <CardTemario :temario="temario" />
       </v-col>
     </v-row>
   </v-container>
@@ -56,5 +86,4 @@ onMounted(fetchTemarios);
 .temarios-container {
   padding: 20px;
 }
-
 </style>

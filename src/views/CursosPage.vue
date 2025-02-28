@@ -23,6 +23,7 @@ const cursos = ref([]);
 // Función para obtener los cursos desde la API
 const fetchCursos = async () => {
   try {
+    // Usar la URL completa del backend en lugar de la ruta relativa
     const response = await fetch("/api/Curso", {
       headers: usuarioLogeadoStore.usuarioActual 
         ? { 'Authorization': `Bearer ${usuarioLogeadoStore.usuarioActual.token}` }

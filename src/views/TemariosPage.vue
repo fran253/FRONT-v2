@@ -1,4 +1,5 @@
 <script setup lang="ts">
+//imports
 import { ref, computed, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import Header from "@/components/Header.vue";
@@ -9,38 +10,21 @@ import ListaTemarios from "@/components/ListaTemarios.vue";
 const route = useRoute();
 const drawer = ref(false);
 
+//buscador
+const searchQuery = ref(""); 
+
 const idAsignatura = computed(() => route.params.idAsignatura ? String(route.params.idAsignatura) : "");
 
-// almacenar los temarios de la API
-const temarios = ref([]);
-
-// Datos para el breadcrumb
+//  breadcrumb
 const items = ref([
   { title: "Cursos", disabled: false, href: "/cursos" },
   { title: "Asignaturas", disabled: false },
   { title: "Temarios", disabled: true },
 ]);
 
-// Función para obtener los temarios desde la API
-async function fetchTemariosByAsignatura(idAsignatura: string) {
-  if (!idAsignatura || idAsignatura === "undefined") return; // Evitar llamadas incorrectas
-
-  try {
-    const response = await fetch(`/api/Temario/asignatura/${idAsignatura}`);
-    if (!response.ok) throw new Error("Error al obtener los temarios");
-
-    temarios.value = await response.json();
-  } catch (error) {
-    console.error("Error al obtener temarios:", error);
-  }
-}
-
-
-watchEffect(() => {
-  if (idAsignatura.value) {
-    fetchTemariosByAsignatura(idAsignatura.value);
-  }
-});
+const handleTemariosCargados = (temariosData) => {
+  console.log("Temarios cargados:", temariosData);
+};
 </script>
 
 <template>
@@ -58,8 +42,22 @@ watchEffect(() => {
       <Sidebar v-model="drawer" />
 
       <div class="content">
+        <!-- Opcional: Barra de búsqueda -->
+        <v-text-field
+          v-model="searchQuery"
+          prepend-inner-icon="mdi-magnify"
+          label="Buscar temarios"
+          single-line
+          hide-details
+          class="mb-4"
+        ></v-text-field>
+        
         <!-- Lista de temarios -->
-        <ListaTemarios :temarios="temarios" />
+        <ListaTemarios 
+          :idAsignatura="idAsignatura" 
+          :searchQuery="searchQuery"
+          @temariosCargados="handleTemariosCargados"
+        />
       </div>
     </v-container>
 

@@ -13,7 +13,7 @@ const routes = [
   { path: "/", component: HomePage },
   { path: "/asignaturas/:idCurso", component: AsignaturasPage, props: true },
   { path: "/temarios/:idAsignatura", component: TemariosPage, props: true },
-  { path: "/temarios/:id/archivos-test", component: ArchivosyTestPage, props: true },
+  { path: "/temarios/:idTemario/archivos-test", component: ArchivosyTestPage, props: true },
   { path: "/cursos", component: CursosPage },
   { path: "/perfil", component: PerfilPage },
   { path: "/mis-cursos", component: MisCursosPage },

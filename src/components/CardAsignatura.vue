@@ -8,7 +8,7 @@
   //props
   const props = defineProps<{ 
     asignatura: { 
-      id: number;
+      idAsignatura: number;
       nombre: string;
       imagen: string;
     } 
@@ -16,8 +16,15 @@
 
   //metodo seleccionarAsignatura
   const seleccionarAsignatura = () => {
-      router.push(`/temarios/${props.asignatura.id}`);
-  };
+    console.log('Asignatura completa:', props.asignatura);
+    console.log('ID de la asignatura:', props.asignatura.idAsignatura);
+    
+    if (props.asignatura && props.asignatura.idAsignatura) {
+        router.push(`/temarios/${props.asignatura.idAsignatura}`);
+    } else {
+        console.error('Error: la asignatura o su ID no están definidos');
+    }
+};
 </script>
 
 <template>
