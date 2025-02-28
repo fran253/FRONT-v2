@@ -1,23 +1,10 @@
 <script setup lang="ts">
+// Imports
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
 
-const router = useRouter();
 
-// Definir las propiedades del componente
-const props = defineProps({
-  test: {
-    type: Object,
-    required: true
-  }
-});
-
-// Obtener el título de manera segura
-const testTitle = computed(() => {
-  return props.test?.titulo || props.test?.nombre || 'Test sin título';
-});
-
-// Método para ver el test
+//Evento de clickar en test para ver la ventana del test
 const verTest = () => {
   if (props.test && props.test.id) {
     router.push(`/test/${props.test.id}`);
@@ -25,6 +12,24 @@ const verTest = () => {
     console.error("Error: Test sin ID válido", props.test);
   }
 };
+
+
+// Router
+const router = useRouter();
+// Definir las propiedades de test
+const props = defineProps({
+  test: {
+    type: Object,
+    required: true
+  }
+});
+
+// Obtener el título
+const testTitle = computed(() => {
+  return props.test?.titulo || props.test?.nombre || 'Test sin título';
+});
+
+
 </script>
 
 <template>

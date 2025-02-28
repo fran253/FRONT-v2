@@ -1,48 +1,55 @@
 <script setup lang="ts">
-  // Imports
-  import { ref, watch, onMounted } from 'vue';
-  import { useRoute } from 'vue-router';
-  import Header from '@/components/Header.vue';
-  import Sidebar from '@/components/Sidebar.vue';
-  import Footer from '@/components/Footer.vue';
-  import Archivos from '@/components/Archivos.vue';
-  import ListaTest from '@/components/ListaTest.vue';
+// Imports
+import { ref, watch, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import Header from '@/components/Header.vue';
+import Sidebar from '@/components/Sidebar.vue';
+import Footer from '@/components/Footer.vue';
+import Archivos from '@/components/Archivos.vue';
+import ListaTest from '@/components/ListaTest.vue';
 
-  // Variables
-  const route = useRoute();
-  const drawer = ref(false);
-  const tab = ref(1);
-  const terminoBusqueda = ref("");
-  const temarioId = ref<number | null>(null);
 
-  // Datos para el breadcrumb
-  const items = ref([
-    { title: 'Cursos', disabled: false, href: '/cursos' },
-    { title: 'Asignaturas', disabled: false },
-    { title: 'Temarios', disabled: true },
-    { title: "Archivos & Tests", disabled: false }
-  ]);
+//breadcrumb
+const items = ref([
+  { title: 'Cursos', disabled: false, href: '/cursos' },
+  { title: 'Asignaturas', disabled: false },
+  { title: 'Temarios', disabled: true },
+  { title: "Archivos & Tests", disabled: false }
+]);
 
-  // Actualizar ID del temario cuando cambia la ruta
-  watch(() => route.params.idTemario, (nuevoId) => {
-    if (nuevoId) {
-      console.log('Nuevo ID del temario:', nuevoId);
-      temarioId.value = Number(nuevoId);
-    }
-  }, { immediate: true });
+// Variables
+const drawer = ref(false);
+const tab = ref(1);
+const terminoBusqueda = ref("");
+// Ruta actual
+const route = useRoute();
+// ID del temario
+const temarioId = ref<number | null>(null);
 
-  // Obtener el ID del temario al montar el componente
-  onMounted(() => {
-    if (route.params.idTemario) {
-      temarioId.value = Number(route.params.idTemario);
-      console.log('ID del temario al montar:', temarioId.value);
-    }
-  });
 
-  // Función para actualizar el término de búsqueda
-  const updateSearch = (query: string) => {
-    terminoBusqueda.value = query;
-  };
+//cambio archivos depende el idTemario
+watch(() => route.params.idTemario, (nuevoId) => {
+  if (nuevoId) {
+    console.log('Nuevo ID del temario:', nuevoId);
+    temarioId.value = Number(nuevoId);
+  }
+}, { immediate: true });
+
+
+// Actualizar buscador ruta
+const updateSearch = (query: string) => {
+  terminoBusqueda.value = query;
+};
+
+
+// Obtener el ID del temario
+onMounted(() => {
+  if (route.params.idTemario) {
+    temarioId.value = Number(route.params.idTemario);
+    console.log('ID del temario al montar:', temarioId.value);
+  }
+});
+
 </script>
 
 <template>

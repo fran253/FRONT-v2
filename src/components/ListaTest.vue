@@ -17,10 +17,9 @@ const props = defineProps({
 
 const emit = defineEmits(["testsCargados"]);
 
-// Store de tests
+// usa el Test.ts en store
 const testStore = useTestStore();
 
-// Estado local
 const loading = ref(false);
 const error = ref("");
 

@@ -1,9 +1,9 @@
 <script setup>
+//imports
 import { ref } from 'vue';
-
-// Importa el logo SVG
 import emote from '@/assets/emote.svg';
 
+//buscador
 const search = ref('');
 </script>
 

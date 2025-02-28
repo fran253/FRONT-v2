@@ -1,36 +1,45 @@
 <script setup lang="ts">
-  import { ref, computed, defineEmits } from "vue";
-  import { useDisplay } from "vuetify";
-  import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
+//imports
+import { ref, computed, defineEmits } from "vue";
+import { useDisplay } from "vuetify";
+import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
 
-  const emit = defineEmits(["mostrar-login"]);
-  const usuarioLogeadoStore = useUsuarioLogeadoStore();
-  const drawer = ref(true);
-  const isExpanded = ref(false);
-  const { mobile } = useDisplay();
-  const isMobile = computed(() => mobile.value);
-  const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
-  const estaAutenticado = computed(() => usuarioLogeadoStore.estaAutenticado);
-  
-  const menuPublico = [
-    { text: "Inicio", route: "/", icon: "mdi-home" },
-    { text: "Cursos", route: "/cursos", icon: "mdi-school" },
-    { text: "Info", route: "info", icon: "mdi-information" },
-    { text: "Login", action: () => mostrarLogin(), icon: "mdi-login" }
-  ];
 
-  const menuPrivado = [
-    { text: "Mis Cursos", route: "/mis-cursos", icon: "mdi-heart" },
-    { text: "Perfil", route: "/perfil", icon: "mdi-account" }
-  ];
+//MENU PUBLICO (Usuarios no logeados)
+const menuPublico = [
+  { text: "Inicio", route: "/", icon: "mdi-home" },
+  { text: "Cursos", route: "/cursos", icon: "mdi-school" },
+  { text: "Info", route: "info", icon: "mdi-information" },
+  { text: "Login", action: () => mostrarLogin(), icon: "mdi-login" }
+];
+//MENU PRIVADO (Usuarios logeados)
+const menuPrivado = [
+  { text: "Mis Cursos", route: "/mis-cursos", icon: "mdi-heart" },
+  { text: "Perfil", route: "/perfil", icon: "mdi-account" }
+];
 
-  const toggleSidebar = () => (isExpanded.value = false);
-  const expandSidebar = () => (isExpanded.value = true);
 
-  const mostrarLogin = () => {
-    localStorage.setItem('yaMostroLogin', 'true');
-    emit("mostrar-login");
-  };
+//abrir y cerrar sidebar
+const toggleSidebar = () => (isExpanded.value = false);
+const expandSidebar = () => (isExpanded.value = true);
+
+// llamar al login
+const mostrarLogin = () => {
+  localStorage.setItem('yaMostroLogin', 'true');
+  emit("mostrar-login");
+};
+
+
+//variables
+const emit = defineEmits(["mostrar-login"]);
+const usuarioLogeadoStore = useUsuarioLogeadoStore();
+const drawer = ref(true);
+const isExpanded = ref(false);
+const { mobile } = useDisplay();
+const isMobile = computed(() => mobile.value);
+const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
+const estaAutenticado = computed(() => usuarioLogeadoStore.estaAutenticado);
+
 </script>
 
 <template>

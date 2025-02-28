@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import Header from "@/components/Header.vue";
-  import Footer from "@/components/Footer.vue";
-  import Carrusel from "@/components/Carrusel.vue";
-  import AvatarRiendo from '@/components/AvatarEmote.vue'; 
+//imports
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
+import Carrusel from "@/components/Carrusel.vue";
+import AvatarRiendo from '@/components/AvatarEmote.vue'; 
 
 </script>
 

@@ -3,29 +3,8 @@
 import { onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 
-// Router
-const router = useRouter();
 
-// Propiedades temario
-const props = defineProps({
-  temario: {
-    type: Object,
-    required: true
-  }
-});
-
-// ID del temario
-const temarioId = computed(() => {
-  if (!props.temario) return null;
-  return props.temario.id || props.temario.idTemario || props.temario.temarioId;
-});
-
-onMounted(() => {
-  console.log('Temario en CardTemario:', props.temario);
-  console.log('ID calculado:', temarioId.value);
-});
-
-// Método para ir a la página de archivos  y test del temario
+//Evento de clickar en temario para ir a la página de archivos-test
 const seleccionarTemario = () => {
   console.log('ID del temario:', props.temario.id);
   if (props.temario && props.temario.id) {
@@ -34,6 +13,33 @@ const seleccionarTemario = () => {
     console.error('Error: el temario o su ID no están definidos');
   }
 };
+
+
+// Router
+const router = useRouter();
+// Propiedades temario
+const props = defineProps({
+  temario: {
+    type: Object,
+    required: true
+  }
+});
+
+
+// ID del temario
+const temarioId = computed(() => {
+  if (!props.temario) return null;
+  return props.temario.id || props.temario.idTemario || props.temario.temarioId;
+});
+
+//mensajes por consola para verificar que funcionan las pruebas
+onMounted(() => {
+  console.log('Temario en CardTemario:', props.temario);
+  console.log('ID calculado:', temarioId.value);
+});
+
+
+
 </script>
 
 <template>
