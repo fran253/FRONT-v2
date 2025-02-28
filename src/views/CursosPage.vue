@@ -1,11 +1,17 @@
 <script setup>
+//imports
 import { ref, computed, onMounted } from 'vue';
+import { useUsuarioLogeadoStore } from '@/stores/UsuarioLogeado';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import Sidebar from '@/components/Sidebar.vue';
 import CardCurso from '@/components/CardCurso.vue';
 import Login from '@/components/Login.vue';
 
+// Stores
+const usuarioLogeadoStore = useUsuarioLogeadoStore();
+
+//variables
 const drawer = ref(false);
 const searchQuery = ref('');
 const mostrarLogin = ref(false);
@@ -17,7 +23,13 @@ const cursos = ref([]);
 // Función para obtener los cursos desde la API
 const fetchCursos = async () => {
   try {
-    const response = await fetch("/api/Curso");
+    // Usar la URL completa del backend en lugar de la ruta relativa
+    const response = await fetch("/api/Curso", {
+      headers: usuarioLogeadoStore.usuarioActual 
+        ? { 'Authorization': `Bearer ${usuarioLogeadoStore.usuarioActual.token}` }
+        : {}
+    });
+    
     if (!response.ok) throw new Error("Error al obtener los cursos");
 
     cursos.value = await response.json();
@@ -34,15 +46,36 @@ const cursosFiltrados = computed(() => {
   );
 });
 
-// Cargar los cursos al montar el componente
 onMounted(fetchCursos);
+
+// Verificar autenticación al montar el componente
+onMounted(async () => {
+  const usuarioGuardado = localStorage.getItem('usuario');
+  const yaMostroLogin = localStorage.getItem('yaMostroLogin');
+
+  if (usuarioGuardado) {
+    const usuario = JSON.parse(usuarioGuardado);
+    const existe = await usuarioLogeadoStore.verificarUsuario(usuario.email);
+    
+    if (existe) {
+      usuarioLogeadoStore.usuarioActual = usuario;
+      usuarioLogeadoStore.estaAutenticado = true;
+      await fetchCursos();
+    } else {
+      mostrarLogin.value = true;
+      localStorage.removeItem('usuario');
+    }
+  } else if (!yaMostroLogin) {
+    mostrarLogin.value = true;
+    localStorage.setItem('yaMostroLogin', 'true');
+  }
+});
 </script>
 
 <template>
   <v-app>
     <Header @toggle-sidebar="drawer = !drawer" @update-search="searchQuery = $event" />
 
-    <!-- Breadcrumb -->
     <v-breadcrumbs class="breadcrumbs" :items="items">
       <template v-slot:prepend>
         <v-icon icon="$vuetify" size="small"></v-icon>
@@ -50,7 +83,7 @@ onMounted(fetchCursos);
     </v-breadcrumbs>
 
     <v-container class="main-container">
-      <Sidebar v-model="drawer" />
+      <Sidebar v-model="drawer" @mostrar-login="mostrarLogin = true" />
 
       <div class="content">
         <v-container class="cursos-container">
@@ -71,8 +104,11 @@ onMounted(fetchCursos);
 
     <Footer />
 
-    <!-- Modal de Login -->
-    <Login v-if="mostrarLogin" :mostrar="mostrarLogin" @cerrar="mostrarLogin = false" />
+    <Login 
+      v-if="mostrarLogin" 
+      :mostrar="mostrarLogin" 
+      @cerrar="mostrarLogin = false" 
+    />
   </v-app>
 </template>
 

@@ -1,21 +1,21 @@
 <script setup lang="ts">
-  //imports
+  // Imports
   import { ref, watch, onMounted } from 'vue';
   import { useRoute } from 'vue-router';
   import Header from '@/components/Header.vue';
   import Sidebar from '@/components/Sidebar.vue';
   import Footer from '@/components/Footer.vue';
   import Archivos from '@/components/Archivos.vue';
-  import Test from '@/components/Test.vue';
+  import ListaTest from '@/components/ListaTest.vue';
 
-  //variables
+  // Variables
   const route = useRoute();
   const drawer = ref(false);
   const tab = ref(1);
   const terminoBusqueda = ref("");
   const temarioId = ref<number | null>(null);
 
-  //datos para el breadcrumb
+  // Datos para el breadcrumb
   const items = ref([
     { title: 'Cursos', disabled: false, href: '/cursos' },
     { title: 'Asignaturas', disabled: false },
@@ -23,19 +23,31 @@
     { title: "Archivos & Tests", disabled: false }
   ]);
 
-  //ver archivo o test
-  watch(() => route.params.id, (nuevoId) => {
-    temarioId.value = Number(nuevoId);
-  });
-  //obtener el id del temario
+  // Actualizar ID del temario cuando cambia la ruta
+  watch(() => route.params.idTemario, (nuevoId) => {
+    if (nuevoId) {
+      console.log('Nuevo ID del temario:', nuevoId);
+      temarioId.value = Number(nuevoId);
+    }
+  }, { immediate: true });
+
+  // Obtener el ID del temario al montar el componente
   onMounted(() => {
-    temarioId.value = Number(route.params.id);
+    if (route.params.idTemario) {
+      temarioId.value = Number(route.params.idTemario);
+      console.log('ID del temario al montar:', temarioId.value);
+    }
   });
+
+  // Función para actualizar el término de búsqueda
+  const updateSearch = (query: string) => {
+    terminoBusqueda.value = query;
+  };
 </script>
 
 <template>
   <v-app>
-    <Header @toggle-sidebar="drawer = !drawer" @update-search="terminoBusqueda = $event" />
+    <Header @toggle-sidebar="drawer = !drawer" @update-search="updateSearch" />
 
     <!-- Breadcrumb -->
     <v-breadcrumbs class="breadcrumbs" :items="items">
@@ -47,7 +59,7 @@
     <v-container class="main-container">
       <Sidebar v-model="drawer" />
 
-      <div class="content">
+      <div class="content" v-if="temarioId !== null">
         <v-card class="tab-container">
           <v-tabs v-model="tab" align-tabs="left" color="orange-darken-3">
             <v-tab :value="1">
@@ -58,16 +70,21 @@
             </v-tab>
           </v-tabs>
 
-          <v-tabs-window v-model="tab">
-            <v-tabs-window-item :value="1">
+          <v-window v-model="tab">
+            <v-window-item :value="1">
               <Archivos :terminoBusqueda="terminoBusqueda" :temarioId="temarioId" />
-            </v-tabs-window-item>
+            </v-window-item>
 
-            <v-tabs-window-item :value="2">
-              <Test :terminoBusqueda="terminoBusqueda" :temarioId="temarioId" />
-            </v-tabs-window-item>
-          </v-tabs-window>
+            <v-window-item :value="2">
+              <ListaTest :searchQuery="terminoBusqueda" :temarioId="temarioId" />
+            </v-window-item>
+          </v-window>
         </v-card>
+      </div>
+      <div v-else class="content text-center">
+        <v-alert type="warning" icon="mdi-alert-circle">
+          No se ha seleccionado ningún temario. Por favor, seleccione un temario para ver sus archivos y tests.
+        </v-alert>
       </div>
     </v-container>
 

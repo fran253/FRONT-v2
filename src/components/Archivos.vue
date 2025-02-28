@@ -1,54 +1,105 @@
 <script setup lang="ts">
-  //IMPORTS
-  import { ref, computed } from 'vue';
-  import ModalArchivoComentario from '@/components/ModalArchivoComentarios.vue';
-  import { Archivo } from "@/types/archivo";
+// IMPORTS
+import { ref, computed, onMounted, watch } from 'vue';
+import ModalArchivoComentario from '@/components/ModalArchivoComentarios.vue';
+import { Archivo } from "@/types/archivo";
+import { useArchivoStore } from "@/stores/Archivo";
 
-  //propiedades
-  const props = defineProps<{ temarioId: number | null; terminoBusqueda: string }>();
+// Propiedades
+const props = defineProps<{ temarioId: number | null; terminoBusqueda: string }>();
 
-  //lista archivos
-  const archivosHardcoded: Archivo[] = [
-    { id: 1, temarioId: 1, nombre: "Guía de Vue", url: "https://www.orimi.com/pdf-test.pdf" },
-    { id: 2, temarioId: 1, nombre: "Manual de Vuetify", url: "https://www.orimi.com/pdf-test.pdf" },
-    { id: 3, temarioId: 2, nombre: "Documentación TypeScript", url: "https://www.orimi.com/pdf-test.pdf" }
-  ];
+// llamada a Archivo.ts
+const archivoStore = useArchivoStore();
 
-  //filtrar archivos
-  const archivosFiltrados = computed(() => {
-    if (props.temarioId === null) return archivosHardcoded;
-    return archivosHardcoded.filter(archivo =>
-      archivo.temarioId === props.temarioId &&
-      (props.terminoBusqueda ? archivo.nombre.toLowerCase().includes(props.terminoBusqueda.toLowerCase()) : true)
-    );
-  });
 
-  //Archivo funciones
-  const visorAbierto = ref(false);
-  const archivoSeleccionado = ref<Archivo | null>(null);
+// Estado local
+const visorAbierto = ref(false);
+const archivoSeleccionado = ref<Archivo | null>(null);
+const cargando = ref(false);
+const error = ref('');
 
-  //abrir
-  const verArchivo = (archivo: Archivo) => {
-    archivoSeleccionado.value = archivo;
-    visorAbierto.value = true;
-  };
+// Filtrar archivos
+const archivosFiltrados = computed(() => {
+  // Si no hay temario seleccionado, mostrar todos los archivos
+  if (!props.terminoBusqueda) return archivoStore.archivos;
+  
+  // Filtrar por término de búsqueda
+  return archivoStore.archivos.filter(archivo =>
+    archivo.titulo.toLowerCase().includes(props.terminoBusqueda.toLowerCase())
+  );
+});
 
-  //cerrar
-  const cerrarModal = () => {
-    visorAbierto.value = false;
-  };
+// cambio archivos cuando cambie el id del temario
+watch(() => props.temarioId, async (nuevoId) => {
+  if (nuevoId) {
+    await cargarArchivos(nuevoId);
+  }
+}, { immediate: true });
+
+// Método  cargar los archivos del temario
+async function cargarArchivos(temarioId: number) {
+  cargando.value = true;
+  error.value = '';
+  
+  try {
+    await archivoStore.fetchArchivosByTemario(temarioId);
+  } catch (e) {
+    error.value = 'Error al cargar los archivos';
+    console.error(e);
+  } finally {
+    cargando.value = false;
+  }
+}
+
+// Abrir ventana de archivo
+const verArchivo = (archivo: Archivo) => {
+  archivoSeleccionado.value = archivo;
+  visorAbierto.value = true;
+};
+
+//cerrar
+const cerrarModal = () => {
+  visorAbierto.value = false;
+};
+
+// Cargar archivos al montar
+onMounted(async () => {
+  if (props.temarioId) {
+    await cargarArchivos(props.temarioId);
+  }
+});
 </script>
-
 
 <template>
   <v-container fluid>
     <v-row>
       <v-col cols="12" md="10">
-        <v-card class="pa-5">
+        <!-- Estado de carga -->
+        <v-card v-if="cargando" class="pa-5 d-flex justify-center align-center">
+          <v-progress-circular indeterminate color="orange-darken-2"></v-progress-circular>
+        </v-card>
+        
+        <!-- Mensaje de error -->
+        <v-card v-else-if="error" class="pa-5 text-center">
+          <v-icon color="error" size="large">mdi-alert-circle</v-icon>
+          <p class="text-h6 mt-2">{{ error }}</p>
+          <v-btn color="orange-darken-2" @click="cargarArchivos(props.temarioId!)">
+            Reintentar
+          </v-btn>
+        </v-card>
+        
+        <!-- Sin archivos -->
+        <v-card v-else-if="archivosFiltrados.length === 0" class="pa-5 text-center">
+          <v-icon size="large">mdi-file-search</v-icon>
+          <p class="text-h6 mt-2">No se encontraron archivos para este temario</p>
+        </v-card>
+        
+        <!-- Lista de archivos -->
+        <v-card v-else class="pa-5">
           <v-row>
             <v-col v-for="archivo in archivosFiltrados" :key="archivo.id" cols="12" md="6" lg="4">
               <v-card class="pa-3">
-                <v-card-title>{{ archivo.nombre }}</v-card-title>
+                <v-card-title>{{ archivo.titulo }}</v-card-title>
                 <v-divider></v-divider>
 
                 <v-card-actions class="button-group">
@@ -59,7 +110,6 @@
                     <v-icon color="white">mdi-download</v-icon>
                   </v-btn>
                 </v-card-actions>
-
               </v-card>
             </v-col>
           </v-row>

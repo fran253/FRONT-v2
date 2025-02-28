@@ -1,86 +1,130 @@
-<script setup>
-  //imports
-  import { ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  import HomeHeader from '@/components/HomeHeader.vue';
-  import LoginForm from '@/components/LoginForm.vue';
-  import InfoSection from '@/components/InfoSection.vue';
+<script setup lang="ts">
+  import Header from "@/components/Header.vue";
+  import Footer from "@/components/Footer.vue";
+  import Carrusel from "@/components/Carrusel.vue";
+  import AvatarRiendo from '@/components/AvatarEmote.vue'; 
 
-  // Variables
-  const router = useRouter();
-  const mostrarLogin = ref(true);
-  const step = ref(1);
-  const nombre = ref('');
-  const email = ref('');
-  const password = ref('');
-  const confirmPassword = ref('');
-  const tipoUsuario = ref('');
-
-  // Funciones
-  const toggleRegistro = () => (mostrarLogin.value = false);
-
-  const registrarUsuario = () => {
-    if (password.value !== confirmPassword.value) {
-      alert("Las contraseñas no coinciden");
-      return;
-    }
-    console.log({
-      nombre: nombre.value,
-      email: email.value,
-      password: password.value,
-      tipoUsuario: tipoUsuario.value,
-    });
-
-    alert("Registro completado");
-    router.push('/cursos'); 
-  };
 </script>
 
 <template>
-  <div class="container">
-    <HomeHeader />
-    <LoginForm v-if="mostrarLogin" @mostrarRegistro="toggleRegistro" />
+  <v-app>
+    <Header />
 
-    <v-stepper v-if="!mostrarLogin" v-model="step" :items="['Datos Personales', 'Contraseña', 'Tipo de Usuario']">
-      <!-- Paso 1: Nombre y Correo -->
-      <template v-slot:item.1>
-        <v-card title="Datos Personales" flat>
-          <v-text-field v-model="nombre" label="Nombre" outlined dense></v-text-field>
-          <v-text-field v-model="email" label="Correo Electrónico" outlined dense></v-text-field>
-        </v-card>
-      </template>
+    <v-container class="main-container">
+      <v-container class="content">
+        <section class="home-section">
+          <Carrusel />
 
-      <!-- Paso 2: Contraseña -->
-      <template v-slot:item.2>
-        <v-card title="Contraseña" flat>
-          <v-text-field v-model="password" label="Contraseña" type="password" outlined dense></v-text-field>
-          <v-text-field v-model="confirmPassword" label="Confirmar Contraseña" type="password" outlined dense></v-text-field>
-        </v-card>
-      </template>
+          <div class="divider-container" min-height="400">
 
-      <!-- Paso 3: Tipo de Usuario -->
-      <template v-slot:item.3>
-        <v-card title="Tipo de Usuario" flat>
-          <v-radio-group v-model="tipoUsuario">
-            <v-radio label="Alumno" value="alumno"></v-radio>
-            <v-radio label="Profesor" value="profesor"></v-radio>
-          </v-radio-group>
-          <v-btn @click="registrarUsuario" color="success">Registrarse</v-btn>
-        </v-card>
-      </template>
-    </v-stepper>
+            <!-- Stepper vuetify -->
+            <v-stepper :items="['Paso 1', 'Paso 2', 'Paso 3', 'Paso 4']" class="stepper___home">
 
-    <InfoSection />
+              <template v-slot:item.1>
+                <v-card title="¡Elige tu CURSO!" flat class="step-card">
+                  <div class="card-content"><v-icon icon="mdi-emoticon" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon></div>
+                </v-card>
+              </template>
+
+              <template v-slot:item.2>
+                <v-card title="¡Accede a sus ASIGNATURAS!" flat class="step-card">
+                  <div class="card-content"><v-icon icon="mdi-book-multiple" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon></div>
+                </v-card>
+              </template>
+
+              <template v-slot:item.3>
+                <v-card title="¡Descubre todas sus UNIDADES!" flat class="step-card">
+                  <div class="card-content"><v-icon icon="mdi-food-apple" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon></div>
+                </v-card>
+              </template>
+
+              <template v-slot:item.4>
+                <v-card title="Realiza TEST y explora ARCHIVOS" flat class="step-card">
+                  <div class="card-content"><v-icon icon="mdi-clipboard-check" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon></div>
+                </v-card>
+              </template>
+            </v-stepper>
+
+            <v-divider class="border-opacity-100" color="warning" vertical></v-divider>
+
+            <v-btn prepend-icon="$vuetify" variant="outlined" color="orange-darken-3" class="custom-button" size="x-large" to="/cursos">Entra a Cursos</v-btn>  
+
+            <v-divider class="border-opacity-100" color="warning" vertical></v-divider>
+            <AvatarRiendo />
+
+          </div>
+        </section>
+      </v-container>
+    </v-container>
+
     <Footer />
-  </div>
+  </v-app>
 </template>
 
-
 <style lang="scss" scoped>
-  .container {
-    max-width: 800px;
-    margin: auto;
-    flex: 1;
-    margin-top: 10%;
+  .main-container {
+    display: flex;
+    gap: 20px;
+    min-height: 100vh;
+    padding-top: 5%;
   }
+
+  .content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .divider-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 7%;
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 100%;
+  }
+
+  .stepper___home {
+    max-width: 600px;
+    min-height: 250px;
+    flex-grow: 1;
+  }
+
+  .step-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .card-content {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .centered-icon {
+    margin: 0 auto;
+  }
+
+  .custom-button {
+    border-color: #FF5500 ;
+    color: #FF5500 ;
+    font-size: 1.2rem;
+    padding: 15px 40px;
+  }
+
+  .large-image-section {
+  margin-top: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>

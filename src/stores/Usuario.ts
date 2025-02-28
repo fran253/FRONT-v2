@@ -36,7 +36,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
   // creado de usuarios
   async function createUsuario(newUser: UsuarioDTO) {
     try {
-      const response = await fetch("https://localhost:7278/api/Usuario", {
+      const response = await fetch("/api/Usuario", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newUser),
@@ -55,7 +55,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
   // putter como el palo de golf
   async function updateUsuario(updatedUser: UsuarioDTO) {
     try {
-      const response = await fetch(`https://localhost:7278/api/Usuario/${updatedUser.idUsuario}`, {
+      const response = await fetch(`/api/Usuario/${updatedUser.idUsuario}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedUser),
@@ -73,7 +73,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
   // borra
   async function deleteUsuario(idUsuario: number) {
     try {
-      const response = await fetch(`https://localhost:7278/api/Usuario/${idUsuario}`, {
+      const response = await fetch(`/api/Usuario/${idUsuario}`, {
         method: "DELETE",
       });
 
