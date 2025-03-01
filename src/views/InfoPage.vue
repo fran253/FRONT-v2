@@ -8,22 +8,6 @@
   // Variables
   const sheet = ref(false);
   const dialog = ref(false);
-
-  const likes = ref<{ id: number; top: string; left: string }[]>([]);
-
-  //cosa aniamcion
-  const generarLikes = () => {
-    likes.value = Array.from({ length: 6 }, (_, i) => ({
-      id: i,
-      top: `${Math.random() * 80 + 10}%`,
-      left: `${Math.random() * 80 + 10}%`,
-    }));
-
-    setTimeout(generarLikes, 2000);
-  };
-
-  //gilipollez
-  generarLikes();
 </script>
 
 <template>
@@ -66,21 +50,6 @@
             </v-dialog>
           </div>
 
-          <!-- Imagen del usuario con los likes animados -->
-          <div class="user-container">
-            <img src="../images/user_icono.png" class="user-image" alt="Usuario" />
-
-            <transition-group name="fade">
-              <img
-                v-for="like in likes"
-                :key="like.id"
-                src="../images/like_naranja.png"
-                class="like-icon"
-                :style="{ top: like.top, left: like.left }"
-                alt="Like"
-              />
-            </transition-group>
-          </div>
 
           <!-- Tercer recuadro con redes sociales -->
           <div class="info-group">

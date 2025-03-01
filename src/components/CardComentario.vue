@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
   //propiedades comentario
   defineProps<{
     comentario: {

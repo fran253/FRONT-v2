@@ -1,124 +1,124 @@
 <script setup lang="ts">
-  // Imports
-  import { ref, defineProps, defineEmits } from "vue";
-  import CardComentario from "@/components/CardComentario.vue";
-  import type { Comentario } from "@/types/comentario"; // Importamos el tipo
+// Imports
+import { ref, defineProps, defineEmits, watch, onMounted } from "vue";
+import ListaComentarios from "@/components/ListaComentarios.vue";
 
-  //  propiedades
-  const props = defineProps<{ 
-    archivo: { id: number; nombre: string; url: string } | null; 
-    abierto: boolean 
-  }>();
+// Propiedades
+const props = defineProps<{ 
+  archivo: { id: number; nombre: string; url: string } | null; 
+  abierto: boolean 
+}>();
 
-  // cerrar
-  const emit = defineEmits(["cerrar"]);
+// Emisiones
+const emit = defineEmits(["cerrar"]);
 
-  // Variables
-  const nuevoComentario = ref("");
-  const comentarios = ref<Comentario[]>([]);
+// Variables
+const cantidadComentarios = ref(0);
+const archivoIdActual = ref<number | null>(null);
 
-  // metodo añadir comentario
-  const agregarComentario = () => {
-    const comentarioSanitizado = nuevoComentario.value.trim().replace(/</g, "&lt;").replace(/>/g, "&gt;");
+// Log para depuración
+onMounted(() => {
+  console.log("ModalArchivoComentarios montado");
+});
+
+// Observar cambios en props para depuración
+watch(() => props.abierto, (newVal) => {
+  console.log("Modal abierto:", newVal);
+}, { immediate: true });
+
+// Observar el objeto archivo
+watch(() => props.archivo, (newArchivo) => {
+  console.log("Archivo en modal:", newArchivo);
+  if (newArchivo) {
+    console.log("Propiedades del archivo:", Object.keys(newArchivo));
+    console.log("ID del archivo:", newArchivo.id);
     
-    if (comentarioSanitizado === "") return;
+    // Actualizar el ID del archivo actual
+    archivoIdActual.value = newArchivo.id;
+  } else {
+    archivoIdActual.value = null;
+  }
+}, { immediate: true, deep: true });
 
-    comentarios.value.push({
-      id: Date.now(),
-      usuario: "Usuario Anónimo",
-      avatar: `https://i.pravatar.cc/40?u=${Date.now()}`,
-      texto: comentarioSanitizado,
-      fecha: new Date().toISOString().split("T")[0],
-    });
-
-    nuevoComentario.value = "";
-  };
+// Manejar evento de comentarios cargados
+const onComentariosCargados = (cantidad: number) => {
+  console.log("Comentarios cargados:", cantidad);
+  cantidadComentarios.value = cantidad;
+};
 </script>
 
-
 <template>
-    <v-dialog v-model="props.abierto" max-width="1000px">
-        <v-card class="dialog-container">
-            <v-card-title>{{ props.archivo?.nombre }}</v-card-title>
-            <v-divider></v-divider>
-        
-            <v-card-text class="dialog-content">
-                    <div class="file-view">
-                        <iframe
-                            v-if="props.archivo?.url"
-                            :src="props.archivo.url"
-                            width="100%"
-                            height="400px"
-                        ></iframe>
-                    </div>
+  <v-dialog v-model="props.abierto" max-width="1000px" @update:model-value="value => console.log('Estado del diálogo cambiado:', value)">
+    <v-card class="dialog-container">
+      <v-card-title>
+        {{ props.archivo ? props.archivo.nombre : 'Sin archivo seleccionado' }}
+        <span v-if="cantidadComentarios > 0" class="comment-count">({{ cantidadComentarios }} comentarios)</span>
+      </v-card-title>
+      <v-divider></v-divider>
+    
+      <v-card-text class="dialog-content">
+        <div class="file-view">
+          <iframe
+            v-if="props.archivo?.url"
+            :src="props.archivo.url"
+            width="100%"
+            height="400px"
+          ></iframe>
+          <div v-else class="no-file-message">
+            <p>No hay archivo seleccionado o la URL no es válida</p>
+            <p v-if="props.archivo">Debug info: ID={{ props.archivo?.id }}</p>
+          </div>
+        </div>
 
-                <div class="comments-section">
+        <!-- Componente de comentarios usando el ID real del archivo -->
+        <ListaComentarios 
+  :archivoId="archivoIdForceado || 1" 
+  @comentarioCargado="onComentariosCargados"
+/>
+      </v-card-text>
 
-                    <v-divider></v-divider>
-
-                    <div class="comments-list">
-                        <CardComentario v-for="comentario in comentarios" :key="comentario.id" :comentario="comentario" />
-                        <p v-if="comentarios.length === 0">No hay comentarios aún. Sé el primero en comentar.</p>
-                    </div>
-
-                    <div class="comment-input">
-                        <v-text-field
-                            v-model="nuevoComentario"
-                            label="Escribe un comentario..."
-                            variant="outlined"
-                        ></v-text-field>
-
-                        <v-btn color="orange-darken-2" icon class="circular-btn" @click="agregarComentario">
-                            <v-icon color="white">mdi-send</v-icon>
-                        </v-btn>
-                    </div>
-                </div>
-            </v-card-text>
-
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="red" @click="emit('cerrar')">Cerrar</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="red" @click="emit('cerrar')">Cerrar</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style lang="scss" scoped>
-    .dialog-container {
-        display: flex;
-        flex-direction: column;
-        height: 80vh;
-    }
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+}
 
-    .dialog-content {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        overflow-y: auto;
-        max-height: 600px;
-        padding: 20px;
-    }
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  max-height: 600px;
+  padding: 20px;
+}
 
-    .file-view {
-        width: 100%;
-    }
+.file-view {
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 
-    .comments-section {
-        background: #f9f9f9;
-        padding: 15px;
-        border-radius: 8px;
-    }
+.no-file-message {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+}
 
-    .comments-list {
-        max-height: 150px;
-        overflow-y: auto;
-        padding: 10px;
-    }
-
-    .comment-input {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        margin-top: 10px;
-    }
+.comment-count {
+  font-size: 0.8em;
+  margin-left: 10px;
+  color: #666;
+}
 </style>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-//imports
+// Imports
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import Carrusel from "@/components/Carrusel.vue";
-import AvatarRiendo from '@/components/AvatarEmote.vue'; 
-
+import AvatarRiendo from '@/components/AvatarEmote.vue';
+import HomeInfoSection from "@/components/HomeInfosection.vue";
 </script>
 
 <template>
@@ -17,31 +17,37 @@ import AvatarRiendo from '@/components/AvatarEmote.vue';
           <Carrusel />
 
           <div class="divider-container" min-height="400">
-
             <!-- Stepper vuetify -->
             <v-stepper :items="['Paso 1', 'Paso 2', 'Paso 3', 'Paso 4']" class="stepper___home">
-
               <template v-slot:item.1>
                 <v-card title="¡Elige tu CURSO!" flat class="step-card">
-                  <div class="card-content"><v-icon icon="mdi-emoticon" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon></div>
+                  <div class="card-content">
+                    <v-icon icon="mdi-emoticon" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon>
+                  </div>
                 </v-card>
               </template>
 
               <template v-slot:item.2>
                 <v-card title="¡Accede a sus ASIGNATURAS!" flat class="step-card">
-                  <div class="card-content"><v-icon icon="mdi-book-multiple" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon></div>
+                  <div class="card-content">
+                    <v-icon icon="mdi-book-multiple" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon>
+                  </div>
                 </v-card>
               </template>
 
               <template v-slot:item.3>
                 <v-card title="¡Descubre todas sus UNIDADES!" flat class="step-card">
-                  <div class="card-content"><v-icon icon="mdi-food-apple" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon></div>
+                  <div class="card-content">
+                    <v-icon icon="mdi-food-apple" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon>
+                  </div>
                 </v-card>
               </template>
 
               <template v-slot:item.4>
                 <v-card title="Realiza TEST y explora ARCHIVOS" flat class="step-card">
-                  <div class="card-content"><v-icon icon="mdi-clipboard-check" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon></div>
+                  <div class="card-content">
+                    <v-icon icon="mdi-clipboard-check" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon>
+                  </div>
                 </v-card>
               </template>
             </v-stepper>
@@ -52,15 +58,20 @@ import AvatarRiendo from '@/components/AvatarEmote.vue';
 
             <v-divider class="border-opacity-100" color="warning" vertical></v-divider>
             <AvatarRiendo />
-
           </div>
         </section>
       </v-container>
     </v-container>
 
+    <!-- Incluir el nuevo componente aquí -->
+    <HomeInfoSection />
+
+    
+
     <Footer />
   </v-app>
 </template>
+
 
 <style lang="scss" scoped>
   .main-container {

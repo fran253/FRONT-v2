@@ -9,7 +9,6 @@ import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
 const menuPublico = [
   { text: "Inicio", route: "/", icon: "mdi-home" },
   { text: "Cursos", route: "/cursos", icon: "mdi-school" },
-  { text: "Info", route: "info", icon: "mdi-information" },
   { text: "Login", action: () => mostrarLogin(), icon: "mdi-login" }
 ];
 //MENU PRIVADO (Usuarios logeados)

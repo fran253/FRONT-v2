@@ -1,16 +1,45 @@
 <script setup>
   //imports
-  import { ref, watch } from 'vue';
+  import { ref, watch, computed } from 'vue';
   import Header from '@/components/Header.vue';
   import Footer from '@/components/Footer.vue';
   import Sidebar from '@/components/Sidebar.vue';
   import UserTab from '@/components/UserTab.vue';
   import Login from '@/components/Login.vue';
+  import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
+
+  // Store de usuario
+  const usuarioLogeadoStore = useUsuarioLogeadoStore();
 
   // Variables
   const drawer = ref(false);
-  const nombre = ref("Sandra Adams");
   const items = ref([{ title: 'Perfil', disabled: false }]);
+
+  // Obtener el usuario actual del store
+  const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
+  
+  // Utilizar el nombre del usuario logueado o un valor por defecto
+  const nombre = computed({
+    get: () => usuarioActual.value?.nombre || "Usuario",
+    set: (value) => {
+    }
+  });
+  
+  // Verificar si hay un usuario en el localStorage al cargar la página
+  const checkUsuarioLocal = () => {
+    const usuarioGuardado = localStorage.getItem('usuario');
+    if (usuarioGuardado && !usuarioActual.value) {
+      try {
+        usuarioLogeadoStore.usuarioActual = JSON.parse(usuarioGuardado);
+        usuarioLogeadoStore.estaAutenticado = true;
+      } catch (error) {
+        console.error("Error al recuperar usuario de localStorage:", error);
+      }
+    }
+  };
+  
+  // Ejecutar al cargar el componente
+  checkUsuarioLocal();
 
   // frases celebres
   const estados = [
@@ -42,10 +71,27 @@
         <!-- Avatar, Nombre y Frase -->
         <v-col cols="12" md="6" class="left__panel">
           <div class="avatar-container">
-            <v-avatar image="../src/images/user.png" size="120"></v-avatar>
+            <v-avatar :image="usuarioActual?.avatar || '../src/images/user.png'" size="120"></v-avatar>
           </div>
 
-          <v-text-field class="nombre__perfil" label="Nombre" v-model="nombre" outlined dense></v-text-field>
+          <v-text-field 
+            class="nombre__perfil" 
+            label="Nombre" 
+            v-model="nombre" 
+            outlined 
+            dense
+            :readonly="true"
+          ></v-text-field>
+          
+          <v-text-field
+            v-if="usuarioActual"
+            class="email__perfil"
+            label="Email"
+            :model-value="usuarioActual.email"
+            outlined
+            dense
+            readonly
+          ></v-text-field>
 
           <v-autocomplete class="frase__perfil" label="¿Cuál es tu frase?" :items="estados" outlined dense></v-autocomplete>
         </v-col>
@@ -58,7 +104,7 @@
 
     <Footer />
 
-     </v-app>
+  </v-app>
 </template>
 
 <style lang="scss" scoped>

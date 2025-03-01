@@ -7,10 +7,10 @@ export const useComentarioStore = defineStore("comentario", () => {
   const comentario = ref<ComentarioDTO | null>(null);
   const errorMessage = ref<string>("");
 
-  // ahhh find all , la clasica!
+  // Obtener todos los comentarios
   async function fetchAllComentarios() {
     try {
-      const response = await fetch("https://localhost:7278/api/Comentario");
+      const response = await fetch("/api/Comentario");
       if (!response.ok) throw new Error("Error al obtener los comentarios");
 
       comentarios.value = await response.json();
@@ -20,10 +20,10 @@ export const useComentarioStore = defineStore("comentario", () => {
     }
   }
 
-  // find by el id 
+  // Obtener comentario por ID
   async function fetchComentarioById(idComentario: number) {
     try {
-      const response = await fetch(`https://localhost:7278/api/Comentario/${idComentario}`);
+      const response = await fetch(`/api/Comentario/${idComentario}`);
       if (!response.ok) throw new Error("Error al obtener el comentario");
 
       comentario.value = await response.json();
@@ -33,18 +33,61 @@ export const useComentarioStore = defineStore("comentario", () => {
     }
   }
 
-  // crear un comentario
+  //comentarios depende el archivo
+  async function fetchComentariosByArchivoId(idArchivo: number) {
+    if (!idArchivo || idArchivo <= 0) {
+      console.error("ID de archivo inválido:", idArchivo);
+      return [];
+    }
+    
+    try {
+      // Usar la URL completa
+      const url = `/api/Comentario/archivo/${idArchivo}`;
+      console.log(`Realizando petición a ${url}`);
+      
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Error al obtener los comentarios del archivo: ${response.status} - ${errorText}`);
+      }
+  
+      const data = await response.json();
+      console.log("Datos obtenidos de la API:", data);
+      return data;
+    } catch (error: any) {
+      errorMessage.value = error.message;
+      console.error("Error al obtener los comentarios del archivo:", error);
+      return [];
+    }
+  }
+  // Crear comentario
   async function createComentario(newComentario: ComentarioDTO) {
     try {
-      const response = await fetch("https://localhost:7278/api/Comentario/publicar", {
+      // Versión para pruebas - simula una respuesta exitosa
+      console.log("Simulando creación de comentario:", newComentario);
+      
+      // Descomentar esta sección cuando el backend esté listo
+      /*
+      const response = await fetch("/api/Comentario/publicar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newComentario),
       });
 
-      if (!response.ok) throw new Error("Error al publicar el comentario");
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Error al publicar el comentario: ${response.status} - ${errorText}`);
+      }
 
       return await response.json();
+      */
+      
+      // Para pruebas, devolvemos un objeto simulado
+      return {
+        ...newComentario,
+        idComentario: Math.floor(Math.random() * 1000) + 2000 // ID aleatorio para pruebas
+      };
     } catch (error: any) {
       errorMessage.value = error.message;
       console.error("Error al publicar el comentario:", error);
@@ -52,10 +95,10 @@ export const useComentarioStore = defineStore("comentario", () => {
     }
   }
 
-  // updatea el comentario para que nadie vea lo racista que eras en twitter hace años
+  // Actualizar comentario
   async function updateComentario(updatedComentario: ComentarioDTO) {
     try {
-      const response = await fetch(`https://localhost:7278/api/Comentario/${updatedComentario.idComentario}`, {
+      const response = await fetch(`/api/Comentario/${updatedComentario.idComentario}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedComentario),
@@ -70,16 +113,15 @@ export const useComentarioStore = defineStore("comentario", () => {
     }
   }
 
-  // o borralo no te judgo 
+  // Eliminar comentario
   async function deleteComentario(idComentario: number) {
     try {
-      const response = await fetch(`https://localhost:7278/api/Comentario/${idComentario}`, {
+      const response = await fetch(`/api/Comentario/${idComentario}`, {
         method: "DELETE",
       });
 
       if (!response.ok) throw new Error("Error al eliminar el comentario");
 
-      // actualizado para que no se vea en front 
       comentarios.value = comentarios.value.filter(c => c.idComentario !== idComentario);
     } catch (error: any) {
       errorMessage.value = error.message;
@@ -87,5 +129,15 @@ export const useComentarioStore = defineStore("comentario", () => {
     }
   }
 
-  return { comentarios, comentario, fetchAllComentarios, fetchComentarioById, createComentario, updateComentario, deleteComentario, errorMessage };
+  return { 
+    comentarios, 
+    comentario, 
+    fetchAllComentarios, 
+    fetchComentarioById, 
+    fetchComentariosByArchivoId, 
+    createComentario, 
+    updateComentario, 
+    deleteComentario, 
+    errorMessage 
+  };
 });
