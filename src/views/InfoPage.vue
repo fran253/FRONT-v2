@@ -114,39 +114,44 @@
 <style lang="scss" scoped>
   .main-container {
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    gap: 15px;
     min-height: 100vh;
-    padding-top: 64px;
+    padding-top: 56px;
   }
 
   .content {
     flex: 1;
     display: flex;
     justify-content: center;
+    padding: 0 15px;
   }
 
   .info-section {
     display: flex;
     flex-direction: column;
-    gap: 50px;
-    margin-top: 70px;
+    gap: 25px;
+    margin-top: 40px;
     align-items: center;
+    width: 100%;
   }
 
   .info-group {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
+    width: 100%;
   }
 
   .info-card {
     background: white;
-    padding: 25px;
+    padding: 15px;
     border-radius: 10px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
     color: #333;
     text-align: center;
-    width: 900px;
+    width: 100%;
   }
 
   .info-card:nth-child(1) {
@@ -169,9 +174,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 200px;
-    height: 200px;
-    margin: 40px 0;
+    width: 120px;
+    height: 120px;
+    margin: 25px 0;
   }
 
   .user-image {
@@ -181,7 +186,7 @@
 
   .like-icon {
     position: absolute;
-    width: 30px;
+    width: 20px;
     opacity: 0;
     animation: fade-in-out 2s infinite;
   }
@@ -199,4 +204,69 @@
   .fade-enter, .fade-leave-to {
     opacity: 0;
   }
+
+/* ipad */
+@media (min-width: 576px) {
+  .main-container {
+    padding-top: 60px;
+  }
+
+  .info-section {
+    gap: 35px;
+    margin-top: 55px;
+  }
+
+  .info-card {
+    padding: 20px;
+    max-width: 550px;
+  }
+
+  .user-container {
+    width: 150px;
+    height: 150px;
+    margin: 30px 0;
+  }
+
+  .like-icon {
+    width: 25px;
+  }
+}
+
+/* Ordenador */
+@media (min-width: 768px) {
+  .main-container {
+    flex-direction: row;
+    gap: 20px;
+    padding-top: 64px;
+  }
+
+  .content {
+    padding: 0;
+  }
+
+  .info-section {
+    gap: 50px;
+    margin-top: 70px;
+  }
+
+  .info-group {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .info-card {
+    padding: 25px;
+    width: 900px;
+  }
+
+  .user-container {
+    width: 200px;
+    height: 200px;
+    margin: 40px 0;
+  }
+
+  .like-icon {
+    width: 30px;
+  }
+}
 </style>

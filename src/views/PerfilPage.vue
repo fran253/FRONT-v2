@@ -63,21 +63,24 @@
 
 <style lang="scss" scoped>
   .breadcrumbs {
-    margin-left: 5%;
-    margin-top: 6%;
+    margin-left: 15px;
+    margin-top: 50px;
   }
 
   .main-container {
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    gap: 15px;
     min-height: 100vh;
+    padding: 0 15px;
   }
 
   .perfil__container {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
+    gap: 30px;
   }
 
   .left__panel {
@@ -94,11 +97,13 @@
     }
 
     .nombre__perfil {
-      width: 40%;
+      width: 80%;
+      text-align: center;
     }
 
     .frase__perfil {
-      width: 80%;
+      width: 100%;
+      text-align: center;
     }
   }
 
@@ -109,6 +114,69 @@
   }
 
   v-col.md-9 {
+    min-height: 200px;
+  }
+
+/* ipad */
+@media (min-width: 576px) {
+  .breadcrumbs {
+    margin-left: 3%;
+    margin-top: 5%;
+  }
+
+  .main-container {
+    gap: 18px;
+    padding: 0 20px;
+  }
+
+  .left__panel {
+    .nombre__perfil {
+      width: 60%;
+    }
+
+    .frase__perfil {
+      width: 90%;
+    }
+  }
+
+  v-col.md-9 {
+    min-height: 250px;
+  }
+}
+
+/* Ordenador */
+@media (min-width: 768px) {
+  .breadcrumbs {
+    margin-left: 5%;
+    margin-top: 6%;
+  }
+
+  .main-container {
+    flex-direction: row;
+    gap: 20px;
+    padding: 0;
+  }
+
+  .perfil__container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .left__panel {
+    .nombre__perfil {
+      width: 40%;
+      text-align: left;
+    }
+
+    .frase__perfil {
+      width: 80%;
+      text-align: left;
+    }
+  }
+
+  v-col.md-9 {
     min-height: 300px;
   }
+}
 </style>

@@ -33,16 +33,37 @@ const slides = ref([img1, img2, img3]);
   
 
   
-<style lang="scss" scoped>
-  .carrusel-wrapper {
-    width: 100%;
-    min-width: 1600px; 
-    margin: 0 auto;
-  }
+  <style lang="scss" scoped>
+    .carrusel-wrapper {
+      width: 100%;
+      margin: 0 auto;
+      min-width: 100%; // En lugar de un valor fijo, usamos porcentaje para dispositivos móviles
+    }
+    
+    .full-width-carousel {
+      width: 100%;
+      max-width: 100%;
+    }
   
-  .full-width-carousel {
-    width: 100%;
-    max-width: 100%;
-  }
-</style>
+    /* Tablet (768px y superior) */
+    @media only screen and (min-width: 768px) {
+      .carrusel-wrapper {
+        min-width: 100%; // Mantiene el comportamiento fluido en tablets
+      }
+    }
+  
+    /* Desktop (1024px y superior) */
+    @media only screen and (min-width: 1024px) {
+      .carrusel-wrapper {
+        min-width: 100%; // Sigue siendo fluido para pantallas pequeñas de escritorio
+      }
+    }
+  
+    /* Large Desktop (1600px y superior) */
+    @media only screen and (min-width: 1600px) {
+      .carrusel-wrapper {
+        min-width: 1600px; // Aquí aplicamos el valor fijo original para pantallas grandes
+      }
+    }
+  </style>
   

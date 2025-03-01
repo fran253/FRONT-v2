@@ -64,27 +64,59 @@ const handleTemariosCargados = (temariosData) => {
 
 <style lang="scss" scoped>
 .breadcrumbs {
-  margin-left: 5%;
-  margin-top: 6%;
+  margin-left: 15px;
+  margin-top: 50px;
 }
 
 .content {
-  margin-top: -4%;
+  margin-top: 0;
   flex: 1;
-  padding: 20px;
-  margin-left: 1%;
+  padding: 15px;
+  margin-left: 0;
 }
 
 .main-container {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 15px;
   min-height: 100vh;
-  padding-top: 64px;
+  padding-top: 56px;
 }
 
-@media (max-width: 768px) {
+/* Ipad */
+@media (min-width: 576px) {
+  .breadcrumbs {
+    margin-left: 3%;
+    margin-top: 5%;
+  }
+
   .content {
-    margin-left: 0;
+    padding: 18px;
+  }
+
+  .main-container {
+    gap: 18px;
+    padding-top: 60px;
+  }
+}
+
+/* Ordenador */
+@media (min-width: 768px) {
+  .breadcrumbs {
+    margin-left: 5%;
+    margin-top: 6%;
+  }
+
+  .content {
+    margin-top: -4%;
+    padding: 20px;
+    margin-left: 1%;
+  }
+
+  .main-container {
+    flex-direction: row;
+    gap: 20px;
+    padding-top: 64px;
   }
 }
 </style>

@@ -17,21 +17,24 @@
 
 <script setup></script>
 
+/* Mobile First Approach */
 <style lang="scss" scoped>
   .info-section {
     display: flex;
     flex-direction: column;
-    gap: 50px;
-    margin-top: 70px;
+    gap: 30px;
+    margin-top: 50px;
+    padding: 0 15px;
   }
 
   .info-card {
     background: white;
-    padding: 25px;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
     color: #333;
     text-align: center;
+    width: 100%;
   }
 
   .info-card:nth-child(1) {
@@ -47,5 +50,32 @@
   .info-card:nth-child(3) {
     background-color: #F7A277;
     color: white;
+  }
+
+  @media (min-width: 768px) {
+    .info-section {
+      gap: 40px;
+      margin-top: 60px;
+      padding: 0 30px;
+    }
+
+    .info-card {
+      padding: 22px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .info-section {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 50px;
+      margin-top: 70px;
+      padding: 0 50px;
+    }
+
+    .info-card {
+      padding: 25px; 
+      flex: 1;
+    }
   }
 </style>
