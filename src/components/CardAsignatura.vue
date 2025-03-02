@@ -6,9 +6,6 @@ import { useRouter } from "vue-router";
 
 //Evento de clickar en la asignatura para ir a la página de temarios
 const seleccionarAsignatura = () => {
-  console.log('Asignatura completa:', props.asignatura);
-  console.log('ID de la asignatura:', props.asignatura.idAsignatura);
-  
   if (props.asignatura && props.asignatura.idAsignatura) {
       router.push(`/temarios/${props.asignatura.idAsignatura}`);
   } else {
@@ -27,8 +24,6 @@ const props = defineProps<{
     imagen: string;
   } 
 }>();
-
-
 </script>
 
 <template>

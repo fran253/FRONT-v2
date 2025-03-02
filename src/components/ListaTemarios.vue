@@ -12,7 +12,6 @@ async function fetchTemarios() {
     if (!response.ok) throw new Error("Error al obtener los temarios");
 
     const data = await response.json();
-    console.log('Datos recibidos de la API:', data);
     
     // verificar id temario
     temarios.value = data.map(temario => ({
@@ -20,7 +19,6 @@ async function fetchTemarios() {
       id: temario.id || temario.idTemario || temario.temarioId || null
     }));
 
-    console.log('Temarios procesados:', temarios.value);
     emit("temariosCargados", temarios.value);
   } catch (error) {
     console.error("Error al obtener temarios:", error);
@@ -58,12 +56,6 @@ const temarios = ref([]);
 
 // LLamamos a la API
 onMounted(fetchTemarios);
-
-// onMounted(() => {
-//   if (props.idAsignatura && props.idAsignatura !== "undefined") {
-//     fetchTemarios();
-//   }
-// });
 
 // Llamamos a la API cuando cambie el ID de la asignatura
 watch(() => props.idAsignatura, (newVal) => {

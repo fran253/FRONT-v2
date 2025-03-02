@@ -25,7 +25,7 @@ const fetchCursos = async () => {
 
     cursos.value = await response.json();
   } catch (error) {
-    console.error("Error al obtener cursos:", error);
+    console.error(error);
   }
 };
 
@@ -118,6 +118,8 @@ onMounted(async () => {
 </template>
 
 <style lang="scss" scoped>
+
+
 .breadcrumbs {
   margin-left: 15px;
   margin-top: 50px;

@@ -1,54 +1,33 @@
 <script setup lang="ts">
 // Imports
-import { ref, defineProps, defineEmits, watch, onMounted } from "vue";
+import { ref, defineProps, defineEmits, watch } from "vue";
 import ListaComentarios from "@/components/ListaComentarios.vue";
 
 // Propiedades
 const props = defineProps<{ 
-  archivo: { id: number; nombre: string; url: string } | null; 
+  archivo: { 
+    id: number;
+    nombre: string;
+    url: string 
+  } 
+  | null; 
   abierto: boolean 
 }>();
 
-// Emisiones
+//cerrar modal
 const emit = defineEmits(["cerrar"]);
 
 // Variables
 const cantidadComentarios = ref(0);
-const archivoIdActual = ref<number | null>(null);
-
-// Log para depuración
-onMounted(() => {
-  console.log("ModalArchivoComentarios montado");
-});
-
-// Observar cambios en props para depuración
-watch(() => props.abierto, (newVal) => {
-  console.log("Modal abierto:", newVal);
-}, { immediate: true });
-
-// Observar el objeto archivo
-watch(() => props.archivo, (newArchivo) => {
-  console.log("Archivo en modal:", newArchivo);
-  if (newArchivo) {
-    console.log("Propiedades del archivo:", Object.keys(newArchivo));
-    console.log("ID del archivo:", newArchivo.id);
-    
-    // Actualizar el ID del archivo actual
-    archivoIdActual.value = newArchivo.id;
-  } else {
-    archivoIdActual.value = null;
-  }
-}, { immediate: true, deep: true });
 
 // Manejar evento de comentarios cargados
 const onComentariosCargados = (cantidad: number) => {
-  console.log("Comentarios cargados:", cantidad);
   cantidadComentarios.value = cantidad;
 };
 </script>
 
 <template>
-  <v-dialog v-model="props.abierto" max-width="1000px" @update:model-value="value => console.log('Estado del diálogo cambiado:', value)">
+  <v-dialog v-model="props.abierto" max-width="1000px">
     <v-card class="dialog-container">
       <v-card-title>
         {{ props.archivo ? props.archivo.nombre : 'Sin archivo seleccionado' }}
@@ -57,6 +36,7 @@ const onComentariosCargados = (cantidad: number) => {
       <v-divider></v-divider>
     
       <v-card-text class="dialog-content">
+        <!-- Ver Archivo -->
         <div class="file-view">
           <iframe
             v-if="props.archivo?.url"
@@ -66,15 +46,15 @@ const onComentariosCargados = (cantidad: number) => {
           ></iframe>
           <div v-else class="no-file-message">
             <p>No hay archivo seleccionado o la URL no es válida</p>
-            <p v-if="props.archivo">Debug info: ID={{ props.archivo?.id }}</p>
           </div>
         </div>
 
-        <!-- Componente de comentarios usando el ID real del archivo -->
+        <!-- Listado de los comentarios -->
         <ListaComentarios 
-  :archivoId="archivoIdForceado || 1" 
-  @comentarioCargado="onComentariosCargados"
-/>
+          v-if="props.archivo && (props.archivo.id || props.archivo.idArchivo)"
+          :archivoId="props.archivo.id || props.archivo.idArchivo" 
+          @comentarioCargado="onComentariosCargados"
+        />
       </v-card-text>
 
       <v-card-actions>

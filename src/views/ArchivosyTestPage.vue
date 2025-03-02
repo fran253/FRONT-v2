@@ -30,7 +30,6 @@ const temarioId = ref<number | null>(null);
 //cambio archivos depende el idTemario
 watch(() => route.params.idTemario, (nuevoId) => {
   if (nuevoId) {
-    console.log('Nuevo ID del temario:', nuevoId);
     temarioId.value = Number(nuevoId);
   }
 }, { immediate: true });
@@ -46,7 +45,6 @@ const updateSearch = (query: string) => {
 onMounted(() => {
   if (route.params.idTemario) {
     temarioId.value = Number(route.params.idTemario);
-    console.log('ID del temario al montar:', temarioId.value);
   }
 });
 

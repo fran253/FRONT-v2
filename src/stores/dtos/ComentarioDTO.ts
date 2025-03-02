@@ -5,5 +5,3 @@ export interface ComentarioDTO {
   idUsuario: number;
   idArchivo: number;
 }
-
-  

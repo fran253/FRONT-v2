@@ -33,7 +33,7 @@
         usuarioLogeadoStore.usuarioActual = JSON.parse(usuarioGuardado);
         usuarioLogeadoStore.estaAutenticado = true;
       } catch (error) {
-        console.error("Error al recuperar usuario de localStorage:", error);
+        console.error(error);
       }
     }
   };

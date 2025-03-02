@@ -44,7 +44,6 @@ async function cargarTests() {
     emit("testsCargados", testStore.tests);
   } catch (e) {
     error.value = "Error al cargar los tests";
-    console.error("Error al cargar tests:", e);
   } finally {
     loading.value = false;
   }

@@ -27,10 +27,10 @@ const idAsignatura = computed(() => route.params.idAsignatura ? String(route.par
 
 
 
-// Manejo de temarios cargados
-const handleTemariosCargados = (temariosData) => {
-  console.log("Temarios cargados:", temariosData);
-};
+// // verificar que se cargan temarios
+// const handleTemariosCargados = (temariosData) => {
+//   console.log("Temarios cargados:", temariosData);
+// };
 
 </script>
 

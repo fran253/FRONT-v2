@@ -26,7 +26,6 @@ async function fetchAsignaturasByCurso(idCurso: string) {
     asignaturas.value = await response.json();
   } catch (error: any) {
     errorMessage.value = error.message;
-    console.error("Error al obtener asignaturas del curso:", error);
   }
 }
 
