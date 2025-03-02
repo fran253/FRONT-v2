@@ -1,13 +1,35 @@
 <script setup lang="ts">
-// imports
 import { ref, computed, onMounted, watch } from 'vue';
 import ModalArchivoComentario from '@/components/ModalArchivoComentarios.vue';
-import { Archivo } from "@/types/archivo";
+import SubirArchivoModal from '@/components/SubirArchivoModal.vue';
 import { useArchivoStore } from "@/stores/Archivo";
 
+const props = defineProps<{ 
+  temarioId: number | null;
+  terminoBusqueda: string 
+}>();
 
-// mostrar archivos segun el temario
-async function cargarArchivos(temarioId: number) {
+// Estado del modal de subida
+const modalSubidaVisible = ref(false);
+
+// Estado del modal de visualización
+const visorAbierto = ref(false);
+const archivoSeleccionado = ref<Archivo | null>(null);
+
+// Estado de carga inicializado antes de su uso
+const cargando = ref(false);
+const error = ref('');
+
+// Instancia del store
+const archivoStore = useArchivoStore();
+
+// Mostrar archivos según el temario
+const cargarArchivos = async (temarioId: number | null) => {
+  if (!temarioId) {
+    error.value = "No se ha proporcionado un temario válido.";
+    return;
+  }
+  
   cargando.value = true;
   error.value = '';
   
@@ -19,8 +41,7 @@ async function cargarArchivos(temarioId: number) {
   } finally {
     cargando.value = false;
   }
-}
-
+};
 
 // Filtrar archivos al buscar
 const archivosFiltrados = computed(() => {
@@ -30,58 +51,42 @@ const archivosFiltrados = computed(() => {
   );
 });
 
+// Cargar archivos al montar
+onMounted(async () => {
+  await cargarArchivos(props.temarioId);
+});
 
-// Propiedades para filtrar los datos
-const props = defineProps<{ 
-  temarioId: number | null;
-  terminoBusqueda: string 
-}>();
+// Cambio archivos cuando cambie el ID del temario
+watch(() => props.temarioId, async (nuevoId) => {
+  await cargarArchivos(nuevoId);
+}, { immediate: true });
 
-
-// Abrir Modal de archivo
+// Abrir modal de archivo
 const verArchivo = (archivo: Archivo) => {
   archivoSeleccionado.value = archivo;
   visorAbierto.value = true;
 };
-//cerrar
+
+// Cerrar modal
 const cerrarModal = () => {
   visorAbierto.value = false;
 };
-
-// LLamamos al metodo
-onMounted(async () => {
-  if (props.temarioId) {
-    await cargarArchivos(props.temarioId);
-  }
-});
-
-// cambio archivos cuando cambie el id del temario
-watch(() => props.temarioId, async (nuevoId) => {
-  if (nuevoId) {
-    await cargarArchivos(nuevoId);
-  }
-}, { immediate: true });
-
-// llamada a Archivo.ts
-const archivoStore = useArchivoStore();
-
-
-// Estado local
-const visorAbierto = ref(false);
-const archivoSeleccionado = ref<Archivo | null>(null);
-const cargando = ref(false);
-const error = ref('');
 </script>
 
 <template>
   <v-container fluid>
     <v-row>
       <v-col cols="12" md="10">
+        <!-- Botón para subir archivo -->
+        <v-btn color="orange-darken-2" class="mb-3" @click="modalSubidaVisible = true">
+          Subir Archivo
+        </v-btn>
+
         <!-- Estado de carga -->
         <v-card v-if="cargando" class="pa-5 d-flex justify-center align-center">
           <v-progress-circular indeterminate color="orange-darken-2"></v-progress-circular>
         </v-card>
-        
+
         <!-- Mensaje de error -->
         <v-card v-else-if="error" class="pa-5 text-center">
           <v-icon color="error" size="large">mdi-alert-circle</v-icon>
@@ -90,13 +95,7 @@ const error = ref('');
             Reintentar
           </v-btn>
         </v-card>
-        
-        <!-- Sin archivos -->
-        <v-card v-else-if="archivosFiltrados.length === 0" class="pa-5 text-center">
-          <v-icon size="large">mdi-file-search</v-icon>
-          <p class="text-h6 mt-2">No se encontraron archivos para este temario</p>
-        </v-card>
-        
+
         <!-- Lista de archivos -->
         <v-card v-else class="pa-5">
           <v-row>
@@ -120,6 +119,15 @@ const error = ref('');
       </v-col>
     </v-row>
 
+    <!-- Modal para subir archivos -->
+    <SubirArchivoModal 
+      :visible="modalSubidaVisible" 
+      :temarioId="props.temarioId!" 
+      @update:visible="modalSubidaVisible = false"
+      @archivo-subido="cargarArchivos(props.temarioId!)"
+    />
+
+    <!-- Modal para ver comentarios del archivo -->
     <ModalArchivoComentario
       :archivo="archivoSeleccionado"
       :abierto="visorAbierto"

@@ -8,7 +8,7 @@ export const useUsuarioLogeadoStore = defineStore("usuarioLogeado", () => {
   const estaAutenticado = ref(false);
   const errorMessage = ref("");
 
-  // ✅ Recuperar usuario desde localStorage al iniciar
+  // Recuperar usuario desde localStorage al iniciar
   function cargarUsuarioDesdeStorage() {
     const usuarioGuardado = localStorage.getItem("usuario");
     if (usuarioGuardado) {
@@ -23,7 +23,7 @@ export const useUsuarioLogeadoStore = defineStore("usuarioLogeado", () => {
     }
   }
 
-  // ✅ Guardar usuario en localStorage al iniciar sesión
+  // Guardar usuario en localStorage al iniciar sesión
   async function login(email: string, password: string): Promise<boolean> {
     try {
       const response = await fetch("/api/Usuario/login", {
@@ -42,7 +42,7 @@ export const useUsuarioLogeadoStore = defineStore("usuarioLogeado", () => {
       estaAutenticado.value = true;
       errorMessage.value = "";
 
-      // ✅ Guardar en localStorage
+      // Guardar en localStorage
       localStorage.setItem("usuario", JSON.stringify(usuario));
       console.log("Usuario guardado en localStorage:", usuario);
 
@@ -53,7 +53,7 @@ export const useUsuarioLogeadoStore = defineStore("usuarioLogeado", () => {
     }
   }
 
-  // ✅ Limpiar usuario y cerrar sesión
+  // Limpiar usuario y cerrar sesión
   function logout() {
     usuarioActual.value = null;
     estaAutenticado.value = false;
@@ -68,6 +68,6 @@ export const useUsuarioLogeadoStore = defineStore("usuarioLogeado", () => {
     errorMessage,
     login,
     logout,
-    cargarUsuarioDesdeStorage, // ✅ Agregamos la función para restaurar sesión
+    cargarUsuarioDesdeStorage, // Agregamos la función para restaurar sesión
   };
 });
