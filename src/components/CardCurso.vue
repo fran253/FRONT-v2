@@ -7,11 +7,8 @@ import { useRouter } from 'vue-router';
 const seleccionarCurso = () => {
   if (curso.id) {
     router.push(`/asignaturas/${curso.id}`);
-  } else {
-    console.error("Falta id", curso);
   }
 };
-
 
 //router
 const router = useRouter();
@@ -25,9 +22,11 @@ const curso = defineProps({
 });
 
 const show = ref(false);
+
+//Funcionalidad Mis cursos
 const misCursos = ref(JSON.parse(localStorage.getItem('misCursos') || '[]'));
 
-// Computada para verificar si el curso ya está en la lista
+//verificar si el curso ya está en la lista
 const estaEnMisCursos = computed(() => misCursos.value.some(c => c.id === curso.id));
 
 

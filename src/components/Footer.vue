@@ -16,10 +16,10 @@
   }
 
   .texto__footer {
-    margin-left: 0; /* En móviles centramos el texto */
+    margin-left: 0;
   }
 
-  /* Tablet y Desktop (769px y superior) */
+  /* Ordenador */
   @media (min-width: 769px) {
     .footer {
       width: calc(100%);

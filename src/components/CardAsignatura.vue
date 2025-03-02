@@ -1,6 +1,5 @@
 <script setup lang="ts">
 //Imports
-import CursosPage from "@/views/CursosPage.vue";
 import { useRouter } from "vue-router";
 
 
@@ -13,9 +12,9 @@ const seleccionarAsignatura = () => {
   }
 };
 
-
 //router
 const router = useRouter();
+
 //Propiedades de la asignatura
 const props = defineProps<{ 
   asignatura: { 

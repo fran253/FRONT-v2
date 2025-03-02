@@ -8,8 +8,6 @@ import { computed } from 'vue';
 const verTest = () => {
   if (props.test && props.test.id) {
     router.push(`/test/${props.test.id}`);
-  } else {
-    console.error("Error: Test sin ID válido", props.test);
   }
 };
 
@@ -28,8 +26,6 @@ const props = defineProps({
 const testTitle = computed(() => {
   return props.test?.titulo || props.test?.nombre || 'Test sin título';
 });
-
-
 </script>
 
 <template>

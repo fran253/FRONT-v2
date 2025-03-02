@@ -1,21 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+//imports
+import { ref, onMounted, computed } from "vue";
 import CardComentario from "@/components/CardComentario.vue";
 import { useComentarioStore } from "@/stores/Comentario";
+import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
 
-// Propiedades del componente extraidas de Modal
-const props = defineProps<{archivoId: number;}>();
 
-// Emisiones
-const emit = defineEmits(["comentarioCargado"]);
-
-// Variables
-const comentarios = ref([]);
-const nuevoComentario = ref("");
-const cargando = ref(false);
-const comentarioStore = useComentarioStore();
-
-// mostrtar comentarios del archivo
+// fetch a la API
 async function mostrarComentarios() {
   cargando.value = true;
   
@@ -39,32 +30,83 @@ async function mostrarComentarios() {
   cargando.value = false;
 }
 
-// Añadir comentario
+// Propiedades del componente
+const props = defineProps<{ 
+  archivoId: number; 
+}>();
+
+
+const emit = defineEmits(["comentarioCargado"]);
+
+//Almacenar los comentarios
+const comentarios = ref([]);
+
+
+
+//  Obtener usuario logeado
+const usuarioLogeadoStore = useUsuarioLogeadoStore();
+const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
+
+// comprobaciones
+console.log("Usuario actual en ListaComentarios:", usuarioActual.value);
+
+// Cuando abres el modal, llama al metodo
+onMounted(() => {
+  usuarioLogeadoStore.cargarUsuarioDesdeStorage(); // ✅ Forzar la carga del usuario
+  mostrarComentarios();
+});
+
+
+// Variables
+const nuevoComentario = ref("");
+const cargando = ref(false);
+const comentarioStore = useComentarioStore();
+const errorMensaje = ref("");
+
+
+
+// fetch a la API (añadir comentario)
 async function añadirComentario() {
+  console.log("Intentando enviar comentario con usuario:", usuarioActual.value);
+
   if (!nuevoComentario.value.trim()) return;
-  
+
+  //verificar usuario logeado
+  if (!usuarioActual.value || !usuarioActual.value.id) {
+    errorMensaje.value = "Debes iniciar sesión para comentar.";
+    return;
+  }
+
   try {
-    const comentario = {
-      idComentario: 0,
+    const comentarioObj = {
       contenido: nuevoComentario.value.trim(),
-      fechaCreacion: new Date(),
-      idUsuario: 1,
-      idArchivo: props.archivoId
+      idUsuario: usuarioActual.value.id, 
+      idArchivo: props.archivoId,
+      fechaCreacion: new Date().toISOString()
     };
+
+    console.log("Enviando comentario:", comentarioObj);
     
-    await comentarioStore.createComentario(comentario);
-    nuevoComentario.value = "";
-    mostrarComentarios();
+    const resultado = await comentarioStore.createComentario(comentarioObj);
+    
+    if (resultado) {
+      nuevoComentario.value = "";
+      errorMensaje.value = "";
+      await mostrarComentarios();
+    } else {
+      errorMensaje.value = "No se pudo publicar el comentario.";
+      console.error("No se pudo crear el comentario");
+    }
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error al publicar comentario:", error);
+    errorMensaje.value = "Ocurrió un error al publicar el comentario.";
   }
 }
 
-// cuando abres el modal salen los comentarios
-onMounted(() => {
-  mostrarComentarios();
-});
+
 </script>
+
+
 
 <template>
   <div class="comentarios">
@@ -78,6 +120,8 @@ onMounted(() => {
         <p v-if="comentarios.length === 0">No hay comentarios aún. Sé el primero en comentar.</p>
       </template>
     </div>
+
+    <p v-if="errorMensaje" class="error-text">{{ errorMensaje }}</p>
 
     <div class="nueva-entrada">
       <v-text-field
@@ -94,22 +138,9 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.comentarios {
-  background: #f9f9f9;
-  padding: 15px;
-  border-radius: 8px;
-  margin-top: 20px;
-}
-
-.lista {
-  max-height: 250px;
-  overflow-y: auto;
-  padding: 10px;
-}
-
-.nueva-entrada {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
+.error-text {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
 }
 </style>

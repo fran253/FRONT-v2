@@ -18,7 +18,7 @@ async function fetchAsignaturas() {
   }
 }
 
-// filtrar las asignaturas dinámicamente 
+// filtrar las asignaturas al buscar
 const asignaturasFiltradas = computed(() => {
   if (!props.searchQuery) return asignaturas.value;
   return asignaturas.value.filter(asignatura =>
@@ -37,7 +37,7 @@ const emit = defineEmits(["asignaturasCargadas"]);
 // almacenar las asignaturas
 const asignaturas = ref([]);
 
-// Llamamos a la API
+// LLamamos al metodo
 onMounted(fetchAsignaturas);
 </script>
 

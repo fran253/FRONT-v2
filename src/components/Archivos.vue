@@ -1,42 +1,12 @@
 <script setup lang="ts">
-// IMPORTS
+// imports
 import { ref, computed, onMounted, watch } from 'vue';
 import ModalArchivoComentario from '@/components/ModalArchivoComentarios.vue';
 import { Archivo } from "@/types/archivo";
 import { useArchivoStore } from "@/stores/Archivo";
 
-// Propiedades
-const props = defineProps<{ temarioId: number | null; terminoBusqueda: string }>();
 
-// llamada a Archivo.ts
-const archivoStore = useArchivoStore();
-
-
-// Estado local
-const visorAbierto = ref(false);
-const archivoSeleccionado = ref<Archivo | null>(null);
-const cargando = ref(false);
-const error = ref('');
-
-// Filtrar archivos
-const archivosFiltrados = computed(() => {
-  // Si no hay temario seleccionado, mostrar todos los archivos
-  if (!props.terminoBusqueda) return archivoStore.archivos;
-  
-  // Filtrar por término de búsqueda
-  return archivoStore.archivos.filter(archivo =>
-    archivo.titulo.toLowerCase().includes(props.terminoBusqueda.toLowerCase())
-  );
-});
-
-// cambio archivos cuando cambie el id del temario
-watch(() => props.temarioId, async (nuevoId) => {
-  if (nuevoId) {
-    await cargarArchivos(nuevoId);
-  }
-}, { immediate: true });
-
-// Método  cargar los archivos del temario
+// mostrar archivos segun el temario
 async function cargarArchivos(temarioId: number) {
   cargando.value = true;
   error.value = '';
@@ -51,23 +21,56 @@ async function cargarArchivos(temarioId: number) {
   }
 }
 
-// Abrir ventana de archivo
+
+// Filtrar archivos al buscar
+const archivosFiltrados = computed(() => {
+  if (!props.terminoBusqueda) return archivoStore.archivos;
+  return archivoStore.archivos.filter(archivo =>
+    archivo.titulo.toLowerCase().includes(props.terminoBusqueda.toLowerCase())
+  );
+});
+
+
+// Propiedades para filtrar los datos
+const props = defineProps<{ 
+  temarioId: number | null;
+  terminoBusqueda: string 
+}>();
+
+
+// Abrir Modal de archivo
 const verArchivo = (archivo: Archivo) => {
   archivoSeleccionado.value = archivo;
   visorAbierto.value = true;
 };
-
 //cerrar
 const cerrarModal = () => {
   visorAbierto.value = false;
 };
 
-// Cargar archivos al montar
+// LLamamos al metodo
 onMounted(async () => {
   if (props.temarioId) {
     await cargarArchivos(props.temarioId);
   }
 });
+
+// cambio archivos cuando cambie el id del temario
+watch(() => props.temarioId, async (nuevoId) => {
+  if (nuevoId) {
+    await cargarArchivos(nuevoId);
+  }
+}, { immediate: true });
+
+// llamada a Archivo.ts
+const archivoStore = useArchivoStore();
+
+
+// Estado local
+const visorAbierto = ref(false);
+const archivoSeleccionado = ref<Archivo | null>(null);
+const cargando = ref(false);
+const error = ref('');
 </script>
 
 <template>

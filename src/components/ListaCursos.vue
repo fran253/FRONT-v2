@@ -17,7 +17,7 @@ async function fetchCursos() {
   }
 }
 
-// filtrar los cursos dinámicamente
+// filtrar los cursos al buscar
 const cursosFiltrados = computed(() => {
   if (!props.searchQuery) return cursos.value;
   return cursos.value.filter(curso =>
@@ -36,7 +36,7 @@ const emit = defineEmits(["cursosCargados"]);
 // almacenar los cursos
 const cursos = ref([]);
 
-// Llamamos a la API
+// LLamamos al metodo
 onMounted(fetchCursos);
 </script>
 

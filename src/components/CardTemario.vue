@@ -1,8 +1,7 @@
 <script setup lang="ts">
 // Imports
-import { onMounted, computed } from "vue";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
-
 
 //Evento de clickar en temario para ir a la página de archivos-test
 const seleccionarTemario = () => {
@@ -13,9 +12,9 @@ const seleccionarTemario = () => {
   }
 };
 
-
 // Router
 const router = useRouter();
+
 // Propiedades temario
 const props = defineProps({
   temario: {
@@ -23,13 +22,6 @@ const props = defineProps({
     required: true
   }
 });
-
-
-// ID del temario
-const temarioId = computed(() => {
-  return props.temario.id || props.temario.idTemario || props.temario.temarioId;
-});
-
 
 </script>
 

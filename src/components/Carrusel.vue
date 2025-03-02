@@ -37,7 +37,7 @@ const slides = ref([img1, img2, img3]);
     .carrusel-wrapper {
       width: 100%;
       margin: 0 auto;
-      min-width: 100%; // En lugar de un valor fijo, usamos porcentaje para dispositivos móviles
+      min-width: 100%;
     }
     
     .full-width-carousel {
@@ -45,25 +45,19 @@ const slides = ref([img1, img2, img3]);
       max-width: 100%;
     }
   
-    /* Tablet (768px y superior) */
+    /* ipad */
     @media only screen and (min-width: 768px) {
       .carrusel-wrapper {
-        min-width: 100%; // Mantiene el comportamiento fluido en tablets
+        min-width: 100%;
       }
     }
   
-    /* Desktop (1024px y superior) */
+    /* ordenador */
     @media only screen and (min-width: 1024px) {
       .carrusel-wrapper {
-        min-width: 100%; // Sigue siendo fluido para pantallas pequeñas de escritorio
+        min-width: 100%;
       }
     }
   
-    /* Large Desktop (1600px y superior) */
-    @media only screen and (min-width: 1600px) {
-      .carrusel-wrapper {
-        min-width: 1600px; // Aquí aplicamos el valor fijo original para pantallas grandes
-      }
-    }
   </style>
   

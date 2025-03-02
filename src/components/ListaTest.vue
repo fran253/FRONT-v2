@@ -56,7 +56,7 @@ watch(() => props.temarioId, async (nuevoId) => {
   }
 }, { immediate: true });
 
-// Cargar tests al montar el componente
+// LLamamos al metodo
 onMounted(async () => {
   await cargarTests();
 });

@@ -25,7 +25,7 @@ async function fetchTemarios() {
   }
 }
 
-// filtrar los temarios dinámicamente 
+// filtrar los temarios al buscar
 const temariosFiltrados = computed(() => {
   if (!props.searchQuery) return temarios.value;
   return temarios.value.filter(temario =>
@@ -54,7 +54,7 @@ const emit = defineEmits(["temariosCargados"]);
 // almacenar los temarios
 const temarios = ref([]);
 
-// LLamamos a la API
+// LLamamos al metodo
 onMounted(fetchTemarios);
 
 // Llamamos a la API cuando cambie el ID de la asignatura
