@@ -28,6 +28,7 @@
     email: "",
     password: "",
     tipoUsuario: "",
+    idRol: undefined, // Añadimos el campo idRol
   });
 
   const confirmPassword = ref("");
@@ -62,6 +63,7 @@
       email: "",
       password: "",
       tipoUsuario: "",
+      idRol: undefined,
     };
     confirmPassword.value = "";
     step.value = 1;
@@ -82,6 +84,26 @@
     router.push("/cursos");
   };
 
+  const redirigirSegunRol = () => {
+    if (usuarioLogeadoStore.usuarioActual) {
+      const usuario = usuarioLogeadoStore.usuarioActual;
+      
+      const idRol = usuario.idRol || 
+                    (usuario.rol && usuario.rol.idRol) || 
+                    (usuario.rol && usuario.rol.id);
+      
+      console.log("ID del rol:", idRol);
+      
+      if (idRol === 1) {
+        router.push("/admin");
+      } else {
+        router.push("/cursos");
+      }
+    } else {
+      router.push("/cursos");
+    }
+  };
+
   // Metodo login
   const iniciarSesion = async () => {
     if (!formEsValido.value) {
@@ -100,7 +122,8 @@
 
       if (resultado) {
         cerrarModal();
-        router.push("/cursos");
+        // Usar el nuevo método de redirección según rol
+        redirigirSegunRol();
       } else {
         errorMessage.value = usuarioLogeadoStore.errorMessage;
       }
@@ -122,16 +145,26 @@
     errorMessage.value = "";
 
     try {
+      // Asignar el idRol según el tipo de usuario
+      let idRol = 2; // Valor por defecto (no administrador)
+      if (usuario.value.tipoUsuario === 'profesor') {
+        idRol = 2; // Rol de profesor
+      } else if (usuario.value.tipoUsuario === 'alumno') {
+        idRol = 3; // Rol de alumno
+      }
+      
       const resultado = await usuarioLogeadoStore.registrar({
         nombre: usuario.value.nombre,
         email: usuario.value.email,
         password: usuario.value.password,
-        tipoUsuario: usuario.value.tipoUsuario
+        tipoUsuario: usuario.value.tipoUsuario,
+        idRol: idRol
       });
       
       if (resultado) {
         cerrarModal();
-        router.push("/cursos");
+        // Usar el nuevo método de redirección según rol
+        redirigirSegunRol();
       } else {
         errorMessage.value = usuarioLogeadoStore.errorMessage || 'No se pudo completar el registro';
       }
