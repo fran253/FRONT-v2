@@ -122,7 +122,7 @@ onMounted(async () => {
 
 .CursosPage___Breadcrumb {
   margin-left: 5%;
-  margin-top: 5%;
+  margin-top: 25%;
 }
 
 .CursosPage___contenido {

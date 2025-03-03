@@ -36,15 +36,28 @@ export const useArchivoStore = defineStore("archivo", () => {
   // Obtener archivos por ID de temario
   async function fetchArchivosByTemario(idTemario: number) {
     try {
-      const response = await fetch(`/api/Archivo/temario/${idTemario}`);
-      if (!response.ok) throw new Error("Error al obtener los archivos del temario");
+        const response = await fetch(`/api/Archivo/temario/${idTemario}`);
+        if (!response.ok) throw new Error("Error al obtener los archivos del temario");
 
-      archivos.value = await response.json();
+        const data = await response.json();
+
+        // Convertir URL relativa en absoluta, manejando posibles valores nulos
+        archivos.value = data.map((archivo: ArchivoDTO) => {
+            return {
+                ...archivo,
+                url: archivo.url ? 
+                    (archivo.url.startsWith("/") ? `http://localhost:5167${archivo.url}` : archivo.url) 
+                    : null 
+            };
+        });
+
+        console.log("Archivos cargados correctamente:", archivos.value);
     } catch (error: any) {
-      errorMessage.value = error.message;
-      console.error("Error al obtener los archivos del temario:", error);
+        errorMessage.value = error.message;
+        console.error("Error al obtener los archivos del temario:", error);
     }
   }
+
 
   // Subir archivo físico
   async function uploadArchivoFile(file: File | null, titulo: string, tipo: string, temarioId: number | null, userId: number | null) {
@@ -53,12 +66,11 @@ export const useArchivoStore = defineStore("archivo", () => {
         return null;
     }
 
-
     console.log("Subiendo archivo:", file.name, "para el temario ID:", temarioId, "y usuario ID:", userId);
 
     try {
         const formData = new FormData();
-        formData.append("archivo", file); // Debe coincidir con el backend
+        formData.append("archivo", file);
         formData.append("titulo", titulo);
         formData.append("tipo", tipo);
         formData.append("idUsuario", userId.toString());
@@ -75,12 +87,20 @@ export const useArchivoStore = defineStore("archivo", () => {
             throw new Error(errorText || "Error al subir el archivo");
         }
 
-        return await response.json();
+        const data = await response.json();
+        console.log("Archivo subido correctamente:", data);
+
+        // 🔥 Actualizar automáticamente la lista de archivos sin reiniciar el backend
+        await fetchArchivosByTemario(temarioId);
+
+        return data;
     } catch (error: any) {
         console.error("Error al subir el archivo:", error);
         return null;
     }
-}
+  }
+
+
 
   
   // Crear archivo en la base de datos

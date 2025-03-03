@@ -64,8 +64,8 @@ const idAsignatura = computed(() => route.params.idAsignatura ? String(route.par
 
 <style lang="scss" scoped>
 .TemariosPage__Breadcrumb {
-  margin-left: 15px;
-  margin-top: 50px;
+  margin-left: 5%;
+  margin-top: 25%;
 }
 
 .TemariosPage__Contenido {

@@ -2,9 +2,11 @@
 //Imports
 import { useRouter } from "vue-router";
 
+//Router
+const router = useRouter();
 
-//Evento de clickar en la asignatura para ir a la página de temarios
-const seleccionarAsignatura = () => {
+//Evento para ir a la página de temarios al hacer clic en el botón
+const irATemarios = () => {
   if (props.asignatura && props.asignatura.idAsignatura) {
       router.push(`/temarios/${props.asignatura.idAsignatura}`);
   } else {
@@ -12,33 +14,41 @@ const seleccionarAsignatura = () => {
   }
 };
 
-//router
-const router = useRouter();
-
 //Propiedades de la asignatura
 const props = defineProps<{ 
   asignatura: { 
     idAsignatura: number;
     nombre: string;
-    imagen: string;
+    descripcion: string;
   } 
 }>();
 </script>
 
 <template>
-  <v-card class="mx-auto" max-width="400" @click="seleccionarAsignatura">
-    <v-img class="align-end text-white" height="150" :src="asignatura.imagen" cover>
-      <v-card-title>{{ asignatura.nombre }}</v-card-title>
-    </v-img>
+  <v-card class="mx-auto d-flex flex-column" max-width="400" color="grey-darken-4">
+    <div class="pa-3 flex-grow-1">
+      <v-card-title class="text-h5 text-white text-wrap">
+        <span class="d-block text-truncate" style="max-width: 100%;">
+          {{ asignatura.nombre }}
+        </span>
+      </v-card-title>
 
-    <v-card-subtitle class="pt-4 text-orange-darken-2 text-h6">
-      {{ asignatura.nombre }}
-    </v-card-subtitle>
+      <v-card-subtitle class="text-white text-wrap">
+        <span class="d-block text-truncate" style="max-width: 100%;">
+          {{ asignatura.descripcion }}
+        </span>
+      </v-card-subtitle>
+    </div>
 
-
-
-    <v-card-actions>
-
+    <v-card-actions class="justify-end">
+      <v-btn 
+        class="ms-2"
+        size="small"
+        color="orange-lighten-1"
+        text="Ver temarios"
+        variant="outlined"
+        @click="irATemarios"
+      ></v-btn>
     </v-card-actions>
   </v-card>
 </template>

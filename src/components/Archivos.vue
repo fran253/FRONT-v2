@@ -128,7 +128,7 @@ const cerrarModal = () => {
     />
 
     <!-- Modal para ver archivos -->
-    <v-dialog v-model="visorAbierto" max-width="800px">
+    <!-- <v-dialog v-model="visorAbierto" max-width="800px">
       <v-card>
         <v-card-title>
           <span class="headline">Visualización de Archivo</span>
@@ -137,20 +137,17 @@ const cerrarModal = () => {
 
         <v-card-text class="pa-5">
           <template v-if="archivoSeleccionado">
-            <!-- Mostrar imagen -->
             <img v-if="archivoSeleccionado.tipo.toLowerCase().includes('imagen')" 
                  :src="archivoSeleccionado.url" 
                  alt="Vista previa de imagen" 
                  width="100%" />
 
-            <!-- Mostrar PDF -->
             <iframe v-else-if="archivoSeleccionado.tipo.toLowerCase().includes('pdf')" 
                     :src="archivoSeleccionado.url" 
                     width="100%" 
                     height="400px">
             </iframe>
 
-            <!-- Mensaje si no se puede previsualizar -->
             <p v-else>No se puede mostrar una vista previa de este archivo.</p>
           </template>
         </v-card-text>
@@ -159,7 +156,7 @@ const cerrarModal = () => {
           <v-btn color="red-darken-2" text @click="cerrarModal">Cerrar</v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
 
     <!-- Modal para ver comentarios del archivo -->
     <ModalArchivoComentario

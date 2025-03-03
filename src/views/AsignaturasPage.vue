@@ -92,8 +92,8 @@ watchEffect(() => {
 
 <style lang="scss" scoped>
 .AsignaturasPage__Breadcrumb {
-  margin-left: 15px;
-  margin-top: 60px;
+  margin-left: 5%;
+  margin-top: 25%;
 }
 
 .AsignaturasPage__Contenido {
