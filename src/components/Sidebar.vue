@@ -42,7 +42,7 @@ const estaAutenticado = computed(() => usuarioLogeadoStore.estaAutenticado);
 </script>
 
 <template>
-  <v-navigation-drawer v-model="drawer" :width="isExpanded ? 250 : 80" :rail="!isExpanded" app class="sidebar">
+  <v-navigation-drawer v-model="drawer" :width="isExpanded ? 250 : 80" :rail="!isExpanded" app class="SideBar">
     <v-list>
       <v-list-item
         :prepend-avatar="usuarioActual?.avatar || 'https://randomuser.me/api/portraits/women/85.jpg'"
@@ -89,13 +89,13 @@ const estaAutenticado = computed(() => usuarioLogeadoStore.estaAutenticado);
     </v-list>
   </v-navigation-drawer>
 
-  <v-btn v-if="isMobile" icon @click="drawer = !drawer" class="menu-btn">
+  <v-btn v-if="isMobile" icon @click="drawer = !drawer" class="SideBar__Boton">
     <v-icon>mdi-menu</v-icon>
   </v-btn>
 </template>
 
 <style lang="scss" scoped>
-  .sidebar {
+  .SideBar {
     background: #ffffff;
     color: #ff7424;
     min-height: 100vh;
@@ -113,7 +113,7 @@ const estaAutenticado = computed(() => usuarioLogeadoStore.estaAutenticado);
     font-weight: bold;
   }
 
-  .menu-btn {
+  .SideBar__Boton {
     position: fixed;
     top: 15px;
     left: 15px;

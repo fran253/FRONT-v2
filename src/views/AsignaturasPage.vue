@@ -66,17 +66,17 @@ watchEffect(() => {
     <Header @toggle-sidebar="drawer = !drawer" @update-search="searchQuery = $event" /> <!-- Recibir búsqueda -->
 
     <!-- Breadcrumb -->
-    <v-breadcrumbs class="breadcrumbs" :items="items">
+    <v-breadcrumbs class="AsignaturasPage__Breadcrumb" :items="items">
       <template v-slot:prepend>
         <v-icon icon="$vuetify" size="small"></v-icon>
       </template>
     </v-breadcrumbs>
 
-    <v-container class="main-container">
+    <v-container class="AsignaturasPage__Contenedor">
       <Sidebar v-model="drawer" />
 
-      <div class="content">
-        <v-container class="asignaturas-container">
+      <div class="AsignaturasPage__Contenido">
+        <v-container class="AsignaturasPage__ContenedorAsignaturas">
           <v-row align="start" justify="start">
             <v-col v-for="asignatura in asignaturasFiltradas" :key="asignatura.id" cols="12" sm="6" md="4" lg="3">
               <CardAsignatura :asignatura="asignatura" />
@@ -91,19 +91,19 @@ watchEffect(() => {
 </template>
 
 <style lang="scss" scoped>
-.breadcrumbs {
+.AsignaturasPage__Breadcrumb {
   margin-left: 15px;
   margin-top: 60px;
 }
 
-.content {
+.AsignaturasPage__Contenido {
   margin-top: 0;
   flex: 1;
   padding: 15px;
   margin-left: 0;
 }
 
-.main-container {
+.AsignaturasPage__Contenedor {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -111,51 +111,51 @@ watchEffect(() => {
   padding-top: 56px;
 }
 
-.asignaturas-container {
+.AsignaturasPage__ContenedorAsignaturas {
   padding: 15px;
 }
 
 /* ipad*/
 @media (min-width: 576px) {
-  .breadcrumbs {
+  .AsignaturasPage__Breadcrumb {
     margin-left: 3%;
     margin-top: 5%;
   }
 
-  .content {
+  .AsignaturasPage__Contenido {
     padding: 18px;
   }
 
-  .main-container {
+  .AsignaturasPage__Contenedor {
     gap: 18px;
     padding-top: 60px;
   }
 
-  .asignaturas-container {
+  .AsignaturasPage__ContenedorAsignaturas {
     padding: 18px;
   }
 }
 
 /* Ordenador */
 @media (min-width: 768px) {
-  .breadcrumbs {
+  .AsignaturasPage__Breadcrumb {
     margin-left: 5%;
     margin-top: 6%;
   }
 
-  .content {
+  .AsignaturasPage__Contenido {
     margin-top: -4%;
     padding: 20px;
     margin-left: 1%;
   }
 
-  .main-container {
+  .AsignaturasPage__Contenedor {
     flex-direction: row;
     gap: 20px;
     padding-top: 64px;
   }
 
-  .asignaturas-container {
+  .AsignaturasPage__ContenedorAsignaturas {
     padding: 20px;
   }
 }

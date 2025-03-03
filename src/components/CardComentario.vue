@@ -12,7 +12,7 @@ defineProps<{
 </script>
 
 <template>
-  <v-card class="comment-card">
+  <v-card class="Comentario__Card">
     <v-row no-gutters>
       <!-- Avatar -->
       <v-col cols="2">
@@ -23,22 +23,22 @@ defineProps<{
 
       <!-- Información del usuario -->
       <v-col cols="3">
-        <div class="user-info">
-          <v-card-title class="username">{{ comentario.usuario }}</v-card-title>
-          <v-card-subtitle class="comment-date">{{ comentario.fecha }}</v-card-subtitle>
+        <div class="Comentario__InfoUsuario">
+          <v-card-title class="Comentario__InfoUsuario__Nombre">{{ comentario.usuario }}</v-card-title>
+          <v-card-subtitle class="Comentario__InfoUsuario__Fecha">{{ comentario.fecha }}</v-card-subtitle>
         </div>
       </v-col>
 
       <!-- Texto del comentario -->
       <v-col cols="7">
-        <v-card-text class="comment-text">{{ comentario.texto }}</v-card-text>
+        <v-card-text class="Comentario__InfoUsuario__Comentario">{{ comentario.texto }}</v-card-text>
       </v-col>
     </v-row>
   </v-card>
 </template>
 
 <style lang="scss" scoped>
-.comment-card {
+.Comentario__Card {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -47,12 +47,12 @@ defineProps<{
   border: 2px solid orange; 
 }
 
-.user-info {
+.Comentario__InfoUsuario {
   display: flex;
   flex-direction: column;
 }
 
-.username {
+.Comentario__InfoUsuario__Nombre {
   font-weight: bold;
   font-size: 14px;
   color: orange;
@@ -61,14 +61,14 @@ defineProps<{
   line-height: 1.2;
 }
 
-.comment-date {
+.Comentario__InfoUsuario__Fecha {
   font-size: 12px;
   color: rgb(247, 140, 0);
   padding: 0;
   margin-top: 0;
 }
 
-.comment-text {
+.Comentario__InfoUsuario__Comentario {
   font-size: 14px;
   color: #333;
   padding: 10px;

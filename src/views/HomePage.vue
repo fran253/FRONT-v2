@@ -11,42 +11,42 @@ import HomeInfoSection from "@/components/HomeInfosection.vue";
   <v-app>
     <Header />
 
-    <v-container class="main-container">
-      <v-container class="content">
+    <v-container class="HomePage__Contenedor">
+      <v-container class="HomePage__Contenido">
         <section class="home-section">
           <Carrusel />
 
-          <div class="divider-container" min-height="400">
+          <div class="HomePage__divider" min-height="400">
             <!-- Stepper vuetify -->
-            <v-stepper :items="['Paso 1', 'Paso 2', 'Paso 3', 'Paso 4']" class="stepper___home">
+            <v-stepper :items="['Paso 1', 'Paso 2', 'Paso 3', 'Paso 4']" class="HomePage__Stepper">
               <template v-slot:item.1>
-                <v-card title="¡Elige tu CURSO!" flat class="step-card">
-                  <div class="card-content">
-                    <v-icon icon="mdi-emoticon" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon>
+                <v-card title="¡Elige tu CURSO!" flat class="HomePage__CardStepper">
+                  <div class="HomePage__ContenidoCard">
+                    <v-icon icon="mdi-emoticon" size="x-large" color="orange-darken-3" class="HomePage__IconStepper"></v-icon>
                   </div>
                 </v-card>
               </template>
 
               <template v-slot:item.2>
-                <v-card title="¡Accede a sus ASIGNATURAS!" flat class="step-card">
-                  <div class="card-content">
-                    <v-icon icon="mdi-book-multiple" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon>
+                <v-card title="¡Accede a sus ASIGNATURAS!" flat class="HomePage__CardStepper">
+                  <div class="HomePage__ContenidoCard">
+                    <v-icon icon="mdi-book-multiple" size="x-large" color="orange-darken-3" class="HomePage__IconStepper"></v-icon>
                   </div>
                 </v-card>
               </template>
 
               <template v-slot:item.3>
-                <v-card title="¡Descubre todas sus UNIDADES!" flat class="step-card">
-                  <div class="card-content">
-                    <v-icon icon="mdi-food-apple" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon>
+                <v-card title="¡Descubre todas sus UNIDADES!" flat class="HomePage__CardStepper">
+                  <div class="HomePage__ContenidoCard">
+                    <v-icon icon="mdi-food-apple" size="x-large" color="orange-darken-3" class="HomePage__IconStepper"></v-icon>
                   </div>
                 </v-card>
               </template>
 
               <template v-slot:item.4>
-                <v-card title="Realiza TEST y explora ARCHIVOS" flat class="step-card">
-                  <div class="card-content">
-                    <v-icon icon="mdi-clipboard-check" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon>
+                <v-card title="Realiza TEST y explora ARCHIVOS" flat class="HomePage__CardStepper">
+                  <div class="HomePage__ContenidoCard">
+                    <v-icon icon="mdi-clipboard-check" size="x-large" color="orange-darken-3" class="HomePage__IconStepper"></v-icon>
                   </div>
                 </v-card>
               </template>
@@ -54,7 +54,7 @@ import HomeInfoSection from "@/components/HomeInfosection.vue";
 
             <v-divider class="border-opacity-100" color="warning" vertical></v-divider>
 
-            <v-btn prepend-icon="$vuetify" variant="outlined" color="orange-darken-3" class="custom-button" size="x-large" to="/cursos">Entra a Cursos</v-btn>  
+            <v-btn prepend-icon="$vuetify" variant="outlined" color="orange-darken-3" class="HomePage__BotonCursos" size="x-large" to="/cursos">Entra a Cursos</v-btn>  
 
             <v-divider class="border-opacity-100" color="warning" vertical></v-divider>
             <AvatarRiendo />
@@ -74,7 +74,7 @@ import HomeInfoSection from "@/components/HomeInfosection.vue";
 
 
 <style lang="scss" scoped>
-  .main-container {
+  .HomePage__Contenedor {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -82,7 +82,7 @@ import HomeInfoSection from "@/components/HomeInfosection.vue";
     padding-top: 60px;
   }
 
-  .content {
+  .HomePage__Contenido {
     flex: 1;
     display: flex;
     justify-content: center;
@@ -92,7 +92,7 @@ import HomeInfoSection from "@/components/HomeInfosection.vue";
     padding: 0 15px;
   }
 
-  .divider-container {
+  .HomePage__divider {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -104,13 +104,13 @@ import HomeInfoSection from "@/components/HomeInfosection.vue";
     width: calc(100% - 30px);
   }
 
-  .stepper___home {
+  .HomePage__Stepper {
     max-width: 100%;
     min-height: 200px;
     flex-grow: 1;
   }
 
-  .step-card {
+  .HomePage__CardStepper {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -118,19 +118,19 @@ import HomeInfoSection from "@/components/HomeInfosection.vue";
     padding: 0 10px;
   }
 
-  .card-content {
+  .HomePage__ContenidoCard {
     display: flex;
     justify-content: center;
     width: 100%;
     margin-top: 8px;
   }
 
-  .centered-icon {
+  .HomePage__IconStepper {
     margin: 0 auto;
     transform: scale(0.9);
   }
 
-  .custom-button {
+  .HomePage__BotonCursos {
     border-color: #FF5500;
     color: #FF5500;
     font-size: 1rem;
@@ -150,7 +150,7 @@ import HomeInfoSection from "@/components/HomeInfosection.vue";
 
 /* ipad*/
 @media (min-width: 576px) {
-  .main-container {
+  .HomePage__Contenedor {
     gap: 18px;
     padding-top: 70px;
   }
@@ -163,11 +163,11 @@ import HomeInfoSection from "@/components/HomeInfosection.vue";
     width: calc(100% - 60px);
   }
 
-  .stepper___home {
+  .HomePage__Stepper {
     min-height: 220px;
   }
 
-  .custom-button {
+  .HomePage__BotonCursos {
     font-size: 1.1rem;
     padding: 13px 35px;
   }
@@ -179,17 +179,17 @@ import HomeInfoSection from "@/components/HomeInfosection.vue";
 
 /* Ordenador */
 @media (min-width: 768px) {
-  .main-container {
+  .HomePage__Contenedor {
     flex-direction: row;
     gap: 20px;
     padding-top: 5%;
   }
 
-  .content {
+  .HomePage__Contenido {
     padding: 0;
   }
 
-  .divider-container {
+  .HomePage__divider {
     flex-direction: row;
     gap: 50px;
     margin-top: 7%;
@@ -198,22 +198,22 @@ import HomeInfoSection from "@/components/HomeInfosection.vue";
     width: 100%;
   }
 
-  .stepper___home {
+  .HomePage__Stepper {
     max-width: 600px;
     min-height: 250px;
   }
 
-  .centered-icon {
+  .HomePage__IconStepper {
     transform: scale(1);
   }
 
-  .custom-button {
+  .HomePage__BotonCursos {
     font-size: 1.2rem;
     padding: 15px 40px;
     width: auto;
   }
 
-  .card-content {
+  .HomePage__ContenidoCard {
     margin-top: 10px;
   }
 

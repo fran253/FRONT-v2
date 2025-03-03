@@ -54,7 +54,7 @@ const añadirAMisCursos = () => {
     </v-card-subtitle>
 
     <v-card-actions>
-      <v-btn variant="flat" :color="estaEnMisCursos ? 'orange' : 'white'" class="boton__like" @click.stop="añadirAMisCursos">
+      <v-btn variant="flat" :color="estaEnMisCursos ? 'orange' : 'white'" class="CardCurso__BotonLike" @click.stop="añadirAMisCursos">
         <v-icon :color="estaEnMisCursos ? 'white' : 'orange'">
           {{ estaEnMisCursos ? 'mdi-heart' : 'mdi-heart-outline' }}
         </v-icon>
@@ -71,7 +71,7 @@ const añadirAMisCursos = () => {
 </template>
 
 <style scoped>
-.boton__like {
+.CardCurso__BotonLike {
   font-size: 150%;
   border: 2px solid orange;
 }

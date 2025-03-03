@@ -8,15 +8,15 @@ const search = ref('');
 </script>
 
 <template>
-  <v-app-bar app class="header" height="80">
-    <v-btn icon @click="$emit('toggle-sidebar')" class="mobile-menu-btn">
+  <v-app-bar app class="Header__Seccion" height="80">
+    <v-btn icon @click="$emit('toggle-sidebar')" class="Header__BotonMovil">
       <v-icon>mdi-menu</v-icon>
     </v-btn>
 
     <!-- Logo -->
-    <v-img :src="emote" class="logo" contain></v-img>
+    <v-img :src="emote" class="Header__Logo" contain></v-img>
 
-    <v-toolbar-title class="title">Plataforma de Aprendizaje</v-toolbar-title>
+    <v-toolbar-title class="Header__Titulo">Plataforma de Aprendizaje</v-toolbar-title>
 
     <v-spacer></v-spacer>
 
@@ -27,36 +27,35 @@ const search = ref('');
       append-icon="mdi-magnify"
       single-line
       hide-details
-      class="search-bar"
+      class="Header__Buscador"
       @input="$emit('update-search', search)"
     ></v-text-field>
   </v-app-bar>
 </template>
 
-/* Mobile First Approach */
 <style lang="scss" scoped>
-  .header {
+  .Header__Seccion {
     background-color: #ff7424 !important;
     padding: 0.1%;
     position: fixed;
     z-index: 1100;
-    width: 100%; /* Asegura que ocupe todo el ancho en móviles */
+    width: 100%;
   }
 
-  .logo {
-    height: 40px; /* Ligeramente más pequeño en móviles */
+  .Header__Logo {
+    height: 40px;
     width: auto;
     margin-right: 1px;
   }
 
-  .title {
+  .Header__Titulo {
     color: white;
-    font-size: 1.2rem; /* Tamaño de fuente para móviles */
+    font-size: 1.2rem;
   }
 
-  .search-bar {
-    width: 100%; /* En móviles ocupa todo el ancho disponible */
-    min-width: auto; /* Eliminamos min-width para pantallas pequeñas */
+  .Header__Buscador {
+    width: 100%;
+    min-width: auto;
     background: transparent !important;
     border-radius: 8px;
     color: #ff7424 !important;
@@ -70,21 +69,21 @@ const search = ref('');
     }
   }
 
-  .mobile-menu-btn {
-    display: block; /* Visible por defecto en móviles */
+  .Header__BotonMovil {
+    display: block; 
   }
 
   /* Tablet (768px y superior) */
   @media (min-width: 768px) {
-    .logo {
-      height: 45px; /* Tamaño intermedio para tablets */
+    .Header__Logo {
+      height: 45px; 
     }
 
-    .title {
+    .Header__Titulo {
       font-size: 1.5rem;
     }
 
-    .search-bar {
+    .Header__Buscador {
       width: auto;
       min-width: 300px;
     }
@@ -92,16 +91,16 @@ const search = ref('');
 
   /* Desktop (992px y superior) */
   @media (min-width: 992px) {
-    .logo {
-      height: 50px; /* Tamaño original para desktop */
+    .Header__Logo {
+      height: 50px;
     }
 
-    .search-bar {
+    .Header__Buscador {
       max-width: 400px;
     }
 
-    .mobile-menu-btn {
-      display: none; /* Oculto en desktop */
+    .Header__BotonMovil {
+      display: none; 
     }
   }
 </style>

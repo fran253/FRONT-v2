@@ -32,8 +32,8 @@ const testTitle = computed(() => {
   <v-card class="pa-3">
     <v-card-title>{{ testTitle }}</v-card-title>
     <v-divider></v-divider>
-    <v-card-actions class="button-group">
-      <v-btn color="orange-darken-2" icon class="circular-btn" @click="verTest">
+    <v-card-actions class="CardTest__Botones">
+      <v-btn color="orange-darken-2" icon class="CardTest__Botones__Verbtn" @click="verTest">
         <v-icon color="white">mdi-eye</v-icon>
       </v-btn>
     </v-card-actions>
@@ -52,7 +52,7 @@ const testTitle = computed(() => {
   background-color: orange;
 }
 
-.button-group {
+.CardTest__Botones {
   display: flex;
   gap: 10px;
   justify-content: center;

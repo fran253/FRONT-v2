@@ -41,7 +41,7 @@ onMounted(fetchCursos);
 </script>
 
 <template>
-  <v-container class="cursos-container">
+  <v-container class="ListaCursos__Contenedor">
     <v-row align="start" justify="start">
       <v-col v-for="curso in cursosFiltrados" :key="curso.idCurso" cols="12" sm="6" md="4" lg="3">
         <CardCurso 
@@ -56,7 +56,7 @@ onMounted(fetchCursos);
 </template>
 
 <style scoped>
-.cursos-container {
+.ListaCursos__Contenedor {
   padding: 20px;
 }
 </style>

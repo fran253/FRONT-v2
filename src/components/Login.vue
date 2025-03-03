@@ -92,7 +92,7 @@
     errorMessage.value = "";
 
     try {
-      const response = await fetch("https://tuapi.com/api/usuarios/registro", {
+      const response = await fetch("/api/usuarios/registro", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(usuario.value),
@@ -156,14 +156,14 @@
           </v-btn>
         </v-form>
 
-        <div class="switch-auth">
+        <div class="Login__Switch">
           <span @click="toggleModo">
             {{ esRegistro ? "¿Ya tienes cuenta? Inicia sesión" : "¿No tienes cuenta? Regístrate" }}
           </span>
         </div>
 
-        <div class="actions">
-          <v-btn class="guest-btn" text color="primary" @click="entrarComoInvitado">
+        <div class="Login__opciones">
+          <v-btn class="Login__BotonInvitado" text color="primary" @click="entrarComoInvitado">
             Entrar sin iniciar sesión
           </v-btn>
           <v-btn text color="grey" @click="cerrarModal">Cerrar</v-btn>
@@ -174,24 +174,24 @@
 </template>
 
 <style scoped>
-.switch-auth {
+.Login__Switch {
   text-align: center;
   margin-top: 10px;
   cursor: pointer;
   color: #FF5500;
 }
 
-.switch-auth span:hover {
+.Login__Switch span:hover {
   text-decoration: underline;
 }
 
-.actions {
+.Login__opciones {
   display: flex;
   justify-content: space-between;
   margin-top: 15px;
 }
 
-.guest-btn {
+.Login__BotonInvitado {
   color: #FB7C3C;
 }
 </style>

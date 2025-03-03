@@ -58,24 +58,24 @@
     <Header @toggle-sidebar="drawer = !drawer" />
     
     <!-- Breadcrumb -->
-    <v-breadcrumbs class="breadcrumbs" :items="items">
+    <v-breadcrumbs class="PerfilPage__Breadcrumb" :items="items">
       <template v-slot:prepend>
         <v-icon icon="$vuetify" size="small"></v-icon>
       </template>
     </v-breadcrumbs>
 
-    <v-container class="main-container">
+    <v-container class="PerfilPage__Contenedor">
       <Sidebar v-model="drawer" />
 
       <v-row class="perfil__container">
         <!-- Avatar, Nombre y Frase -->
-        <v-col cols="12" md="6" class="left__panel">
-          <div class="avatar-container">
+        <v-col cols="12" md="6" class="PerfilPage__ZonaIzquierda">
+          <div class="PerfilPage__ZonaIzquierda__Avatar">
             <v-avatar :image="usuarioActual?.avatar || '../src/images/user.png'" size="120"></v-avatar>
           </div>
 
           <v-text-field 
-            class="nombre__perfil" 
+            class="PerfilPage__ZonaIzquierda__Nombre" 
             label="Nombre" 
             v-model="nombre" 
             outlined 
@@ -85,7 +85,7 @@
           
           <v-text-field
             v-if="usuarioActual"
-            class="email__perfil"
+            class="PerfilPage__ZonaIzquierda__Email"
             label="Email"
             :model-value="usuarioActual.email"
             outlined
@@ -93,10 +93,10 @@
             readonly
           ></v-text-field>
 
-          <v-autocomplete class="frase__perfil" label="¿Cuál es tu frase?" :items="estados" outlined dense></v-autocomplete>
+          <v-autocomplete class="PerfilPage__ZonaIzquierda__Frase" label="¿Cuál es tu frase?" :items="estados" outlined dense></v-autocomplete>
         </v-col>
 
-        <v-col cols="12" md="6" class="right__panel">
+        <v-col cols="12" md="6" class="PerfilPage__ZonaDerecha">
           <UserTab />
         </v-col>
       </v-row>
@@ -108,12 +108,12 @@
 </template>
 
 <style lang="scss" scoped>
-  .breadcrumbs {
+  .PerfilPage__Breadcrumb {
     margin-left: 15px;
     margin-top: 50px;
   }
 
-  .main-container {
+  .PerfilPage__Contenedor {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -129,31 +129,31 @@
     gap: 30px;
   }
 
-  .left__panel {
+  .PerfilPage__ZonaIzquierda {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
     width: 100%;
 
-    .avatar-container {
+    .PerfilPage__ZonaIzquierda__Avatar {
       display: flex;
       align-items: center;
       margin-bottom: 10px;
     }
 
-    .nombre__perfil {
+    .PerfilPage__ZonaIzquierda__Nombre {
       width: 80%;
       text-align: center;
     }
 
-    .frase__perfil {
+    .PerfilPage__ZonaIzquierda__Frase {
       width: 100%;
       text-align: center;
     }
   }
 
-  .right__panel {
+  .PerfilPage__ZonaDerecha {
     display: flex;
     justify-content: center;
     width: 100%;
@@ -165,22 +165,22 @@
 
 /* ipad */
 @media (min-width: 576px) {
-  .breadcrumbs {
+  .PerfilPage__Breadcrumb {
     margin-left: 3%;
     margin-top: 5%;
   }
 
-  .main-container {
+  .PerfilPage__Contenedor {
     gap: 18px;
     padding: 0 20px;
   }
 
-  .left__panel {
-    .nombre__perfil {
+  .PerfilPage__ZonaIzquierda {
+    .PerfilPage__ZonaIzquierda__Nombre {
       width: 60%;
     }
 
-    .frase__perfil {
+    .PerfilPage__ZonaIzquierda__Frase {
       width: 90%;
     }
   }
@@ -192,12 +192,12 @@
 
 /* Ordenador */
 @media (min-width: 768px) {
-  .breadcrumbs {
+  .PerfilPage__Breadcrumb {
     margin-left: 5%;
     margin-top: 6%;
   }
 
-  .main-container {
+  .PerfilPage__Contenedor {
     flex-direction: row;
     gap: 20px;
     padding: 0;
@@ -209,13 +209,13 @@
     align-items: flex-start;
   }
 
-  .left__panel {
-    .nombre__perfil {
+  .PerfilPage__ZonaIzquierda {
+    .PerfilPage__ZonaIzquierda__Nombre {
       width: 40%;
       text-align: left;
     }
 
-    .frase__perfil {
+    .PerfilPage__ZonaIzquierda__Frase {
       width: 80%;
       text-align: left;
     }

@@ -10,9 +10,9 @@ const slides = ref([img1, img2, img3]);
 </script>
 
 <template>
-    <v-container class="carrusel-wrapper">
+    <v-container class="Carrusel__Contenedor">
 
-      <v-carousel class="full-width-carousel" height="600" progress="primary" hide-delimiters>
+      <v-carousel class="Carrusel__Contenedor__FullWidth" height="600" progress="primary" hide-delimiters>
 
             <v-carousel-item v-for="(slide, i) in slides" :key="i">
 
@@ -34,27 +34,27 @@ const slides = ref([img1, img2, img3]);
 
   
   <style lang="scss" scoped>
-    .carrusel-wrapper {
+    .Carrusel__Contenedor {
       width: 100%;
       margin: 0 auto;
       min-width: 100%;
     }
     
-    .full-width-carousel {
+    .Carrusel__Contenedor__FullWidth {
       width: 100%;
       max-width: 100%;
     }
   
     /* ipad */
     @media only screen and (min-width: 768px) {
-      .carrusel-wrapper {
+      .Carrusel__Contenedor {
         min-width: 100%;
       }
     }
   
     /* ordenador */
     @media only screen and (min-width: 1024px) {
-      .carrusel-wrapper {
+      .Carrusel__Contenedor {
         min-width: 100%;
       }
     }

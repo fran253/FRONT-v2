@@ -8,26 +8,26 @@ const dialog = ref(false);
 </script>
 
 <template>
-    <section class="info-section">
-      <div class="info-card">
+    <section class="InfoSection">
+      <div class="InfoSection__Card">
         <h3>Sube y comparte tests</h3>
         <p>Facilitamos la creación y distribución de tests para mejorar el aprendizaje.</p>
       </div>
-      <div class="info-card">
+      <div class="InfoSection__Card">
         <h3>Comparte archivos y documentos</h3>
         <p>Un espacio donde los estudiantes pueden encontrar y compartir apuntes, resúmenes y ejercicios.</p>
       </div>
-      <div class="info-card">
+      <div class="InfoSection__Card">
         <h3>Repositorios públicos para profesores</h3>
         <p>Los profesores pueden organizar y compartir material académico con sus alumnos de manera eficiente.</p>
       </div>
     </section>
 
     <!-- Nueva sección para los botones -->
-    <section class="button-section">
+    <section class="InfoSection__Botones">
       <v-dialog v-model="dialog" max-width="500">
         <template v-slot:activator="{ props: activatorProps }">
-          <div class="btn-container">
+          <div class="InfoSection__Botones__Contenedor">
             <v-btn v-bind="activatorProps" color="orange-darken-3" size="x-large" class="circular-btn" icon>
               <v-icon>mdi-information</v-icon>
             </v-btn>
@@ -107,7 +107,7 @@ const dialog = ref(false);
 
       <v-bottom-sheet v-model="sheet">
         <template v-slot:activator="{ props }">
-          <div class="btn-container">
+          <div class="InfoSection__Botones__Contenedor">
             <v-btn v-bind="props" color="orange-darken-3" size="x-large" class="circular-btn" icon>
               <v-icon>mdi-plus</v-icon>
             </v-btn>
@@ -122,7 +122,7 @@ const dialog = ref(false);
 </template>
 
 <style lang="scss" scoped>
-.info-section {
+.InfoSection {
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -131,7 +131,7 @@ const dialog = ref(false);
   margin-bottom: 3%;
 }
 
-.info-card {
+.InfoSection__Card {
   background: white;
   padding: 20px;
   border-radius: 10px;
@@ -141,25 +141,25 @@ const dialog = ref(false);
   width: 100%;
 }
 
-.info-card:nth-child(1) {
+.InfoSection__Card:nth-child(1) {
   background-color: #ffffff;
   color: #F7A277;
   border: 2px solid #FF5500;
 }
 
-.info-card:nth-child(2) {
+.InfoSection__Card:nth-child(2) {
   background-color: #ffffff;
   color: #F7A277;
   border: 2px solid #FF5500;
 }
 
-.info-card:nth-child(3) {
+.InfoSection__Card:nth-child(3) {
   background-color: #ffffff;
   color: #F7A277;
   border: 2px solid #FF5500;
 }
 
-.button-section {
+.InfoSection__Botones {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -169,14 +169,14 @@ const dialog = ref(false);
 }
 
 @media (min-width: 768px) {
-  .info-section {
+  .InfoSection {
     flex-direction: row;
     justify-content: space-between;
     gap: 50px;
     margin-top: 70px;
     padding: 0 50px;
   }
-  .info-card {
+  .InfoSection__Card {
     padding: 25px;
     flex: 1;
   }

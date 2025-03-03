@@ -55,17 +55,17 @@ onMounted(() => {
     <Header @toggle-sidebar="drawer = !drawer" @update-search="updateSearch" />
 
     <!-- Breadcrumb -->
-    <v-breadcrumbs class="breadcrumbs" :items="items">
+    <v-breadcrumbs class="ArchivosyTestPage__Breadcrumb" :items="items">
       <template v-slot:prepend>
         <v-icon icon="$vuetify" size="small"></v-icon>
       </template>
     </v-breadcrumbs>
 
-    <v-container class="main-container">
+    <v-container class="ArchivosyTestPage__Contenedor">
       <Sidebar v-model="drawer" />
 
-      <div class="content" v-if="temarioId !== null">
-        <v-card class="tab-container">
+      <div class="ArchivosyTestPage__Contenido" v-if="temarioId !== null">
+        <v-card class="ArchivosyTestPage__Tab">
           <v-tabs v-model="tab" align-tabs="left" color="orange-darken-3">
             <v-tab :value="1">
               <v-icon class="mr-2">mdi-folder</v-icon> Archivos
@@ -99,19 +99,19 @@ onMounted(() => {
 
 
 <style lang="scss" scoped>
-  .breadcrumbs {
+  .ArchivosyTestPage__Breadcrumb {
     margin-left: 15px;
     margin-top: 60px;
   }
 
-  .content {
+  .ArchivosyTestPage__Contenido {
     flex: 1;
     padding: 15px;
     margin-left: 0;
     margin-top: 0;
   }
 
-  .main-container {
+  .ArchivosyTestPage__Contenedor {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -119,7 +119,7 @@ onMounted(() => {
     padding-top: 56px;
   }
 
-  .tab-container {
+  .ArchivosyTestPage__Tab {
     width: 100%;
     min-height: auto;
     padding: 15px;
@@ -127,21 +127,21 @@ onMounted(() => {
 
   /* ipad*/
   @media (min-width: 576px) {
-    .breadcrumbs {
+    .ArchivosyTestPage__Breadcrumb {
       margin-left: 3%;
       margin-top: 5%;
     }
 
-    .content {
+    .ArchivosyTestPage__Contenido {
       padding: 18px;
     }
 
-    .main-container {
+    .ArchivosyTestPage__Contenedor {
       gap: 18px;
       padding-top: 60px;
     }
 
-    .tab-container {
+    .ArchivosyTestPage__Tab {
       padding: 18px;
       min-height: 60vh;
     }
@@ -149,24 +149,24 @@ onMounted(() => {
 
   /* Ordenadores */
   @media (min-width: 768px) {
-    .breadcrumbs {
+    .ArchivosyTestPage__Breadcrumb {
       margin-left: 5%;
       margin-top: 6%;
     }
 
-    .content {
+    .ArchivosyTestPage__Contenido {
       padding: 20px;
       margin-left: 1%;
       margin-top: -4%; 
     }
 
-    .main-container {
+    .ArchivosyTestPage__Contenedor {
       flex-direction: row; 
       gap: 20px;
       padding-top: 64px;
     }
 
-    .tab-container {
+    .ArchivosyTestPage__Tab {
       min-height: 80vh;
       padding: 20px;
     }

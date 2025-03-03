@@ -29,9 +29,9 @@ onMounted(() => {
   
   // Verificar si idUsuario está disponible
   if (!idUsuario.value) {
-    console.error("❌ No se pudo obtener el ID del usuario desde el store.");
+    console.error("ID del usuario incorrecto.");
   } else {
-    console.log("✅ ID Usuario obtenido:", idUsuario.value);
+    console.log("ID Usuario correcto:", idUsuario.value);
   }
 });
 
@@ -43,14 +43,14 @@ watchEffect(() => {
   console.log("Usuario actualizado:", usuarioLogeadoStore.usuarioActual);
 });
 
-// Capturar archivo seleccionado
+// comprobar archivo seleccionado
 const onFileSelected = (event: Event) => {
   const target = event.target as HTMLInputElement;
   if (target.files && target.files.length > 0) {
     archivoSeleccionado.value = target.files[0];
-    console.log("✅ Archivo capturado:", archivoSeleccionado.value);
+    console.log("Archivo seleccionado:", archivoSeleccionado.value);
   } else {
-    console.error("❌ No se seleccionó ningún archivo.");
+    console.error("No se seleccionó ningún archivo.");
   }
 };
 
@@ -64,13 +64,13 @@ const subirArchivo = async () => {
 
   if (!archivoSeleccionado.value || !tituloArchivo.value || !tipoArchivo.value) {
     errorSubida.value = "Debes completar todos los campos.";
-    console.error("❌ Error: Faltan datos del formulario.");
+    console.error("Error: Faltan datos del formulario.");
     return;
   }
 
   if (!props.temarioId || !idUsuario.value) {
     errorSubida.value = "Faltan datos obligatorios.";
-    console.error("❌ Error: ID Temario o ID Usuario no disponibles.");
+    console.error("Error: ID Temario o ID Usuario no disponibles.");
     return;
   }
 
@@ -91,15 +91,13 @@ const subirArchivo = async () => {
     emit('archivo-subido');
     emit('update:visible', false);
   } catch (e) {
-    console.error("❌ Error al subir el archivo:", e);
+    console.error("Error al subir el archivo:", e);
     errorSubida.value = "Error al subir el archivo.";
   } finally {
     cargandoSubida.value = false;
   }
 };
 </script>
-
-
 
 
 

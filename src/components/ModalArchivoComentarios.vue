@@ -28,23 +28,23 @@ const onComentariosCargados = (cantidad: number) => {
 
 <template>
   <v-dialog v-model="props.abierto" max-width="1000px">
-    <v-card class="dialog-container">
+    <v-card class="ArchivoComentario__Contenedor">
       <v-card-title>
         {{ props.archivo ? props.archivo.nombre : 'Sin archivo seleccionado' }}
-        <span v-if="cantidadComentarios > 0" class="comment-count">({{ cantidadComentarios }} comentarios)</span>
+        <span v-if="cantidadComentarios > 0" class="ArchivoComentario__ContadorComentarios">({{ cantidadComentarios }} comentarios)</span>
       </v-card-title>
       <v-divider></v-divider>
     
-      <v-card-text class="dialog-content">
+      <v-card-text class="ArchivoComentario__Contenido">
         <!-- Ver Archivo -->
-        <div class="file-view">
+        <div class="ArchivoComentario__VerArchivo">
           <iframe
             v-if="props.archivo?.url"
             :src="props.archivo.url"
             width="100%"
             height="400px"
           ></iframe>
-          <div v-else class="no-file-message">
+          <div v-else class="ArchivoComentario__ErrorVerArchivo">
             <p>No hay archivo seleccionado o la URL no es válida</p>
           </div>
         </div>
@@ -66,13 +66,13 @@ const onComentariosCargados = (cantidad: number) => {
 </template>
 
 <style lang="scss" scoped>
-.dialog-container {
+.ArchivoComentario__Contenedor {
   display: flex;
   flex-direction: column;
   height: 80vh;
 }
 
-.dialog-content {
+.ArchivoComentario__Contenido {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -81,24 +81,24 @@ const onComentariosCargados = (cantidad: number) => {
   padding: 20px;
 }
 
-.file-view {
+.ArchivoComentario__VerArchivo {
   width: 100%;
-  min-height: 200px;
+  min-height: 400px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-.no-file-message {
+.ArchivoComentario__ErrorVerArchivo {
   text-align: center;
   color: #888;
   font-style: italic;
 }
 
-.comment-count {
+.ArchivoComentario__ContadorComentarios {
   font-size: 0.8em;
   margin-left: 10px;
-  color: #666;
+  color: #ff8a04;
 }
 </style>

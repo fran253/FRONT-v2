@@ -1,11 +1,11 @@
 <template>
-    <v-footer class="footer">
-      <p class="texto__footer">&copy; 2025 Plataforma de Aprendizaje. Todos los derechos reservados.</p>
+    <v-footer class="Footer__Seccion">
+      <p class="Footer__Seccion__Texto">&copy; 2025 Plataforma de Aprendizaje. Todos los derechos reservados.</p>
     </v-footer>
 </template>
 
 <style lang="scss" scoped>
-  .footer {
+  .Footer__Seccion {
     background: #FB7C3C;
     padding: 20px;
     text-align: center;
@@ -15,7 +15,7 @@
     bottom: 0;
   }
 
-  .texto__footer {
+  .Footer__Seccion__Texto {
     margin-left: 0;
   }
 
@@ -25,7 +25,7 @@
       width: calc(100%);
     }
     
-    .texto__footer {
+    .Footer__Seccion__Texto {
       margin-left: 40%;
     }
   }

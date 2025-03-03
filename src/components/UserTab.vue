@@ -7,7 +7,7 @@
 </script>
 
 <template>
-    <v-card class="tabs-card">
+    <v-card class="Usuario__Tab">
       <v-tabs v-model="tab" bg-color="primary">
         <v-tab value="one">Cursos</v-tab>
         <v-tab value="two">Comentarios</v-tab>
@@ -36,7 +36,7 @@
 
   
 <style lang="scss" scoped>
-  .tabs-card {
+  .Usuario__Tab {
     margin-top: 20px;
     min-height: 80%;
     min-width: 100%;

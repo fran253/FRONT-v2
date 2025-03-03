@@ -52,7 +52,7 @@ console.log("Usuario actual en ListaComentarios:", usuarioActual.value);
 
 // Cuando abres el modal, llama al metodo
 onMounted(() => {
-  usuarioLogeadoStore.cargarUsuarioDesdeStorage(); // ✅ Forzar la carga del usuario
+  usuarioLogeadoStore.cargarUsuarioDesdeStorage(); 
   mostrarComentarios();
 });
 
@@ -109,7 +109,7 @@ async function añadirComentario() {
 
 
 <template>
-  <div class="comentarios">
+  <div class="ListaComentarios">
     <h3>Comentarios</h3>
     <v-divider></v-divider>
 
@@ -121,7 +121,7 @@ async function añadirComentario() {
       </template>
     </div>
 
-    <p v-if="errorMensaje" class="error-text">{{ errorMensaje }}</p>
+    <p v-if="errorMensaje" class="ListaComentarios__Error">{{ errorMensaje }}</p>
 
     <div class="nueva-entrada">
       <v-text-field
@@ -138,7 +138,7 @@ async function añadirComentario() {
 </template>
 
 <style scoped>
-.error-text {
+.ListaComentarios__Error {
   color: red;
   font-size: 14px;
   margin-top: 5px;

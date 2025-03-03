@@ -67,7 +67,7 @@ watch(() => props.idAsignatura, (newVal) => {
 </script>
 
 <template>
-  <v-container class="temarios-container">
+  <v-container class="ListaTemarios__Contenedor">
     <!-- cuando no hayan temarios aparece mensaje de error -->
     <div v-if="temarios.length === 0" class="text-center my-4">
       <p>No hay temarios disponibles para esta asignatura</p>
@@ -83,7 +83,7 @@ watch(() => props.idAsignatura, (newVal) => {
 </template>
 
 <style scoped>
-.temarios-container {
+.ListaTemarios__Contenedor {
   padding: 20px;
 }
 </style>

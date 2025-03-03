@@ -81,17 +81,17 @@ onMounted(async () => {
   <v-app>
     <Header @toggle-sidebar="drawer = !drawer" @update-search="searchQuery = $event" />
 
-    <v-breadcrumbs class="breadcrumbs" :items="items">
+    <v-breadcrumbs class="CursosPage___Breadcrumb" :items="items">
       <template v-slot:prepend>
         <v-icon icon="$vuetify" size="small"></v-icon>
       </template>
     </v-breadcrumbs>
 
-    <v-container class="main-container">
+    <v-container class="CursosPage__Contenedor">
       <Sidebar v-model="drawer" @mostrar-login="mostrarLogin = true" />
 
-      <div class="content">
-        <v-container class="cursos-container">
+      <div class="CursosPage___contenido">
+        <v-container class="CursosPage___ContenedorCursos">
           <v-row align="start" justify="start">
             <v-col v-for="curso in cursosFiltrados" :key="curso.idCurso" cols="12" sm="6" md="4" lg="3">
               <CardCurso 
@@ -120,19 +120,19 @@ onMounted(async () => {
 <style lang="scss" scoped>
 
 
-.breadcrumbs {
-  margin-left: 15px;
-  margin-top: 50px;
+.CursosPage___Breadcrumb {
+  margin-left: 5%;
+  margin-top: 5%;
 }
 
-.content {
+.CursosPage___contenido {
   margin-top: 0;
   flex: 1;
   padding: 15px;
   margin-left: 0;
 }
 
-.main-container {
+.CursosPage__Contenedor {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -148,22 +148,22 @@ onMounted(async () => {
   font-size: 1.5rem;
 }
 
-.cursos-container {
+.CursosPage___ContenedorCursos {
   padding: 15px;
 }
 
 /* ipad */
 @media (min-width: 576px) {
-  .breadcrumbs {
+  .CursosPage___Breadcrumb {
     margin-left: 3%;
     margin-top: 5%;
   }
 
-  .content {
+  .CursosPage___contenido {
     padding: 18px;
   }
 
-  .main-container {
+  .CursosPage__Contenedor {
     gap: 18px;
     padding-top: 60px;
   }
@@ -174,25 +174,25 @@ onMounted(async () => {
     font-size: 1.75rem;
   }
 
-  .cursos-container {
+  .CursosPage___ContenedorCursos {
     padding: 18px;
   }
 }
 
 /* Ordenador */
 @media (min-width: 768px) {
-  .breadcrumbs {
+  .CursosPage___Breadcrumb {
     margin-left: 5%;
     margin-top: 6%;
   }
 
-  .content {
+  .CursosPage___contenido {
     margin-top: -4%;
     padding: 20px;
     margin-left: 1%;
   }
 
-  .main-container {
+  .CursosPage__Contenedor {
     flex-direction: row;
     gap: 20px;
     padding-top: 64px;
@@ -204,7 +204,7 @@ onMounted(async () => {
     font-size: 2rem;
   }
 
-  .cursos-container {
+  .CursosPage___ContenedorCursos {
     padding: 20px;
   }
 }

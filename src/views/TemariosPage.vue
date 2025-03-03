@@ -39,16 +39,16 @@ const idAsignatura = computed(() => route.params.idAsignatura ? String(route.par
     <Header @toggle-sidebar="drawer = !drawer" @update-search="searchQuery = $event" /> <!-- Se agrega el evento de búsqueda -->
 
     <!-- Breadcrumb -->
-    <v-breadcrumbs class="breadcrumbs" :items="items">
+    <v-breadcrumbs class="TemariosPage__Breadcrumb" :items="items">
       <template v-slot:prepend>
         <v-icon icon="$vuetify" size="small"></v-icon>
       </template>
     </v-breadcrumbs>
 
-    <v-container class="main-container">
+    <v-container class="TemariosPage__Contenedor">
       <Sidebar v-model="drawer" />
 
-      <div class="content">
+      <div class="TemariosPage__Contenido">
         <!-- Lista de temarios con búsqueda -->
         <ListaTemarios 
           :idAsignatura="idAsignatura" 
@@ -63,19 +63,19 @@ const idAsignatura = computed(() => route.params.idAsignatura ? String(route.par
 </template>
 
 <style lang="scss" scoped>
-.breadcrumbs {
+.TemariosPage__Breadcrumb {
   margin-left: 15px;
   margin-top: 50px;
 }
 
-.content {
+.TemariosPage__Contenido {
   margin-top: 0;
   flex: 1;
   padding: 15px;
   margin-left: 0;
 }
 
-.main-container {
+.TemariosPage__Contenedor {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -85,16 +85,16 @@ const idAsignatura = computed(() => route.params.idAsignatura ? String(route.par
 
 /* Ipad */
 @media (min-width: 576px) {
-  .breadcrumbs {
+  .TemariosPage__Breadcrumb {
     margin-left: 3%;
     margin-top: 5%;
   }
 
-  .content {
+  .TemariosPage__Contenido {
     padding: 18px;
   }
 
-  .main-container {
+  .TemariosPage__Contenedor {
     gap: 18px;
     padding-top: 60px;
   }
@@ -102,18 +102,18 @@ const idAsignatura = computed(() => route.params.idAsignatura ? String(route.par
 
 /* Ordenador */
 @media (min-width: 768px) {
-  .breadcrumbs {
+  .TemariosPage__Breadcrumb {
     margin-left: 5%;
     margin-top: 6%;
   }
 
-  .content {
+  .TemariosPage__Contenido {
     margin-top: -4%;
     padding: 20px;
     margin-left: 1%;
   }
 
-  .main-container {
+  .TemariosPage__Contenedor {
     flex-direction: row;
     gap: 20px;
     padding-top: 64px;

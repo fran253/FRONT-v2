@@ -94,9 +94,3 @@ onMounted(async () => {
     </v-card>
   </v-container>
 </template>
-
-<style scoped>
-.tests-container {
-  padding: 20px;
-}
-</style>
