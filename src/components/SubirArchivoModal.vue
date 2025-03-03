@@ -26,6 +26,13 @@ const archivoStore = useArchivoStore();
 onMounted(() => {
   usuarioLogeadoStore.cargarUsuarioDesdeStorage();
   console.log("Usuario cargado desde localStorage:", usuarioLogeadoStore.usuarioActual);
+  
+  // Verificar si idUsuario está disponible
+  if (!idUsuario.value) {
+    console.error("❌ No se pudo obtener el ID del usuario desde el store.");
+  } else {
+    console.log("✅ ID Usuario obtenido:", idUsuario.value);
+  }
 });
 
 // Obtener ID del usuario autenticado desde `localStorage`
@@ -41,6 +48,9 @@ const onFileSelected = (event: Event) => {
   const target = event.target as HTMLInputElement;
   if (target.files && target.files.length > 0) {
     archivoSeleccionado.value = target.files[0];
+    console.log("✅ Archivo capturado:", archivoSeleccionado.value);
+  } else {
+    console.error("❌ No se seleccionó ningún archivo.");
   }
 };
 
@@ -54,11 +64,13 @@ const subirArchivo = async () => {
 
   if (!archivoSeleccionado.value || !tituloArchivo.value || !tipoArchivo.value) {
     errorSubida.value = "Debes completar todos los campos.";
+    console.error("❌ Error: Faltan datos del formulario.");
     return;
   }
 
   if (!props.temarioId || !idUsuario.value) {
     errorSubida.value = "Faltan datos obligatorios.";
+    console.error("❌ Error: ID Temario o ID Usuario no disponibles.");
     return;
   }
 
@@ -68,6 +80,8 @@ const subirArchivo = async () => {
   try {
     const response = await archivoStore.uploadArchivoFile(
       archivoSeleccionado.value,
+      tituloArchivo.value, 
+      tipoArchivo.value,    
       props.temarioId,
       idUsuario.value
     );
@@ -77,12 +91,14 @@ const subirArchivo = async () => {
     emit('archivo-subido');
     emit('update:visible', false);
   } catch (e) {
+    console.error("❌ Error al subir el archivo:", e);
     errorSubida.value = "Error al subir el archivo.";
   } finally {
     cargandoSubida.value = false;
   }
 };
 </script>
+
 
 
 

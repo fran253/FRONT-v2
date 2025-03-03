@@ -12,7 +12,7 @@ const props = defineProps<{
 // Estado del modal de subida
 const modalSubidaVisible = ref(false);
 
-// Estado del modal de visualización
+// Estado del modal de visualización de archivo
 const visorAbierto = ref(false);
 const archivoSeleccionado = ref<Archivo | null>(null);
 
@@ -61,13 +61,13 @@ watch(() => props.temarioId, async (nuevoId) => {
   await cargarArchivos(nuevoId);
 }, { immediate: true });
 
-// Abrir modal de archivo
+// Abrir modal de archivo para ver el contenido
 const verArchivo = (archivo: Archivo) => {
   archivoSeleccionado.value = archivo;
   visorAbierto.value = true;
 };
 
-// Cerrar modal
+// Cerrar modal de archivo
 const cerrarModal = () => {
   visorAbierto.value = false;
 };
@@ -127,6 +127,40 @@ const cerrarModal = () => {
       @archivo-subido="cargarArchivos(props.temarioId!)"
     />
 
+    <!-- Modal para ver archivos -->
+    <v-dialog v-model="visorAbierto" max-width="800px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Visualización de Archivo</span>
+        </v-card-title>
+        <v-divider></v-divider>
+
+        <v-card-text class="pa-5">
+          <template v-if="archivoSeleccionado">
+            <!-- Mostrar imagen -->
+            <img v-if="archivoSeleccionado.tipo.toLowerCase().includes('imagen')" 
+                 :src="archivoSeleccionado.url" 
+                 alt="Vista previa de imagen" 
+                 width="100%" />
+
+            <!-- Mostrar PDF -->
+            <iframe v-else-if="archivoSeleccionado.tipo.toLowerCase().includes('pdf')" 
+                    :src="archivoSeleccionado.url" 
+                    width="100%" 
+                    height="400px">
+            </iframe>
+
+            <!-- Mensaje si no se puede previsualizar -->
+            <p v-else>No se puede mostrar una vista previa de este archivo.</p>
+          </template>
+        </v-card-text>
+
+        <v-card-actions class="d-flex justify-end">
+          <v-btn color="red-darken-2" text @click="cerrarModal">Cerrar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <!-- Modal para ver comentarios del archivo -->
     <ModalArchivoComentario
       :archivo="archivoSeleccionado"
@@ -137,20 +171,20 @@ const cerrarModal = () => {
 </template>
 
 <style lang="scss" scoped>
-  .button-group {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-  }
+.button-group {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
 
-  .circular-btn {
-    width: 50px;
-    height: 50px;
-    min-width: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: orange;
-  }
+.circular-btn {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: orange;
+}
 </style>

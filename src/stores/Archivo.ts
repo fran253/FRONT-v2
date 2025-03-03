@@ -47,35 +47,38 @@ export const useArchivoStore = defineStore("archivo", () => {
   }
 
   // Subir archivo físico
-  async function uploadArchivoFile(file: File, temarioId: number, userId: number) {
-    if (!file || !temarioId || !userId) {
-      console.error("Faltan datos para la subida del archivo");
-      return null;
+  async function uploadArchivoFile(file: File | null, titulo: string, tipo: string, temarioId: number | null, userId: number | null) {
+    if (!file || !titulo || !tipo || !temarioId || !userId) {
+        console.error("Faltan datos para la subida del archivo", { file, titulo, tipo, temarioId, userId });
+        return null;
     }
-  
-    console.log("Subiendo archivo:", file.name, "para el temario ID:", temarioId, "y usuario ID:", userId);
-  
-    try {
-      const formData = new FormData();
-      formData.append("archivo", file);  // <-- Asegura que coincida con el backend
-      formData.append("temarioId", temarioId.toString());
-      formData.append("usuarioId", userId.toString());
-  
-      const response = await fetch("/api/Archivo", {
-        method: "POST",
-        body: formData // No agregar headers aquí
-      });
 
-      if (!response.ok) {
-        const errorText = await response.text(); // Intenta leer el error como texto
-        console.error("Error en la respuesta del servidor:", errorText);
-        throw new Error(errorText || "Error al subir el archivo");
-      }
-  
-      return await response.json();
+
+    console.log("Subiendo archivo:", file.name, "para el temario ID:", temarioId, "y usuario ID:", userId);
+
+    try {
+        const formData = new FormData();
+        formData.append("archivo", file); // Debe coincidir con el backend
+        formData.append("titulo", titulo);
+        formData.append("tipo", tipo);
+        formData.append("idUsuario", userId.toString());
+        formData.append("idTemario", temarioId.toString());
+
+        const response = await fetch("/api/Archivo/upload", {
+            method: "POST",
+            body: formData
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Error en la respuesta del servidor:", errorText);
+            throw new Error(errorText || "Error al subir el archivo");
+        }
+
+        return await response.json();
     } catch (error: any) {
-      console.error("Error al subir el archivo:", error);
-      return null;
+        console.error("Error al subir el archivo:", error);
+        return null;
     }
 }
 
