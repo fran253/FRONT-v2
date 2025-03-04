@@ -146,27 +146,58 @@
 
     try {
       // Asignar el idRol según el tipo de usuario
-      let idRol = 2; // Valor por defecto (no administrador)
+      let idRol = 2; // Valor por defecto (profesor)
       if (usuario.value.tipoUsuario === 'profesor') {
         idRol = 2; // Rol de profesor
       } else if (usuario.value.tipoUsuario === 'alumno') {
         idRol = 3; // Rol de alumno
       }
       
-      const resultado = await usuarioLogeadoStore.registrar({
+      // Formato exacto según el formato Swagger verificado
+      const nuevoUsuario = {
+        idUsuario: 0,
         nombre: usuario.value.nombre,
-        email: usuario.value.email,
-        password: usuario.value.password,
-        tipoUsuario: usuario.value.tipoUsuario,
+        apellido: "",  // Campo vacío por defecto
+        gmail: usuario.value.email,  // Mapeo de email a gmail
+        telefono: "",  // Campo vacío por defecto
+        contraseña: usuario.value.password,  // Mapeo de password a contraseña
         idRol: idRol
+      };
+      
+      console.log("Datos de registro:", JSON.stringify(nuevoUsuario));
+      
+      // Realizar petición directa a la API
+      const response = await fetch("/api/Usuario", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(nuevoUsuario),
       });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error del servidor:", errorText);
+        throw new Error(`Error al registrar: ${response.status}`);
+      }
+      
+      // Obtener la respuesta e iniciar sesión si es exitoso
+      const data = await response.json();
+      console.log("Registro exitoso:", data);
+      
+      // Iniciar sesión con las credenciales del nuevo usuario
+      const resultado = await usuarioLogeadoStore.login(
+        usuario.value.email, 
+        usuario.value.password
+      );
       
       if (resultado) {
         cerrarModal();
-        // Usar el nuevo método de redirección según rol
         redirigirSegunRol();
       } else {
-        errorMessage.value = usuarioLogeadoStore.errorMessage || 'No se pudo completar el registro';
+        // Aunque el registro fue exitoso, no se pudo iniciar sesión
+        errorMessage.value = "Registro completado. Por favor inicia sesión.";
+        esRegistro.value = false; // Cambiar a modo login
       }
     } catch (error: any) {
       errorMessage.value = error.message || 'Error en el registro';

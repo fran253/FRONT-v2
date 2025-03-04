@@ -1,29 +1,91 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
-import type { CursoDTO } from "@/stores/dtos/CursoDTO";
+import { ref } from "vue";
+import type { UsuarioDTO } from "@/stores/dtos/UsuarioDTO";
 
-export const useCursoStore = defineStore("curso", () => {
-  const cursos = ref<CursoDTO[]>([]);
+export const useUsuarioStore = defineStore("usuario", () => {
+  const usuarios = ref<UsuarioDTO[]>([]);
+  const usuario = ref<UsuarioDTO | null>(null);
   const errorMessage = ref<string>("");
 
-  async function fetchCursos() {
+  // Corregida a URL relativa
+  async function fetchAllUsuarios() {
     try {
-      const response = await fetch("http://localhost:5167/api/Curso");
-      if (!response.ok) throw new Error("Error al obtener los cursos");
+      const response = await fetch("/api/Usuario");
+      if (!response.ok) throw new Error("Error al obtener los usuarios");
 
-      cursos.value = await response.json();
+      usuarios.value = await response.json();
     } catch (error: any) {
       errorMessage.value = error.message;
-      console.error("Error al obtener cursos:", error);
+      console.error("Error al obtener los usuarios:", error);
     }
   }
 
-  const cursosFiltrados = computed(() => (searchQuery: string) => {
-    if (!searchQuery) return cursos.value;
-    return cursos.value.filter(curso =>
-      curso.nombre.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  });
+  // Corregida a URL relativa
+  async function fetchUsuarioById(idUsuario: number) {
+    try {
+      const response = await fetch(`/api/Usuario/${idUsuario}`);
+      if (!response.ok) throw new Error("Error al obtener el usuario");
 
-  return { cursos, fetchCursos, cursosFiltrados, errorMessage };
+      usuario.value = await response.json();
+    } catch (error: any) {
+      errorMessage.value = error.message;
+      console.error("Error al obtener el usuario:", error);
+    }
+  }
+
+  // Este ya tenía URL relativa
+  async function createUsuario(newUser: UsuarioDTO) {
+    try {
+      const response = await fetch("/api/Usuario", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newUser),
+      });
+
+      if (!response.ok) throw new Error("Error al registrar el usuario");
+
+      return await response.json();
+    } catch (error: any) {
+      errorMessage.value = error.message;
+      console.error("Error al registrar el usuario:", error);
+      return null;
+    }
+  }
+
+  // Este ya tenía URL relativa
+  async function updateUsuario(updatedUser: UsuarioDTO) {
+    try {
+      const response = await fetch(`/api/Usuario/${updatedUser.idUsuario}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedUser),
+      });
+
+      if (!response.ok) throw new Error("Error al actualizar el usuario");
+
+      usuario.value = await response.json();
+    } catch (error: any) {
+      errorMessage.value = error.message;
+      console.error("Error al actualizar el usuario:", error);
+    }
+  }
+
+  // Este ya tenía URL relativa
+  async function deleteUsuario(idUsuario: number) {
+    try {
+      const response = await fetch(`/api/Usuario/${idUsuario}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) throw new Error("Error al eliminar el usuario");
+
+      // borrado de front (actualiza la pagina para que se impriman los usuario existentes)
+      usuarios.value = usuarios.value.filter(u => u.idUsuario !== idUsuario);
+    } catch (error: any) {
+      errorMessage.value = error.message;
+      console.error("Error al eliminar el usuario:", error);
+    }
+  }
+
+  return { usuarios, usuario, fetchAllUsuarios, fetchUsuarioById, createUsuario, updateUsuario, deleteUsuario, errorMessage };
 });

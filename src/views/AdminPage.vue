@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router';
 import HeaderAdmin from '@/components/HeaderAdmin.vue';
 import FooterAdmin from '@/components/FooterAdmin.vue';
 import TablaAsignaturas from '@/components/TablaAsignaturas.vue';
+import TablaUsuarios from '@/components/TablaUsuarios.vue';
 
 const router = useRouter();
 const usuarioLogeadoStore = useUsuarioLogeadoStore();
@@ -60,7 +61,7 @@ onMounted(() => {
         <v-window-item value="usuarios">
           <section class="panel">
             <h2>Gestión de Usuarios</h2>
-            <p>La gestión de usuarios estará disponible próximamente.</p>
+            <TablaUsuarios />
           </section>
         </v-window-item>
       </v-window>
