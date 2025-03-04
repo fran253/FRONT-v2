@@ -223,8 +223,77 @@ async function createAsignatura() {
   }
 }
 
-// Actualizar asignatura existente - versión que funciona
+// Actualizar asignatura existente - versión corregida
 async function updateAsignatura() {
+  if (!selectedAsignatura.value) return;
+  
+  if (!asignaturaForm.value.nombre || !asignaturaForm.value.descripcion) {
+    errorMessage.value = "Los campos nombre y descripción son obligatorios";
+    return;
+  }
+
+  isLoading.value = true;
+  errorMessage.value = '';
+  successMessage.value = '';
+  
+  try {
+    // Estructura completa siguiendo el esquema proporcionado
+    const idCurso = parseInt(String(asignaturaForm.value.idCurso)) || 18;
+    
+    const payload = {
+      idAsignatura: selectedAsignatura.value.idAsignatura,
+      nombre: asignaturaForm.value.nombre,
+      descripcion: asignaturaForm.value.descripcion,
+      imagen: asignaturaForm.value.imagen || '',
+      fechaCreacion: selectedAsignatura.value.fechaCreacion || new Date().toISOString(),
+      idCurso: idCurso,
+      curso: {
+        idCurso: idCurso,
+        nombre: "string", // Valores por defecto ya que no tenemos estos datos
+        imagen: "string",
+        descripcion: "string",
+        fechaCreacion: new Date().toISOString()
+      }
+    };
+
+    console.log("Datos enviados al servidor para actualizar:", JSON.stringify(payload));
+    
+    const response = await fetch(`/api/Asignatura/${selectedAsignatura.value.idAsignatura}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    // Intentar obtener texto de la respuesta para depuración
+    let responseText = '';
+    try {
+      responseText = await response.text();
+      console.log(`Respuesta del servidor: ${response.status} - ${responseText}`);
+    } catch (e) {
+      console.error("No se pudo leer la respuesta:", e);
+    }
+
+    if (!response.ok) {
+      throw new Error(`Error al actualizar la asignatura. Código: ${response.status}`);
+    }
+
+    // Actualizar la lista de asignaturas
+    await asignaturaStore.fetchAllAsignaturas();
+    successMessage.value = "Asignatura actualizada con éxito";
+    
+    closeForm();
+  } catch (error) {
+    console.error("Error completo:", error);
+    errorMessage.value = error.message || "Error al actualizar la asignatura";
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+/* Versión anterior de updateAsignatura (por si necesitas referencia)
+async function updateAsignatura_OLD() {
   if (!selectedAsignatura.value) return;
   
   if (!asignaturaForm.value.nombre || !asignaturaForm.value.descripcion) {
@@ -283,6 +352,7 @@ async function updateAsignatura() {
     isLoading.value = false;
   }
 }
+*/
 
 // Guardar asignatura (crear o actualizar)
 async function saveAsignatura() {
