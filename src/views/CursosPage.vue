@@ -52,28 +52,7 @@ const usuarioLogeadoStore = useUsuarioLogeadoStore();
 //llamada ametodo de mostrar los cursos
 onMounted(fetchCursos);
 
-// Verificar login usuario
-onMounted(async () => {
-  const usuarioGuardado = localStorage.getItem('usuario');
-  const yaMostroLogin = localStorage.getItem('yaMostroLogin');
 
-  if (usuarioGuardado) {
-    const usuario = JSON.parse(usuarioGuardado);
-    const existe = await usuarioLogeadoStore.verificarUsuario(usuario.email);
-    
-    if (existe) {
-      usuarioLogeadoStore.usuarioActual = usuario;
-      usuarioLogeadoStore.estaAutenticado = true;
-      await fetchCursos();
-    } else {
-      mostrarLogin.value = true;
-      localStorage.removeItem('usuario');
-    }
-  } else if (!yaMostroLogin) {
-    mostrarLogin.value = true;
-    localStorage.setItem('yaMostroLogin', 'true');
-  }
-});
 
 </script>
 

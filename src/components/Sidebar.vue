@@ -1,37 +1,15 @@
 <script setup lang="ts">
-//imports
+// Imports
 import { ref, computed, defineEmits } from "vue";
 import { useDisplay } from "vuetify";
 import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
+import { useRouter } from "vue-router";
+import AvatarRiendo from '@/components/AvatarEmote.vue';
 
 
-//MENU PUBLICO (Usuarios no logeados)
-const menuPublico = [
-  { text: "Inicio", route: "/", icon: "mdi-home" },
-  { text: "Cursos", route: "/cursos", icon: "mdi-school" },
-  { text: "Login", action: () => mostrarLogin(), icon: "mdi-login" }
-];
-//MENU PRIVADO (Usuarios logeados)
-const menuPrivado = [
-  { text: "Mis Cursos", route: "/mis-cursos", icon: "mdi-heart" },
-  { text: "Perfil", route: "/perfil", icon: "mdi-account" }
-];
-
-
-//abrir y cerrar sidebar
-const toggleSidebar = () => (isExpanded.value = false);
-const expandSidebar = () => (isExpanded.value = true);
-
-// llamar al login
-const mostrarLogin = () => {
-  localStorage.setItem('yaMostroLogin', 'true');
-  emit("mostrar-login");
-};
-
-
-//variables
-const emit = defineEmits(["mostrar-login"]);
+const router = useRouter();
 const usuarioLogeadoStore = useUsuarioLogeadoStore();
+const emit = defineEmits(["mostrar-login"]);
 const drawer = ref(true);
 const isExpanded = ref(false);
 const { mobile } = useDisplay();
@@ -39,6 +17,27 @@ const isMobile = computed(() => mobile.value);
 const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
 const estaAutenticado = computed(() => usuarioLogeadoStore.estaAutenticado);
 
+// Menús
+const menuPublico = [
+  { text: "Inicio", route: "/", icon: "mdi-home" },
+  { text: "Cursos", route: "/cursos", icon: "mdi-school" }
+];
+const menuPrivado = [
+  { text: "Mis Cursos", route: "/mis-cursos", icon: "mdi-heart" },
+  { text: "Perfil", route: "/perfil", icon: "mdi-account" }
+];
+
+// Cerrar sesión
+const logout = () => {
+  usuarioLogeadoStore.usuarioActual = null;
+  usuarioLogeadoStore.estaAutenticado = false;
+  localStorage.removeItem("usuario");
+  router.push("/");
+};
+
+// Sidebar
+const toggleSidebar = () => (isExpanded.value = false);
+const expandSidebar = () => (isExpanded.value = true);
 </script>
 
 <template>
@@ -51,11 +50,7 @@ const estaAutenticado = computed(() => usuarioLogeadoStore.estaAutenticado);
         @click="expandSidebar">
         
         <template v-slot:append>
-          <v-btn
-            v-if="isExpanded"
-            icon
-            variant="text"
-            @click.stop="toggleSidebar">
+          <v-btn v-if="isExpanded" icon variant="text" @click.stop="toggleSidebar">
             <v-icon>mdi-chevron-left</v-icon>
           </v-btn>
         </template>
@@ -67,10 +62,6 @@ const estaAutenticado = computed(() => usuarioLogeadoStore.estaAutenticado);
     <v-list density="compact" nav>
       <template v-for="(item, index) in menuPublico" :key="item.text">
         <v-list-item v-if="item.route" link :to="item.route" :prepend-icon="item.icon">
-          <v-list-item-title v-if="isExpanded">{{ item.text }}</v-list-item-title>
-        </v-list-item>
-        
-        <v-list-item v-else @click="item.action" :prepend-icon="item.icon">
           <v-list-item-title v-if="isExpanded">{{ item.text }}</v-list-item-title>
         </v-list-item>
 
@@ -86,6 +77,10 @@ const estaAutenticado = computed(() => usuarioLogeadoStore.estaAutenticado);
 
         <v-divider class="border-opacity-100" :thickness="1" v-if="index < menuPrivado.length - 1"></v-divider>
       </template>
+      
+      <v-list-item @click="logout" prepend-icon="mdi-logout">
+        <v-list-item-title v-if="isExpanded">Cerrar sesión</v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 

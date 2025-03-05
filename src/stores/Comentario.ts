@@ -16,23 +16,24 @@ export const useComentarioStore = defineStore("comentario", () => {
     }
   }
 
-  async function createComentario(comentarioData) {
+  async function createComentario(nuevoComentario) {
     try {
-      const nuevoComentario = {
-        contenido: comentarioData.contenido,
-        fechaCreacion: new Date().toISOString(),
-        usuario: { id: comentarioData.idUsuario }, // 🔥 Asegurar que el campo sea "id"
-        archivo: { id: comentarioData.idArchivo } // 🔥 Asegurar que el campo sea "id"
+      const comentarioData = {
+        idComentario: 0, 
+        contenido: nuevoComentario.contenido,
+        fechaCreacion: nuevoComentario.fechaCreacion,
+        idUsuario: nuevoComentario.idUsuario,
+        idArchivo: nuevoComentario.idArchivo
       };
       
-      console.log("Enviando comentario (nuevo formato):", JSON.stringify(nuevoComentario));
-  
+      console.log("Enviando comentario:", JSON.stringify(comentarioData));
+    
       const response = await fetch("/api/Comentario/publicar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nuevoComentario),
+        body: JSON.stringify(comentarioData),
       });
-  
+    
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`Error del servidor (${response.status}): ${errorText}`);

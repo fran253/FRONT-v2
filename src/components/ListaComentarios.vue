@@ -73,14 +73,14 @@ async function añadirComentario() {
 
   //verificar usuario logeado
   if (!usuarioActual.value || !usuarioActual.value.id) {
-    errorMensaje.value = "Debes iniciar sesión para comentar.";
     return;
   }
 
   try {
     const comentarioObj = {
+      idComentario: 0, // The backend will assign the actual ID
       contenido: nuevoComentario.value.trim(),
-      idUsuario: usuarioActual.value.id, 
+      idUsuario: usuarioActual.value.id,
       idArchivo: props.archivoId,
       fechaCreacion: new Date().toISOString()
     };

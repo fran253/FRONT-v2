@@ -163,9 +163,6 @@
         </div>
 
         <div class="Login__opciones">
-          <v-btn class="Login__BotonInvitado" text color="primary" @click="entrarComoInvitado">
-            Entrar sin iniciar sesión
-          </v-btn>
           <v-btn text color="grey" @click="cerrarModal">Cerrar</v-btn>
         </div>
       </v-card-text>

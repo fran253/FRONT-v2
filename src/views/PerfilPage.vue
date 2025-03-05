@@ -1,56 +1,60 @@
 <script setup>
-  //imports
-  import { ref, watch, computed } from 'vue';
-  import Header from '@/components/Header.vue';
-  import Footer from '@/components/Footer.vue';
-  import Sidebar from '@/components/Sidebar.vue';
-  import UserTab from '@/components/UserTab.vue';
-  import Login from '@/components/Login.vue';
-  import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
+//imports
+import { ref, watch, computed, onMounted } from 'vue';
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
+import Sidebar from '@/components/Sidebar.vue';
+import UserTab from '@/components/UserTab.vue';
+import Login from '@/components/Login.vue';
+import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
+import AvatarRiendo from '@/components/AvatarEmote.vue';
 
-  // Store de usuario
-  const usuarioLogeadoStore = useUsuarioLogeadoStore();
 
-  // Variables
-  const drawer = ref(false);
-  const items = ref([{ title: 'Perfil', disabled: false }]);
+// Store de usuario
+const usuarioLogeadoStore = useUsuarioLogeadoStore();
 
-  // Obtener el usuario actual del store
-  const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
+// Variables
+const drawer = ref(false);
+const items = ref([{ title: 'Perfil', disabled: false }]);
+
+// Obtener el usuario actual del store
+const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
   
-  // Utilizar el nombre del usuario logueado o un valor por defecto
-  const nombre = computed({
-    get: () => usuarioActual.value?.nombre || "Usuario",
-    set: (value) => {
+// Utilizar el nombre del usuario logueado o un valor por defecto
+const nombre = computed({
+  get: () => usuarioActual.value?.nombre || "Usuario",
+  set: (value) => {
+    // Placeholder para futura funcionalidad de edición
+  }
+});
+
+// Verificar si hay un usuario en el localStorage al cargar la página
+const checkUsuarioLocal = () => {
+  const usuarioGuardado = localStorage.getItem('usuario');
+  if (usuarioGuardado && !usuarioActual.value) {
+    try {
+      usuarioLogeadoStore.usuarioActual = JSON.parse(usuarioGuardado);
+      usuarioLogeadoStore.estaAutenticado = true;
+    } catch (error) {
+      console.error("Error al recuperar usuario del localStorage:", error);
     }
-  });
-  
-  // Verificar si hay un usuario en el localStorage al cargar la página
-  const checkUsuarioLocal = () => {
-    const usuarioGuardado = localStorage.getItem('usuario');
-    if (usuarioGuardado && !usuarioActual.value) {
-      try {
-        usuarioLogeadoStore.usuarioActual = JSON.parse(usuarioGuardado);
-        usuarioLogeadoStore.estaAutenticado = true;
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-  
-  // Ejecutar al cargar el componente
+  }
+};
+
+// Frases inspiradoras para el perfil
+const estados = [
+  "Me encanta Estudiar",
+  "Soy una persona aplicada",
+  "Vivan las Mates!",
+  "La historia mola",
+  "Fan de literatura",
+  "Alumno sin igual"
+];
+
+// Ejecutar al cargar el componente
+onMounted(() => {
   checkUsuarioLocal();
-
-  // frases celebres
-  const estados = [
-    "Me encanta Estudiar",
-    "Soy una persona aplicada",
-    "Vivan las Mates!",
-    "La historia mola",
-    "Fan de literatura",
-    "Alumno sin igual"
-  ];
-
+});
 </script>
 
 <template>
@@ -64,165 +68,227 @@
       </template>
     </v-breadcrumbs>
 
-    <v-container class="PerfilPage__Contenedor">
+    <v-container class="perfil-container">
       <Sidebar v-model="drawer" />
 
-      <v-row class="perfil__container">
-        <!-- Avatar, Nombre y Frase -->
-        <v-col cols="12" md="6" class="PerfilPage__ZonaIzquierda">
-          <div class="PerfilPage__ZonaIzquierda__Avatar">
-            <v-avatar :image="usuarioActual?.avatar || '../src/images/user.png'" size="120"></v-avatar>
-          </div>
+      <div class="perfil-content">
+        <v-row class="perfil-row">
+          <!-- Fila superior con avatar, nombre, email y frase -->
+          <v-col cols="12" class="perfil-info-row">
+            <v-card class="perfil-card">
+              <v-row no-gutters align="center">
+                <!-- Avatar -->
+                <v-col cols="12" sm="3" class="perfil-avatar-container">
+                  <AvatarRiendo />
+                </v-col>
 
-          <v-text-field 
-            class="PerfilPage__ZonaIzquierda__Nombre" 
-            label="Nombre" 
-            v-model="nombre" 
-            outlined 
-            dense
-            :readonly="true"
-          ></v-text-field>
-          
-          <v-text-field
-            v-if="usuarioActual"
-            class="PerfilPage__ZonaIzquierda__Email"
-            label="Email"
-            :model-value="usuarioActual.email"
-            outlined
-            dense
-            readonly
-          ></v-text-field>
+                <!-- Información del usuario -->
+                <v-col cols="12" sm="9" class="perfil-info">
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                      <v-text-field 
+                        class="perfil-nombre" 
+                        label="Nombre" 
+                        v-model="nombre" 
+                        variant="outlined"
+                        density="compact"
+                        bg-color="white"
+                        readonly
+                      ></v-text-field>
+                    </v-col>
+                    
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        class="perfil-email"
+                        label="Email"
+                        v-model="usuarioActual.gmail"
+                        variant="outlined"
+                        density="compact"
+                        bg-color="white"
+                        readonly
+                      ></v-text-field>
+                    </v-col>
+                    
+                    <v-col cols="12">
+                      <v-autocomplete 
+                        class="perfil-frase" 
+                        label="¿Cuál es tu frase?" 
+                        :items="estados" 
+                        variant="outlined"
+                        density="compact"
+                        bg-color="white"
+                      ></v-autocomplete>
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
 
-          <v-autocomplete class="PerfilPage__ZonaIzquierda__Frase" label="¿Cuál es tu frase?" :items="estados" outlined dense></v-autocomplete>
-        </v-col>
-
-        <v-col cols="12" md="6" class="PerfilPage__ZonaDerecha">
-          <UserTab />
-        </v-col>
-      </v-row>
+          <!-- Fila inferior con pestañas -->
+          <v-col cols="12" class="perfil-tab-row">
+            <UserTab />
+          </v-col>
+        </v-row>
+      </div>
     </v-container>
 
     <Footer />
-
   </v-app>
 </template>
 
 <style lang="scss" scoped>
-  .PerfilPage__Breadcrumb {
-    margin-left: 15px;
-    margin-top: 50px;
+// Variables de colores
+$color-primary: #FF7424;
+$color-secondary: #FB7C3C;
+$color-background: #f5f5f5;
+$color-text: #333333;
+$color-card: #ffffff;
+$color-border: rgba(0, 0, 0, 0.12);
+
+.PerfilPage__Breadcrumb {
+  margin-top: 5%;
+  margin-left: 5%;
+  z-index: 1;
+  background-color: transparent;
+  padding: 0;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.perfil-container {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 160px);
+  padding: 16px;
+  background-color: $color-background;
+}
+
+.perfil-content {
+  flex: 1;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.perfil-card {
+  width: 100%;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-row {
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.perfil-col-izquierda {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.perfil-avatar-container {
+  margin-bottom: 24px;
+}
+
+.perfil-avatar {
+  border: 3px solid $color-primary;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.perfil-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.perfil-nombre, .perfil-email, .perfil-frase {
+  border-radius: 8px;
+  
+  :deep(.v-field__outline) {
+    color: $color-primary;
   }
-
-  .PerfilPage__Contenedor {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    min-height: 100vh;
-    padding: 0 15px;
+  
+  :deep(.v-field__input) {
+    color: $color-text;
+    font-weight: 500;
   }
-
-  .perfil__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    gap: 30px;
-  }
-
-  .PerfilPage__ZonaIzquierda {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    width: 100%;
-
-    .PerfilPage__ZonaIzquierda__Avatar {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .PerfilPage__ZonaIzquierda__Nombre {
-      width: 80%;
-      text-align: center;
-    }
-
-    .PerfilPage__ZonaIzquierda__Frase {
-      width: 100%;
-      text-align: center;
-    }
-  }
-
-  .PerfilPage__ZonaDerecha {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-
-  v-col.md-9 {
-    min-height: 200px;
-  }
-
-/* ipad */
-@media (min-width: 576px) {
-  .PerfilPage__Breadcrumb {
-    margin-left: 3%;
-    margin-top: 5%;
-  }
-
-  .PerfilPage__Contenedor {
-    gap: 18px;
-    padding: 0 20px;
-  }
-
-  .PerfilPage__ZonaIzquierda {
-    .PerfilPage__ZonaIzquierda__Nombre {
-      width: 60%;
-    }
-
-    .PerfilPage__ZonaIzquierda__Frase {
-      width: 90%;
-    }
-  }
-
-  v-col.md-9 {
-    min-height: 250px;
+  
+  :deep(.v-label) {
+    color: $color-secondary;
   }
 }
 
-/* Ordenador */
-@media (min-width: 768px) {
-  .PerfilPage__Breadcrumb {
-    margin-left: 5%;
-    margin-top: 6%;
-  }
+.perfil-col-derecha {
+  display: flex;
+  padding: 0;
+}
 
-  .PerfilPage__Contenedor {
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .PerfilPage__Breadcrumb {
+    margin-top: 5%;
+  }
+  
+  .perfil-card {
+    padding: 12px;
+  }
+  
+  .perfil-row {
+    gap: 12px;
+  }
+  
+  .perfil-avatar-container {
+    margin-bottom: 16px;
+  }
+  
+  .perfil-avatar {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .perfil-info-row, .perfil-tab-row {
+    padding: 0 8px;
+  }
+}
+
+@media (min-width: 769px) {
+  .perfil-container {
     flex-direction: row;
-    gap: 20px;
+    padding: 16px;
+  }
+  
+  .perfil-content {
+    margin-left: 16px;
+  }
+  
+  .perfil-avatar-container {
     padding: 0;
   }
-
-  .perfil__container {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
+  
+  .perfil-info {
+    padding: 0 8px;
   }
-
-  .PerfilPage__ZonaIzquierda {
-    .PerfilPage__ZonaIzquierda__Nombre {
-      width: 40%;
-      text-align: left;
-    }
-
-    .PerfilPage__ZonaIzquierda__Frase {
-      width: 80%;
-      text-align: left;
-    }
+  
+  .perfil-info-row {
+    margin-bottom: 20px;
   }
+}
 
-  v-col.md-9 {
-    min-height: 300px;
+/* Desktop (992px y superior) */
+@media (min-width: 992px) {
+  .PerfilPage__Breadcrumb {
+    margin-left: 5%;
+  }
+  
+  .perfil-container {
+    padding: 24px;
+  }
+  
+  .perfil-content {
+    margin-left: 20px;
   }
 }
 </style>

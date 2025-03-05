@@ -101,14 +101,17 @@ const cerrarModal = () => {
           <v-row>
             <v-col v-for="archivo in archivosFiltrados" :key="archivo.id" cols="12" md="6" lg="4">
               <v-card class="pa-3">
-                <v-card-title>{{ archivo.titulo }}</v-card-title>
+                <div class="d-flex align-center justify-space-between Archivos__TituloContenedor">
+                  <v-card-title class="Archivo__Titulo">{{ archivo.titulo }}</v-card-title>
+                  <div class="Archivo__Tipo">{{ archivo.tipo }}</div>
+                </div>
                 <v-divider></v-divider>
 
-                <v-card-actions class="button-group">
-                  <v-btn color="orange-darken-2" icon class="circular-btn" @click="verArchivo(archivo)" aria-label="Ver archivo">
+                <v-card-actions class="Archivos__Botones">
+                  <v-btn color="orange-darken-2" icon class="Archivos__Boton" @click="verArchivo(archivo)" aria-label="Ver archivo">
                     <v-icon color="white">mdi-eye</v-icon>
                   </v-btn>
-                  <v-btn color="orange-darken-2" icon class="circular-btn" :href="archivo.url" target="_blank" download aria-label="Descargar archivo">
+                  <v-btn color="orange-darken-2" icon class="Archivos__Boton" :href="archivo.url" target="_blank" download aria-label="Descargar archivo">
                     <v-icon color="white">mdi-download</v-icon>
                   </v-btn>
                 </v-card-actions>
@@ -127,37 +130,6 @@ const cerrarModal = () => {
       @archivo-subido="cargarArchivos(props.temarioId!)"
     />
 
-    <!-- Modal para ver archivos -->
-    <!-- <v-dialog v-model="visorAbierto" max-width="800px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">Visualización de Archivo</span>
-        </v-card-title>
-        <v-divider></v-divider>
-
-        <v-card-text class="pa-5">
-          <template v-if="archivoSeleccionado">
-            <img v-if="archivoSeleccionado.tipo.toLowerCase().includes('imagen')" 
-                 :src="archivoSeleccionado.url" 
-                 alt="Vista previa de imagen" 
-                 width="100%" />
-
-            <iframe v-else-if="archivoSeleccionado.tipo.toLowerCase().includes('pdf')" 
-                    :src="archivoSeleccionado.url" 
-                    width="100%" 
-                    height="400px">
-            </iframe>
-
-            <p v-else>No se puede mostrar una vista previa de este archivo.</p>
-          </template>
-        </v-card-text>
-
-        <v-card-actions class="d-flex justify-end">
-          <v-btn color="red-darken-2" text @click="cerrarModal">Cerrar</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog> -->
-
     <!-- Modal para ver comentarios del archivo -->
     <ModalArchivoComentario
       :archivo="archivoSeleccionado"
@@ -168,13 +140,13 @@ const cerrarModal = () => {
 </template>
 
 <style lang="scss" scoped>
-.button-group {
+.Archivos__Botones {
   display: flex;
   gap: 10px;
   justify-content: center;
 }
 
-.circular-btn {
+.Archivos__Boton {
   width: 50px;
   height: 50px;
   min-width: 50px;
@@ -183,5 +155,27 @@ const cerrarModal = () => {
   align-items: center;
   justify-content: center;
   background-color: orange;
+}
+
+.Archivos__TituloContenedor {
+  padding-right: 10px;
+}
+
+.Archivo__Titulo {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Archivo__Tipo {
+  background-color: #FF7424;
+  color: white;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-left: 10px;
+  white-space: nowrap;
 }
 </style>
