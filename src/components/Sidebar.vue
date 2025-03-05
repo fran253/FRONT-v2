@@ -4,8 +4,6 @@ import { ref, computed, defineEmits } from "vue";
 import { useDisplay } from "vuetify";
 import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
 import { useRouter } from "vue-router";
-import AvatarRiendo from '@/components/AvatarEmote.vue';
-
 
 const router = useRouter();
 const usuarioLogeadoStore = useUsuarioLogeadoStore();
@@ -15,14 +13,12 @@ const isExpanded = ref(false);
 const { mobile } = useDisplay();
 const isMobile = computed(() => mobile.value);
 const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
-const estaAutenticado = computed(() => usuarioLogeadoStore.estaAutenticado);
 
-// Menús
-const menuPublico = [
+// Menú unificado
+const menu = [
   { text: "Inicio", route: "/", icon: "mdi-home" },
-  { text: "Cursos", route: "/cursos", icon: "mdi-school" }
-];
-const menuPrivado = [
+  { text: "Cursos", route: "/cursos", icon: "mdi-school" },
+  { text: "Mis Archivos", route: "/mis-archivos", icon: "mdi-file" },
   { text: "Mis Cursos", route: "/mis-cursos", icon: "mdi-heart" },
   { text: "Perfil", route: "/perfil", icon: "mdi-account" }
 ];
@@ -45,7 +41,7 @@ const expandSidebar = () => (isExpanded.value = true);
     <v-list>
       <v-list-item
         :prepend-avatar="usuarioActual?.avatar || 'https://randomuser.me/api/portraits/women/85.jpg'"
-        :subtitle="usuarioActual?.email || 'Invitado'"
+        :subtitle="usuarioActual?.email || 'Usuario'"
         :title="usuarioActual?.nombre || 'Usuario'"
         @click="expandSidebar">
         
@@ -60,22 +56,11 @@ const expandSidebar = () => (isExpanded.value = true);
     <v-divider class="border-opacity-100"></v-divider>
 
     <v-list density="compact" nav>
-      <template v-for="(item, index) in menuPublico" :key="item.text">
-        <v-list-item v-if="item.route" link :to="item.route" :prepend-icon="item.icon">
-          <v-list-item-title v-if="isExpanded">{{ item.text }}</v-list-item-title>
-        </v-list-item>
-
-        <v-divider class="border-opacity-100" :thickness="1" v-if="index < menuPublico.length - 1"></v-divider>
-      </template>
-    </v-list>
-
-    <v-list v-if="estaAutenticado" density="compact" nav>
-      <template v-for="(item, index) in menuPrivado" :key="item.text">
+      <template v-for="(item, index) in menu" :key="item.text">
         <v-list-item link :to="item.route" :prepend-icon="item.icon">
           <v-list-item-title v-if="isExpanded">{{ item.text }}</v-list-item-title>
         </v-list-item>
-
-        <v-divider class="border-opacity-100" :thickness="1" v-if="index < menuPrivado.length - 1"></v-divider>
+        <v-divider class="border-opacity-100" :thickness="1" v-if="index < menu.length - 1"></v-divider>
       </template>
       
       <v-list-item @click="logout" prepend-icon="mdi-logout">
@@ -90,29 +75,5 @@ const expandSidebar = () => (isExpanded.value = true);
 </template>
 
 <style lang="scss" scoped>
-  .SideBar {
-    background: #ffffff;
-    color: #ff7424;
-    min-height: 100vh;
-    border-right: 1.5px solid #ff7424;
-    transition: width 0.3s ease;
-    position: fixed;
-  }
-
-  .v-list-item {
-    margin-top: 0.2%;
-  }
-
-  .v-list-item-title {
-    color: #ff7424;
-    font-weight: bold;
-  }
-
-  .SideBar__Boton {
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    z-index: 2000;
-    background: white;
-  }
+  @import "@/assets/sass/layout/SideBar.scss";
 </style>

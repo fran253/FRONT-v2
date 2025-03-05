@@ -58,6 +58,31 @@ export const useArchivoStore = defineStore("archivo", () => {
     }
   }
 
+  // Obtener archivos por ID de usuario
+  async function fetchArchivosByUsuario(idUsuario: number) {
+    try {
+      const response = await fetch(`/api/Archivo/usuario/${idUsuario}`);
+      if (!response.ok) throw new Error("Error al obtener los archivos del usuario");
+
+      const data = await response.json();
+
+      // Convertimos la URL en absoluta y manejamos valores nulos
+      archivos.value = data.map((archivo: ArchivoDTO) => {
+        return {
+          ...archivo,
+          url: archivo.url 
+            ? (archivo.url.startsWith("/") ? `http://localhost:5167${archivo.url}` : archivo.url) 
+            : null
+        };
+      });
+
+      console.log("Archivos del usuario cargados correctamente:", archivos.value);
+    } catch (error: any) {
+      errorMessage.value = error.message;
+      console.error("Error al obtener los archivos del usuario:", error);
+    }
+  }
+
 
   // Subir archivo físico
   async function uploadArchivoFile(file: File | null, titulo: string, tipo: string, temarioId: number | null, userId: number | null) {
@@ -135,6 +160,7 @@ export const useArchivoStore = defineStore("archivo", () => {
     fetchAllArchivos, 
     fetchArchivoById, 
     fetchArchivosByTemario, 
+    fetchArchivosByUsuario,
     uploadArchivoFile, 
     createArchivo,
     errorMessage

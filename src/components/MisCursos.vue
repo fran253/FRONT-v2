@@ -35,7 +35,5 @@ onMounted(fetchMisCursos);
 </template>
 
 <style lang="scss" scoped>
-.MisCursos__Contenedor {
-    padding: 20px;
-}
+@import "@/assets/sass/components/Mis/MisCursos.scss";
 </style>

@@ -56,7 +56,5 @@ onMounted(fetchCursos);
 </template>
 
 <style scoped>
-.ListaCursos__Contenedor {
-  padding: 20px;
-}
+  @import "@/assets/sass/components/Lists/Lcursos.scss";
 </style>

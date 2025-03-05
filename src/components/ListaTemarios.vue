@@ -83,7 +83,5 @@ watch(() => props.idAsignatura, (newVal) => {
 </template>
 
 <style scoped>
-.ListaTemarios__Contenedor {
-  padding: 20px;
-}
+  @import "@/assets/sass/components/Lists/Ltemarios.scss";
 </style>

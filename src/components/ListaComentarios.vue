@@ -138,9 +138,5 @@ async function añadirComentario() {
 </template>
 
 <style scoped>
-.ListaComentarios__Error {
-  color: red;
-  font-size: 14px;
-  margin-top: 5px;
-}
+  @import "@/assets/sass/components/Lists/Lcomentarios.scss";
 </style>

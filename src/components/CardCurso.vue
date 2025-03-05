@@ -71,8 +71,5 @@ const añadirAMisCursos = () => {
 </template>
 
 <style scoped>
-.CardCurso__BotonLike {
-  font-size: 150%;
-  border: 2px solid orange;
-}
+  @import "@/assets/sass/components/Cards/Ccurso.scss";
 </style>

@@ -3,9 +3,9 @@
 import { ref } from "vue";
 import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
 import { useRouter } from "vue-router";
-import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import HomeInfoSection from "@/components/HomeInfosection.vue";
+import Headerhome from "@/components/HeaderHome.vue"
 import Login from "@/components/Login.vue";
 import Carousel from "@/components/Carrusel.vue";
 import logoImg from "@/assets/images/logo.png";
@@ -54,8 +54,7 @@ const entrarACursos = () => {
 
 <template>
   <v-app>
-    <Header />
-
+    <Headerhome />
     <v-container class="HomePage__Contenedor">
       <!-- Logo  -->
       <div class="HomePage__LogoContenedor">
@@ -116,150 +115,5 @@ const entrarACursos = () => {
 </template>
 
 <style lang="scss" scoped>
-  /* Mobile first approach */
-  .HomePage__Contenedor {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    min-height: 100vh;
-    padding-top: 40px;
-    padding-left: 0;
-    padding-right: 0;
-    max-width: 100%;
-  }
-
-  .HomePage__LogoContenedor {
-    margin-top: 15%;
-    display: flex;
-    justify-content: center;
-    padding: 10px 15px;
-    margin-bottom: 15px;
-  }
-
-  .HomePage__Logo {
-    max-width: 200px;
-    height: auto;
-  }
-
-  .HomePage__Contenido {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-    padding: 0;
-    max-width: 100%;
-  }
-
-  .HomePage__Seccion {
-    width: 100%;
-  }
-
-  .HomePage__Divider {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 30px;
-    margin: 30px 15px;
-    width: calc(100% - 30px);
-  }
-
-  .HomePage__Stepper {
-    max-width: 100%;
-    min-height: 200px;
-    flex-grow: 1;
-  }
-
-  .HomePage__StepperCard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 0 10px;
-  }
-
-  .homepage__card-content {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-top: 8px;
-  }
-
-  .HomePage__StepperIcon {
-    margin: 0 auto;
-    transform: scale(0.9);
-  }
-
-  /* Tablet (576px y superior) */
-  @media (min-width: 576px) {
-    .HomePage__Contenedor {
-      gap: 18px;
-      padding-top: 60px;
-    }
-
-    .HomePage__LogoContenedor {
-      margin-top: 5%;
-      margin-bottom: 20px;
-    }
-
-    .HomePage__Logo {
-      max-width: 250px;
-    }
-
-    .HomePage__Divider {
-      gap: 40px;
-      margin: 40px 30px;
-      width: calc(100% - 60px);
-    }
-
-    .HomePage__Stepper {
-      min-height: 220px;
-    }
-  }
-
-  /* Desktop (768px y superior) */
-  @media (min-width: 768px) {
-    .HomePage__Contenedor {
-      padding-top: 70px;
-    }
-
-    .HomePage__LogoContenedor {
-      margin-top: 1%;
-      margin-bottom: 25px;
-    }
-
-    .HomePage__Logo {
-      max-width: 300px;
-    }
-
-    .HomePage__Divider {
-      flex-direction: row;
-      gap: 50px;
-      margin: 50px 5%;
-      width: 90%;
-    }
-
-    .HomePage__Stepper {
-      max-width: 600px;
-      min-height: 250px;
-    }
-
-    .HomePage__StepperIcon {
-      transform: scale(1);
-    }
-
-    .HomePage__CardContent {
-      margin-top: 10px;
-    }
-  }
-
-  /* Large Desktop (1200px y superior) */
-  @media (min-width: 1200px) {
-    .HomePage__Logo {
-      margin-top: 2%;
-      max-width: 350px;
-    }
-  }
+@import "@/assets/sass/pages/Home.scss";
 </style>

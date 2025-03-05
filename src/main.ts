@@ -26,8 +26,8 @@ app.use(pinia);
 app.use(router);
 app.use(vuetify);
 
-// ✅ Cargar usuario desde localStorage
+// Cargar usuario desde localStorage
 const usuarioLogeadoStore = useUsuarioLogeadoStore();
-usuarioLogeadoStore.cargarUsuarioDesdeStorage(); // ✅ Restaurar usuario
+usuarioLogeadoStore.cargarUsuarioDesdeStorage(); 
 
 app.mount("#app");

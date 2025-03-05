@@ -5,29 +5,6 @@
 </template>
 
 <style lang="scss" scoped>
-  .Footer__Seccion {
-    background: #FB7C3C;
-    padding: 20px;
-    text-align: center;
-    color: white;
-    width: 100%;
-    position: relative;
-    bottom: 0;
-  }
-
-  .Footer__Seccion__Texto {
-    margin-left: 0;
-  }
-
-  /* Ordenador */
-  @media (min-width: 769px) {
-    .footer {
-      width: calc(100%);
-    }
-    
-    .Footer__Seccion__Texto {
-      margin-left: 40%;
-    }
-  }
+@import "@/assets/sass/layout/Footer.scss";
 </style>
   

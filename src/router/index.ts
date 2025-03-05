@@ -5,6 +5,7 @@ import TemariosPage from "@/views/TemariosPage.vue";
 import CursosPage from "@/views/CursosPage.vue";
 import PerfilPage from "@/views/PerfilPage.vue";
 import MisCursosPage from "@/views/MisCursosPage.vue";
+import MisArchivosPage from "@/views/MisArchivosPage.vue";
 import ArchivosyTestPage from "@/views/ArchivosyTestPage.vue";
 import HomePage from "@/views/HomePage.vue";
 
@@ -16,6 +17,8 @@ const routes = [
   { path: "/cursos", component: CursosPage },
   { path: "/perfil", component: PerfilPage },
   { path: "/mis-cursos", component: MisCursosPage },
+  { path: "/mis-archivos", component: MisArchivosPage },
+
 ];
 
 const router = createRouter({
