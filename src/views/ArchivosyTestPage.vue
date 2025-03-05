@@ -30,7 +30,6 @@ const temarioId = ref<number | null>(null);
 //cambio archivos depende el idTemario
 watch(() => route.params.idTemario, (nuevoId) => {
   if (nuevoId) {
-    console.log('Nuevo ID del temario:', nuevoId);
     temarioId.value = Number(nuevoId);
   }
 }, { immediate: true });
@@ -46,7 +45,6 @@ const updateSearch = (query: string) => {
 onMounted(() => {
   if (route.params.idTemario) {
     temarioId.value = Number(route.params.idTemario);
-    console.log('ID del temario al montar:', temarioId.value);
   }
 });
 
@@ -57,17 +55,17 @@ onMounted(() => {
     <Header @toggle-sidebar="drawer = !drawer" @update-search="updateSearch" />
 
     <!-- Breadcrumb -->
-    <v-breadcrumbs class="breadcrumbs" :items="items">
+    <v-breadcrumbs class="ArchivosyTestPage__Breadcrumb" :items="items">
       <template v-slot:prepend>
         <v-icon icon="$vuetify" size="small"></v-icon>
       </template>
     </v-breadcrumbs>
 
-    <v-container class="main-container">
+    <v-container class="ArchivosyTestPage__Contenedor">
       <Sidebar v-model="drawer" />
 
-      <div class="content" v-if="temarioId !== null">
-        <v-card class="tab-container">
+      <div class="ArchivosyTestPage__Contenido" v-if="temarioId !== null">
+        <v-card class="ArchivosyTestPage__Tab">
           <v-tabs v-model="tab" align-tabs="left" color="orange-darken-3">
             <v-tab :value="1">
               <v-icon class="mr-2">mdi-folder</v-icon> Archivos
@@ -99,35 +97,7 @@ onMounted(() => {
   </v-app>
 </template>
 
+
 <style lang="scss" scoped>
-  .breadcrumbs {
-    margin-left: 5%;
-    margin-top: 6%;
-  }
-
-  .content {
-    flex: 1;
-    padding: 20px;
-    margin-left: 1%;
-    margin-top: -4%;
-  }
-
-  .main-container {
-    display: flex;
-    gap: 20px;
-    min-height: 100vh;  
-    padding-top: 64px;
-  }
-
-  .tab-container {
-    width: 100%;
-    min-height: 80vh;
-    padding: 20px;
-  }
-
-  @media (max-width: 768px) {
-    .content {
-      margin-left: 0;
-    }
-  }
+ @import "@/assets/sass/pages/ArchivosyTest.scss";
 </style>

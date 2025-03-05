@@ -17,7 +17,7 @@ async function fetchCursos() {
   }
 }
 
-// filtrar los cursos dinámicamente
+// filtrar los cursos al buscar
 const cursosFiltrados = computed(() => {
   if (!props.searchQuery) return cursos.value;
   return cursos.value.filter(curso =>
@@ -36,12 +36,12 @@ const emit = defineEmits(["cursosCargados"]);
 // almacenar los cursos
 const cursos = ref([]);
 
-// Llamamos a la API
+// LLamamos al metodo
 onMounted(fetchCursos);
 </script>
 
 <template>
-  <v-container class="cursos-container">
+  <v-container class="ListaCursos__Contenedor">
     <v-row align="start" justify="start">
       <v-col v-for="curso in cursosFiltrados" :key="curso.idCurso" cols="12" sm="6" md="4" lg="3">
         <CardCurso 
@@ -56,7 +56,5 @@ onMounted(fetchCursos);
 </template>
 
 <style scoped>
-.cursos-container {
-  padding: 20px;
-}
+  @import "@/assets/sass/components/Lists/Lcursos.scss";
 </style>

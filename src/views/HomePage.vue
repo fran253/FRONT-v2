@@ -1,131 +1,119 @@
 <script setup lang="ts">
-//imports
-import Header from "@/components/Header.vue";
+// Imports
+import { ref } from "vue";
+import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
+import { useRouter } from "vue-router";
 import Footer from "@/components/Footer.vue";
-import Carrusel from "@/components/Carrusel.vue";
-import AvatarRiendo from '@/components/AvatarEmote.vue'; 
+import HomeInfoSection from "@/components/HomeInfosection.vue";
+import Headerhome from "@/components/HeaderHome.vue"
+import Login from "@/components/Login.vue";
+import Carousel from "@/components/Carrusel.vue";
+import logoImg from "@/assets/images/logo.png";
 
+// Importar imágenes
+import imgGradoMedio from "@/assets/images/Carrusel1.jpg";
+import imgGradoSuperior from "@/assets/images/Carrusel2.jpg";
+import imgGradoMedicina from "@/assets/images/Carrusel3.jpg";
+
+// Logo
+const logoSrc = logoImg;
+const router = useRouter();
+const usuarioLogeadoStore = useUsuarioLogeadoStore();
+const mostrarLogin = ref(false);
+
+// Datos para el carrusel
+const slides = ref([
+  {
+    image: imgGradoMedio,
+    title: "Encuentra tu Material de Estudio",
+    text: "Descubre material de estudio ofrecido por otros estudiantes",
+    showButton: false,
+  },
+  {
+    image: imgGradoSuperior,
+    title: "¡Empieza ya!",
+    showButton: true,
+  },
+  {
+    image: imgGradoMedicina,
+    title: "Sube Archivos",
+    text: "Comparte tus proyectos o descubrimientos con la comunidad",
+    showButton: false,
+  },
+]);
+
+// Función para manejar la entrada a cursos
+const entrarACursos = () => {
+  if (usuarioLogeadoStore.estaAutenticado) {
+    router.push("/cursos");
+  } else {
+    mostrarLogin.value = true;
+  }
+};
 </script>
 
 <template>
   <v-app>
-    <Header />
+    <Headerhome />
+    <v-container class="HomePage__Contenedor">
+      <!-- Logo  -->
+      <div class="HomePage__LogoContenedor">
+        <img :src="logoSrc" alt="Logo de AcademIQ" class="HomePage__Logo" />
+      </div>
 
-    <v-container class="main-container">
-      <v-container class="content">
-        <section class="home-section">
-          <Carrusel />
+      <v-container class="HomePage__Contenido">
+        <section class="HomePage__Seccion">
+          <!-- carrusel -->
+          <Carousel :slides="slides" @entrarCursos="entrarACursos" />
 
-          <div class="divider-container" min-height="400">
-
+          <div class="HomePage__Divider">
             <!-- Stepper vuetify -->
-            <v-stepper :items="['Paso 1', 'Paso 2', 'Paso 3', 'Paso 4']" class="stepper___home">
-
+            <v-stepper :items="['Paso 1', 'Paso 2', 'Paso 3', 'Paso 4']" class="HomePage__Stepper">
               <template v-slot:item.1>
-                <v-card title="¡Elige tu CURSO!" flat class="step-card">
-                  <div class="card-content"><v-icon icon="mdi-emoticon" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon></div>
+                <v-card title="¡Elige tu CURSO!" flat class="HomePage__StepperCard">
+                  <div class="HomePage__CardContent">
+                    <v-icon icon="mdi-emoticon" size="x-large" color="orange-darken-3" class="HomePage__StepperIcon"></v-icon>
+                  </div>
                 </v-card>
               </template>
 
               <template v-slot:item.2>
-                <v-card title="¡Accede a sus ASIGNATURAS!" flat class="step-card">
-                  <div class="card-content"><v-icon icon="mdi-book-multiple" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon></div>
+                <v-card title="¡Accede a sus ASIGNATURAS!" flat class="HomePage__StepperCard">
+                  <div class="HomePage__CardContent">
+                    <v-icon icon="mdi-book-multiple" size="x-large" color="orange-darken-3" class="HomePage__StepperIcon"></v-icon>
+                  </div>
                 </v-card>
               </template>
 
               <template v-slot:item.3>
-                <v-card title="¡Descubre todas sus UNIDADES!" flat class="step-card">
-                  <div class="card-content"><v-icon icon="mdi-food-apple" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon></div>
+                <v-card title="¡Descubre todas sus UNIDADES!" flat class="HomePage__StepperCard">
+                  <div class="HomePage__CardContent">
+                    <v-icon icon="mdi-food-apple" size="x-large" color="orange-darken-3" class="HomePage__StepperIcon"></v-icon>
+                  </div>
                 </v-card>
               </template>
 
               <template v-slot:item.4>
-                <v-card title="Realiza TEST y explora ARCHIVOS" flat class="step-card">
-                  <div class="card-content"><v-icon icon="mdi-clipboard-check" size="x-large" color="orange-darken-3" class="centered-icon"></v-icon></div>
+                <v-card title="Realiza TEST y explora ARCHIVOS" flat class="HomePage__StepperCard">
+                  <div class="HomePage__CardContent">
+                    <v-icon icon="mdi-clipboard-check" size="x-large" color="orange-darken-3" class="HomePage__StepperIcon"></v-icon>
+                  </div>
                 </v-card>
               </template>
             </v-stepper>
-
-            <v-divider class="border-opacity-100" color="warning" vertical></v-divider>
-
-            <v-btn prepend-icon="$vuetify" variant="outlined" color="orange-darken-3" class="custom-button" size="x-large" to="/cursos">Entra a Cursos</v-btn>  
-
-            <v-divider class="border-opacity-100" color="warning" vertical></v-divider>
-            <AvatarRiendo />
-
           </div>
         </section>
       </v-container>
     </v-container>
 
+    <HomeInfoSection />
+
     <Footer />
+
+    <Login v-if="mostrarLogin" :mostrar="mostrarLogin" @cerrar="mostrarLogin = false" @login-exitoso="router.push('/cursos')" />
   </v-app>
 </template>
 
 <style lang="scss" scoped>
-  .main-container {
-    display: flex;
-    gap: 20px;
-    min-height: 100vh;
-    padding-top: 5%;
-  }
-
-  .content {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .divider-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 50px;
-    margin-top: 7%;
-    margin-left: 5%;
-    margin-right: 5%;
-    width: 100%;
-  }
-
-  .stepper___home {
-    max-width: 600px;
-    min-height: 250px;
-    flex-grow: 1;
-  }
-
-  .step-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .card-content {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .centered-icon {
-    margin: 0 auto;
-  }
-
-  .custom-button {
-    border-color: #FF5500 ;
-    color: #FF5500 ;
-    font-size: 1.2rem;
-    padding: 15px 40px;
-  }
-
-  .large-image-section {
-  margin-top: 60px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+@import "@/assets/sass/pages/Home.scss";
 </style>

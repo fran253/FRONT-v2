@@ -27,10 +27,10 @@ const idAsignatura = computed(() => route.params.idAsignatura ? String(route.par
 
 
 
-// Manejo de temarios cargados
-const handleTemariosCargados = (temariosData) => {
-  console.log("Temarios cargados:", temariosData);
-};
+// // verificar que se cargan temarios
+// const handleTemariosCargados = (temariosData) => {
+//   console.log("Temarios cargados:", temariosData);
+// };
 
 </script>
 
@@ -39,16 +39,16 @@ const handleTemariosCargados = (temariosData) => {
     <Header @toggle-sidebar="drawer = !drawer" @update-search="searchQuery = $event" /> <!-- Se agrega el evento de búsqueda -->
 
     <!-- Breadcrumb -->
-    <v-breadcrumbs class="breadcrumbs" :items="items">
+    <v-breadcrumbs class="TemariosPage__Breadcrumb" :items="items">
       <template v-slot:prepend>
         <v-icon icon="$vuetify" size="small"></v-icon>
       </template>
     </v-breadcrumbs>
 
-    <v-container class="main-container">
+    <v-container class="TemariosPage__Contenedor">
       <Sidebar v-model="drawer" />
 
-      <div class="content">
+      <div class="TemariosPage__Contenido">
         <!-- Lista de temarios con búsqueda -->
         <ListaTemarios 
           :idAsignatura="idAsignatura" 
@@ -63,28 +63,5 @@ const handleTemariosCargados = (temariosData) => {
 </template>
 
 <style lang="scss" scoped>
-.breadcrumbs {
-  margin-left: 5%;
-  margin-top: 6%;
-}
-
-.content {
-  margin-top: -4%;
-  flex: 1;
-  padding: 20px;
-  margin-left: 1%;
-}
-
-.main-container {
-  display: flex;
-  gap: 20px;
-  min-height: 100vh;
-  padding-top: 64px;
-}
-
-@media (max-width: 768px) {
-  .content {
-    margin-left: 0;
-  }
-}
+@import "@/assets/sass/pages/Temarios.scss";
 </style>

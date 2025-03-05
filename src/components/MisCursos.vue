@@ -19,7 +19,7 @@ onMounted(fetchMisCursos);
 </script>
 
 <template>
-    <v-container class="cursos-container">
+    <v-container class="MisCursos__Contenedor">
         <v-row align="start" justify="start">
             <v-col v-for="curso in misCursos" :key="curso.id" cols="12" sm="6" md="4" lg="3">
                 <CardCurso 
@@ -35,7 +35,5 @@ onMounted(fetchMisCursos);
 </template>
 
 <style lang="scss" scoped>
-    .cursos-container {
-        padding: 20px;
-    }
+@import "@/assets/sass/components/Mis/MisCursos.scss";
 </style>

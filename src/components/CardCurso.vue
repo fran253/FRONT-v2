@@ -7,11 +7,8 @@ import { useRouter } from 'vue-router';
 const seleccionarCurso = () => {
   if (curso.id) {
     router.push(`/asignaturas/${curso.id}`);
-  } else {
-    console.error("Falta id", curso);
   }
 };
-
 
 //router
 const router = useRouter();
@@ -25,9 +22,11 @@ const curso = defineProps({
 });
 
 const show = ref(false);
+
+//Funcionalidad Mis cursos
 const misCursos = ref(JSON.parse(localStorage.getItem('misCursos') || '[]'));
 
-// Computada para verificar si el curso ya está en la lista
+//verificar si el curso ya está en la lista
 const estaEnMisCursos = computed(() => misCursos.value.some(c => c.id === curso.id));
 
 
@@ -55,7 +54,7 @@ const añadirAMisCursos = () => {
     </v-card-subtitle>
 
     <v-card-actions>
-      <v-btn variant="flat" :color="estaEnMisCursos ? 'orange' : 'white'" class="boton__like" @click.stop="añadirAMisCursos">
+      <v-btn variant="flat" :color="estaEnMisCursos ? 'orange' : 'white'" class="CardCurso__BotonLike" @click.stop="añadirAMisCursos">
         <v-icon :color="estaEnMisCursos ? 'white' : 'orange'">
           {{ estaEnMisCursos ? 'mdi-heart' : 'mdi-heart-outline' }}
         </v-icon>
@@ -72,8 +71,5 @@ const añadirAMisCursos = () => {
 </template>
 
 <style scoped>
-.boton__like {
-  font-size: 150%;
-  border: 2px solid orange;
-}
+  @import "@/assets/sass/components/Cards/Ccurso.scss";
 </style>

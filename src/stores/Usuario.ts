@@ -10,7 +10,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
   // la clasica find all
   async function fetchAllUsuarios() {
     try {
-      const response = await fetch("https://localhost:7278/api/Usuario");
+      const response = await fetch("/api/Usuario");
       if (!response.ok) throw new Error("Error al obtener los usuarios");
 
       usuarios.value = await response.json();
@@ -23,7 +23,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
   //find by id 
   async function fetchUsuarioById(idUsuario: number) {
     try {
-      const response = await fetch(`https://localhost:7278/api/Usuario/${idUsuario}`);
+      const response = await fetch(`/api/Usuario/${idUsuario}`);
       if (!response.ok) throw new Error("Error al obtener el usuario");
 
       usuario.value = await response.json();

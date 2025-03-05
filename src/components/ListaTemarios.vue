@@ -12,7 +12,6 @@ async function fetchTemarios() {
     if (!response.ok) throw new Error("Error al obtener los temarios");
 
     const data = await response.json();
-    console.log('Datos recibidos de la API:', data);
     
     // verificar id temario
     temarios.value = data.map(temario => ({
@@ -20,14 +19,13 @@ async function fetchTemarios() {
       id: temario.id || temario.idTemario || temario.temarioId || null
     }));
 
-    console.log('Temarios procesados:', temarios.value);
     emit("temariosCargados", temarios.value);
   } catch (error) {
     console.error("Error al obtener temarios:", error);
   }
 }
 
-// filtrar los temarios dinámicamente 
+// filtrar los temarios al buscar
 const temariosFiltrados = computed(() => {
   if (!props.searchQuery) return temarios.value;
   return temarios.value.filter(temario =>
@@ -56,14 +54,8 @@ const emit = defineEmits(["temariosCargados"]);
 // almacenar los temarios
 const temarios = ref([]);
 
-// LLamamos a la API
+// LLamamos al metodo
 onMounted(fetchTemarios);
-
-// onMounted(() => {
-//   if (props.idAsignatura && props.idAsignatura !== "undefined") {
-//     fetchTemarios();
-//   }
-// });
 
 // Llamamos a la API cuando cambie el ID de la asignatura
 watch(() => props.idAsignatura, (newVal) => {
@@ -75,7 +67,7 @@ watch(() => props.idAsignatura, (newVal) => {
 </script>
 
 <template>
-  <v-container class="temarios-container">
+  <v-container class="ListaTemarios__Contenedor">
     <!-- cuando no hayan temarios aparece mensaje de error -->
     <div v-if="temarios.length === 0" class="text-center my-4">
       <p>No hay temarios disponibles para esta asignatura</p>
@@ -91,7 +83,5 @@ watch(() => props.idAsignatura, (newVal) => {
 </template>
 
 <style scoped>
-.temarios-container {
-  padding: 20px;
-}
+  @import "@/assets/sass/components/Lists/Ltemarios.scss";
 </style>

@@ -26,7 +26,6 @@ async function fetchAsignaturasByCurso(idCurso: string) {
     asignaturas.value = await response.json();
   } catch (error: any) {
     errorMessage.value = error.message;
-    console.error("Error al obtener asignaturas del curso:", error);
   }
 }
 
@@ -67,17 +66,17 @@ watchEffect(() => {
     <Header @toggle-sidebar="drawer = !drawer" @update-search="searchQuery = $event" /> <!-- Recibir búsqueda -->
 
     <!-- Breadcrumb -->
-    <v-breadcrumbs class="breadcrumbs" :items="items">
+    <v-breadcrumbs class="AsignaturasPage__Breadcrumb" :items="items">
       <template v-slot:prepend>
         <v-icon icon="$vuetify" size="small"></v-icon>
       </template>
     </v-breadcrumbs>
 
-    <v-container class="main-container">
+    <v-container class="AsignaturasPage__Contenedor">
       <Sidebar v-model="drawer" />
 
-      <div class="content">
-        <v-container class="asignaturas-container">
+      <div class="AsignaturasPage__Contenido">
+        <v-container class="AsignaturasPage__ContenedorAsignaturas">
           <v-row align="start" justify="start">
             <v-col v-for="asignatura in asignaturasFiltradas" :key="asignatura.id" cols="12" sm="6" md="4" lg="3">
               <CardAsignatura :asignatura="asignatura" />
@@ -92,32 +91,5 @@ watchEffect(() => {
 </template>
 
 <style lang="scss" scoped>
-.breadcrumbs {
-  margin-left: 5%;
-  margin-top: 6%;
-}
-
-.content {
-  margin-top: -4%;
-  flex: 1;
-  padding: 20px;
-  margin-left: 1%;
-}
-
-.main-container {
-  display: flex;
-  gap: 20px;
-  min-height: 100vh;
-  padding-top: 64px;
-}
-
-.asignaturas-container {
-  padding: 20px;
-}
-
-@media (max-width: 768px) {
-  .content {
-    margin-left: 0;
-  }
-}
+@import "@/assets/sass/pages/Asignaturas.scss";
 </style>
