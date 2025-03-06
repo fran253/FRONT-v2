@@ -9,6 +9,7 @@ import Headerhome from "@/components/HeaderHome.vue"
 import Login from "@/components/Login.vue";
 import Carousel from "@/components/Carrusel.vue";
 import logoImg from "@/assets/images/logo.png";
+import AcademIQ from "@/components/AcademIQ.vue";
 
 // Importar imágenes
 import imgGradoMedio from "@/assets/images/Carrusel1.jpg";
@@ -58,7 +59,7 @@ const entrarACursos = () => {
     <v-container class="HomePage__Contenedor">
       <!-- Logo  -->
       <div class="HomePage__LogoContenedor">
-        <img :src="logoSrc" alt="Logo de AcademIQ" class="HomePage__Logo" />
+        <AcademIQ />
       </div>
 
       <v-container class="HomePage__Contenido">

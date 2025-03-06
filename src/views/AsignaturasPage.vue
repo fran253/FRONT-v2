@@ -11,7 +11,7 @@ import CardAsignatura from "@/components/CardAsignatura.vue";
 //breadcrumb
 const items = ref([
   { title: "Cursos", disabled: false, href: "/cursos" },
-  { title: "Asignaturas", disabled: false },
+  { title: "Asignaturas", disabled: true },
 ]);
 
 

@@ -10,7 +10,7 @@ import Login from '@/components/Login.vue';
 
 
 //breadcrumb
-const items = ref([{ title: 'Cursos', disabled: false, href: '/cursos' }]);
+const items = ref([{ title: 'Cursos', disabled: true, href: '/cursos' }]);
 
 // Fetch a la API
 const fetchCursos = async () => {

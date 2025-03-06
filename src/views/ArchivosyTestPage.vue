@@ -13,8 +13,8 @@ import ListaTest from '@/components/ListaTest.vue';
 const items = ref([
   { title: 'Cursos', disabled: false, href: '/cursos' },
   { title: 'Asignaturas', disabled: false },
-  { title: 'Temarios', disabled: true },
-  { title: "Archivos & Tests", disabled: false }
+  { title: 'Temarios', disabled: false },
+  { title: "Archivos & Tests", disabled: true }
 ]);
 
 // Variables
