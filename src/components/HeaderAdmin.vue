@@ -5,14 +5,13 @@
 <template>
   <header class="admin-header">
     <div class="header-content">
-      <h1>Panel de Administración</h1>
+      <h1>Zona De Admnistracion </h1>
+
       <nav>
         <ul>
-          <li><router-link to="/admin">Dashboard</router-link></li>
-          <li><router-link to="/admin/asignaturas">Asignaturas</router-link></li>
-          <li><router-link to="/cursos">Ver Sitio</router-link></li>
-        </ul>
-      </nav>
+      <li><router-link to="/cursos">Ver Sitio</router-link></li>
+    </ul>
+  </nav>
     </div>
   </header>
 </template>
