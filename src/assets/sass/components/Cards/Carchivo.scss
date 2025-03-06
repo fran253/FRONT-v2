@@ -1,0 +1,38 @@
+.Archivos__Botones {
+display: flex;
+gap: 10px;
+justify-content: center;
+}
+
+.Archivos__Boton {
+width: 50px;
+height: 50px;
+min-width: 50px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+background-color: #FF6D00;
+}
+
+.Archivos__TituloContenedor {
+padding-right: 10px;
+}
+
+.Archivo__Titulo {
+flex-grow: 1;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+.Archivo__Tipo {
+background-color: #BF360C;
+color: white;
+border-radius: 4px;
+padding: 4px 8px;
+font-size: 0.8rem;
+font-weight: 500;
+margin-left: 10px;
+white-space: nowrap;
+}
