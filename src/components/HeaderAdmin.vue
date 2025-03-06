@@ -8,9 +8,7 @@
       <h1>Panel de Administración</h1>
       <nav>
         <ul>
-          <li><router-link to="/admin">Dashboard</router-link></li>
-          <li><router-link to="/admin/asignaturas">Asignaturas</router-link></li>
-          <li><router-link to="/cursos">Ver Sitio</router-link></li>
+          <li><router-link to="/cursos">Volver a Cursos</router-link></li>
         </ul>
       </nav>
     </div>
