@@ -1,46 +1,53 @@
 <script setup lang="ts">
-    import { ref } from "vue";
-    import img1 from "@/assets/images/GradoMedioInformatica.jpg";
-    import img2 from "@/assets/images/GradoSuperiorInformatica.jpg";
-    import img3 from "@/assets/images/GradoMedicina.jpg";
+// Importar Vue
+import { defineProps, defineEmits } from 'vue';
 
-    const slides = ref([img1, img2, img3]);
+// Definir propiedades
+const props = defineProps({
+  slides: {
+    type: Array,
+    required: true
+  }
+});
+
+// Definir eventos que emitiremos
+const emit = defineEmits(['entrarCursos']);
+
+// Función para manejar el clic en el botón
+const handleEntrarCursos = () => {
+  emit('entrarCursos');
+};
 </script>
 
 <template>
-    <v-container class="carrusel-wrapper">
+  <div class="Carrusel__Home">
+    <v-carousel class="Carrusel__Componente" height="600" progress="primary" hide-delimiters>
+      <v-carousel-item v-for="(slide, i) in slides" :key="i">
+        <v-sheet height="100%">
+          <div class="d-flex fill-height justify-center align-center">
+            <v-img :src="slide.image" height="100%" cover>
+              <div class="Carrusel__Contenido">
+                <h2 class="Carrusel__Titulo">{{ slide.title }}</h2>
+                <p v-if="slide.text" class="Carrusel__Texto">{{ slide.text }}</p>
+                <v-btn 
+                  v-if="slide.showButton" 
+                  variant="outlined" 
+                  color="white" 
+                  class="Boton__Cursos" 
+                  size="x-large" 
+                  @click="handleEntrarCursos"
+                >
+                  Entra a Cursos
+                </v-btn>
+              </div>
+            </v-img>
+          </div>
+        </v-sheet>
+      </v-carousel-item>
+    </v-carousel>
+  </div>
+</template>
 
-      <v-carousel class="full-width-carousel" height="600" progress="primary" hide-delimiters>
-
-            <v-carousel-item v-for="(slide, i) in slides" :key="i">
-
-                <v-sheet height="100%">
-
-                    <div class="d-flex fill-height justify-center align-center">
-                    <v-img :src="slide" height="100%" cover></v-img>
-                    </div>
-                    
-                </v-sheet>
-
-            </v-carousel-item>
-
-      </v-carousel>
-
-    </v-container>
-  </template>
-  
-
-  
 <style lang="scss" scoped>
-  .carrusel-wrapper {
-    width: 100%;
-    min-width: 1600px; 
-    margin: 0 auto;
-  }
-  
-  .full-width-carousel {
-    width: 100%;
-    max-width: 100%;
-  }
+  @import "@/assets/sass/components/Carrusel.scss";
 </style>
-  

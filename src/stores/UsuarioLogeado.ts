@@ -8,31 +8,28 @@ export const useUsuarioLogeadoStore = defineStore("usuarioLogeado", () => {
   const estaAutenticado = ref(false);
   const errorMessage = ref("");
 
-  // Método para verificar si el usuario existe en la base de datos
-  async function verificarUsuario(email: string): Promise<boolean> {
-    try {
-      const response = await fetch(`/api/Usuario/verificar-email?email=${email}`);
-      
-      if (!response.ok) {
-        errorMessage.value = "Error al verificar usuario";
-        return false;
+  // Recuperar usuario desde localStorage al iniciar
+  function cargarUsuarioDesdeStorage() {
+    const usuarioGuardado = localStorage.getItem("usuario");
+    if (usuarioGuardado) {
+      try {
+        usuarioActual.value = JSON.parse(usuarioGuardado);
+        estaAutenticado.value = true;
+        console.log("Usuario cargado desde localStorage:", usuarioActual.value);
+      } catch (error) {
+        console.error("Error al recuperar usuario:", error);
+        localStorage.removeItem("usuario"); // Limpiar si hay error
       }
-
-      const existe = await response.json();
-      return existe;
-    } catch (error: any) {
-      errorMessage.value = error.message || "Error de conexión";
-      return false;
     }
   }
 
-  // Método para iniciar sesión
+  // Guardar usuario en localStorage al iniciar sesión
   async function login(email: string, password: string): Promise<boolean> {
     try {
       const response = await fetch("/api/Usuario/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
@@ -44,10 +41,11 @@ export const useUsuarioLogeadoStore = defineStore("usuarioLogeado", () => {
       usuarioActual.value = usuario;
       estaAutenticado.value = true;
       errorMessage.value = "";
-      
+
       // Guardar en localStorage
-      localStorage.setItem('usuario', JSON.stringify(usuario));
-      
+      localStorage.setItem("usuario", JSON.stringify(usuario));
+      console.log("Usuario guardado en localStorage:", usuario);
+
       return true;
     } catch (error: any) {
       errorMessage.value = error.message || "Error al iniciar sesión";
@@ -55,68 +53,21 @@ export const useUsuarioLogeadoStore = defineStore("usuarioLogeado", () => {
     }
   }
 
-  // Método para registrar usuario
-  async function registrar(usuario: Usuario): Promise<boolean> {
-    try {
-      const response = await fetch("/api/Usuario", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nombre: usuario.nombre,
-          apellidos: usuario.apellido,
-          gmail: usuario.email,
-          telefono: usuario.telefono || '', 
-          contraseña: usuario.password,
-          rol: {
-            idRol: usuario.idRol || 2 // Rol por defecto
-          }
-        })
-      });
-
-      if (!response.ok) {
-        errorMessage.value = "Error al registrar usuario";
-        return false;
-      }
-
-      const nuevoUsuario = await response.json();
-      usuarioActual.value = nuevoUsuario;
-      estaAutenticado.value = true;
-      errorMessage.value = "";
-      
-      // Guardar en localStorage
-      localStorage.setItem('usuario', JSON.stringify(nuevoUsuario));
-      
-      return true;
-    } catch (error: any) {
-      errorMessage.value = error.message || "Error al registrar";
-      return false;
-    }
-  }
-
-  // Método para cerrar sesión
+  // Limpiar usuario y cerrar sesión
   function logout() {
     usuarioActual.value = null;
     estaAutenticado.value = false;
     errorMessage.value = "";
-    localStorage.removeItem('usuario');
-  }
-
-  // Método para entrar como invitado
-  function entrarComoInvitado() {
-    usuarioActual.value = null;
-    estaAutenticado.value = false;
-    errorMessage.value = "";
-    localStorage.removeItem('usuario');
+    localStorage.removeItem("usuario");
+    console.log("Usuario eliminado de localStorage");
   }
 
   return {
     usuarioActual,
     estaAutenticado,
     errorMessage,
-    verificarUsuario,
     login,
-    registrar,
     logout,
-    entrarComoInvitado
+    cargarUsuarioDesdeStorage, // Agregamos la función para restaurar sesión
   };
 });

@@ -13,6 +13,7 @@
     { id: 3, nombre: "Test de TypeScript", url: "https://www.orimi.com/pdf-test.pdf" }
   ]);
 
+  
   const visorAbierto = ref(false);
   const testSeleccionado = ref<{ id: number; nombre: string; url: string } | null>(null);
   const terminoBusqueda = ref("");
@@ -38,7 +39,7 @@
   <v-app>
     <Header @update-search="filtrarTests" />
     
-    <v-main class="content">
+    <v-main class="TestPage__Contenido">
       <v-container fluid>
         <v-row>
           <Sidebar />
@@ -64,7 +65,7 @@
       </v-container>
     </v-main>
 
-    <v-footer app class="footer">
+    <v-footer app class="TestPage__Footer">
       <Footer />
     </v-footer>
 
@@ -89,13 +90,13 @@
 </template>
 
 <style scoped>
-  .content {
+  .TestPage__Contenido {
     display: flex;
     flex-direction: column;
     min-height: calc(100vh - 80px);
   }
 
-  .footer {
+  .TestPage__Footer {
     width: 100%;
   }
 </style>

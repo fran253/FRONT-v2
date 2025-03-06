@@ -17,10 +17,9 @@ const props = defineProps({
 
 const emit = defineEmits(["testsCargados"]);
 
-// Store de tests
+// usa el Test.ts en store
 const testStore = useTestStore();
 
-// Estado local
 const loading = ref(false);
 const error = ref("");
 
@@ -45,7 +44,6 @@ async function cargarTests() {
     emit("testsCargados", testStore.tests);
   } catch (e) {
     error.value = "Error al cargar los tests";
-    console.error("Error al cargar tests:", e);
   } finally {
     loading.value = false;
   }
@@ -58,7 +56,7 @@ watch(() => props.temarioId, async (nuevoId) => {
   }
 }, { immediate: true });
 
-// Cargar tests al montar el componente
+// LLamamos al metodo
 onMounted(async () => {
   await cargarTests();
 });
@@ -96,9 +94,3 @@ onMounted(async () => {
     </v-card>
   </v-container>
 </template>
-
-<style scoped>
-.tests-container {
-  padding: 20px;
-}
-</style>

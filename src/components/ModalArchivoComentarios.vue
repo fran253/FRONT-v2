@@ -1,124 +1,70 @@
 <script setup lang="ts">
-  // Imports
-  import { ref, defineProps, defineEmits } from "vue";
-  import CardComentario from "@/components/CardComentario.vue";
-  import type { Comentario } from "@/types/comentario"; // Importamos el tipo
+// Imports
+import { ref, defineProps, defineEmits, watch } from "vue";
+import ListaComentarios from "@/components/ListaComentarios.vue";
 
-  //  propiedades
-  const props = defineProps<{ 
-    archivo: { id: number; nombre: string; url: string } | null; 
-    abierto: boolean 
-  }>();
+// Propiedades
+const props = defineProps<{ 
+  archivo: { 
+    id: number;
+    nombre: string;
+    url: string 
+  } 
+  | null; 
+  abierto: boolean 
+}>();
 
-  // cerrar
-  const emit = defineEmits(["cerrar"]);
+//cerrar modal
+const emit = defineEmits(["cerrar"]);
 
-  // Variables
-  const nuevoComentario = ref("");
-  const comentarios = ref<Comentario[]>([]);
+// Variables
+const cantidadComentarios = ref(0);
 
-  // metodo añadir comentario
-  const agregarComentario = () => {
-    const comentarioSanitizado = nuevoComentario.value.trim().replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    
-    if (comentarioSanitizado === "") return;
-
-    comentarios.value.push({
-      id: Date.now(),
-      usuario: "Usuario Anónimo",
-      avatar: `https://i.pravatar.cc/40?u=${Date.now()}`,
-      texto: comentarioSanitizado,
-      fecha: new Date().toISOString().split("T")[0],
-    });
-
-    nuevoComentario.value = "";
-  };
+// Manejar evento de comentarios cargados
+const onComentariosCargados = (cantidad: number) => {
+  cantidadComentarios.value = cantidad;
+};
 </script>
 
-
 <template>
-    <v-dialog v-model="props.abierto" max-width="1000px">
-        <v-card class="dialog-container">
-            <v-card-title>{{ props.archivo?.nombre }}</v-card-title>
-            <v-divider></v-divider>
-        
-            <v-card-text class="dialog-content">
-                    <div class="file-view">
-                        <iframe
-                            v-if="props.archivo?.url"
-                            :src="props.archivo.url"
-                            width="100%"
-                            height="400px"
-                        ></iframe>
-                    </div>
+  <v-dialog v-model="props.abierto" max-width="1000px">
+    <v-card class="ArchivoComentario__Contenedor">
+      <v-card-title>
+        {{ props.archivo ? props.archivo.nombre : 'Sin archivo seleccionado' }}
+        <span v-if="cantidadComentarios > 0" class="ArchivoComentario__ContadorComentarios">({{ cantidadComentarios }} comentarios)</span>
+      </v-card-title>
+      <v-divider></v-divider>
+    
+      <v-card-text class="ArchivoComentario__Contenido">
+        <!-- Ver Archivo -->
+        <div class="ArchivoComentario__VerArchivo">
+          <iframe
+            v-if="props.archivo?.url"
+            :src="props.archivo.url"
+            width="100%"
+            height="400px"
+          ></iframe>
+          <div v-else class="ArchivoComentario__ErrorVerArchivo">
+            <p>No hay archivo seleccionado o la URL no es válida</p>
+          </div>
+        </div>
 
-                <div class="comments-section">
+        <!-- Listado de los comentarios -->
+        <ListaComentarios 
+          v-if="props.archivo && (props.archivo.id || props.archivo.idArchivo)"
+          :archivoId="props.archivo.id || props.archivo.idArchivo" 
+          @comentarioCargado="onComentariosCargados"
+        />
+      </v-card-text>
 
-                    <v-divider></v-divider>
-
-                    <div class="comments-list">
-                        <CardComentario v-for="comentario in comentarios" :key="comentario.id" :comentario="comentario" />
-                        <p v-if="comentarios.length === 0">No hay comentarios aún. Sé el primero en comentar.</p>
-                    </div>
-
-                    <div class="comment-input">
-                        <v-text-field
-                            v-model="nuevoComentario"
-                            label="Escribe un comentario..."
-                            variant="outlined"
-                        ></v-text-field>
-
-                        <v-btn color="orange-darken-2" icon class="circular-btn" @click="agregarComentario">
-                            <v-icon color="white">mdi-send</v-icon>
-                        </v-btn>
-                    </div>
-                </div>
-            </v-card-text>
-
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="red" @click="emit('cerrar')">Cerrar</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="red" @click="emit('cerrar')">Cerrar</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style lang="scss" scoped>
-    .dialog-container {
-        display: flex;
-        flex-direction: column;
-        height: 80vh;
-    }
-
-    .dialog-content {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        overflow-y: auto;
-        max-height: 600px;
-        padding: 20px;
-    }
-
-    .file-view {
-        width: 100%;
-    }
-
-    .comments-section {
-        background: #f9f9f9;
-        padding: 15px;
-        border-radius: 8px;
-    }
-
-    .comments-list {
-        max-height: 150px;
-        overflow-y: auto;
-        padding: 10px;
-    }
-
-    .comment-input {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        margin-top: 10px;
-    }
+@import "@/assets/sass/components/Models/M_ArchivoComentarios.scss";
 </style>

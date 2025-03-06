@@ -1,30 +1,60 @@
 <script setup>
-  //imports
-  import { ref, watch } from 'vue';
-  import Header from '@/components/Header.vue';
-  import Footer from '@/components/Footer.vue';
-  import Sidebar from '@/components/Sidebar.vue';
-  import UserTab from '@/components/UserTab.vue';
-  import Login from '@/components/Login.vue';
-
-  // Variables
-  const drawer = ref(false);
-  const nombre = ref("Sandra Adams");
-  const items = ref([{ title: 'Perfil', disabled: false }]);
-
-  // frases celebres
-  const estados = [
-    "Me encanta Estudiar",
-    "Soy una persona aplicada",
-    "Vivan las Mates!",
-    "La historia mola",
-    "Fan de literatura",
-    "Alumno sin igual"
-  ];
+//imports
+import { ref, watch, computed, onMounted } from 'vue';
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
+import Sidebar from '@/components/Sidebar.vue';
+import UserTab from '@/components/UserTab.vue';
+import Login from '@/components/Login.vue';
+import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
+import AvatarRiendo from '@/components/AvatarEmote.vue';
 
 
+// Store de usuario
+const usuarioLogeadoStore = useUsuarioLogeadoStore();
 
+// Variables
+const drawer = ref(false);
+const items = ref([{ title: 'Perfil', disabled: false }]);
 
+// Obtener el usuario actual del store
+const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
+  
+// Utilizar el nombre del usuario logueado o un valor por defecto
+const nombre = computed({
+  get: () => usuarioActual.value?.nombre || "Usuario",
+  set: (value) => {
+    // Placeholder para futura funcionalidad de edición
+  }
+});
+
+// Verificar si hay un usuario en el localStorage al cargar la página
+const checkUsuarioLocal = () => {
+  const usuarioGuardado = localStorage.getItem('usuario');
+  if (usuarioGuardado && !usuarioActual.value) {
+    try {
+      usuarioLogeadoStore.usuarioActual = JSON.parse(usuarioGuardado);
+      usuarioLogeadoStore.estaAutenticado = true;
+    } catch (error) {
+      console.error("Error al recuperar usuario del localStorage:", error);
+    }
+  }
+};
+
+// Frases inspiradoras para el perfil
+const estados = [
+  "Me encanta Estudiar",
+  "Soy una persona aplicada",
+  "Vivan las Mates!",
+  "La historia mola",
+  "Fan de literatura",
+  "Alumno sin igual"
+];
+
+// Ejecutar al cargar el componente
+onMounted(() => {
+  checkUsuarioLocal();
+});
 </script>
 
 <template>
@@ -32,86 +62,81 @@
     <Header @toggle-sidebar="drawer = !drawer" />
     
     <!-- Breadcrumb -->
-    <v-breadcrumbs class="breadcrumbs" :items="items">
+    <v-breadcrumbs class="PerfilPage__Breadcrumb" :items="items">
       <template v-slot:prepend>
         <v-icon icon="$vuetify" size="small"></v-icon>
       </template>
     </v-breadcrumbs>
 
-    <v-container class="main-container">
+    <v-container class="perfil-container">
       <Sidebar v-model="drawer" />
 
-      <v-row class="perfil__container">
-        <!-- Avatar, Nombre y Frase -->
-        <v-col cols="12" md="6" class="left__panel">
-          <div class="avatar-container">
-            <v-avatar image="../src/images/user.png" size="120"></v-avatar>
-          </div>
+      <div class="perfil-content">
+        <v-row class="perfil-row">
+          <!-- Fila superior con avatar, nombre, email y frase -->
+          <v-col cols="12" class="perfil-info-row">
+            <v-card class="perfil-card">
+              <v-row no-gutters align="center">
+                <!-- Avatar -->
+                <v-col cols="12" sm="3" class="perfil-avatar-container">
+                  <AvatarRiendo />
+                </v-col>
 
-          <v-text-field class="nombre__perfil" label="Nombre" v-model="nombre" outlined dense></v-text-field>
+                <!-- Información del usuario -->
+                <v-col cols="12" sm="9" class="perfil-info">
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                      <v-text-field 
+                        class="perfil-nombre" 
+                        label="Nombre" 
+                        v-model="nombre" 
+                        variant="outlined"
+                        density="compact"
+                        bg-color="white"
+                        readonly
+                      ></v-text-field>
+                    </v-col>
+                    
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        class="perfil-email"
+                        label="Email"
+                        v-model="usuarioActual.gmail"
+                        variant="outlined"
+                        density="compact"
+                        bg-color="white"
+                        readonly
+                      ></v-text-field>
+                    </v-col>
+                    
+                    <v-col cols="12">
+                      <v-autocomplete 
+                        class="perfil-frase" 
+                        label="¿Cuál es tu frase?" 
+                        :items="estados" 
+                        variant="outlined"
+                        density="compact"
+                        bg-color="white"
+                      ></v-autocomplete>
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
 
-          <v-autocomplete class="frase__perfil" label="¿Cuál es tu frase?" :items="estados" outlined dense></v-autocomplete>
-        </v-col>
-
-        <v-col cols="12" md="6" class="right__panel">
-          <UserTab />
-        </v-col>
-      </v-row>
+          <!-- Fila inferior con pestañas -->
+          <v-col cols="12" class="perfil-tab-row">
+            <UserTab />
+          </v-col>
+        </v-row>
+      </div>
     </v-container>
 
     <Footer />
-
-     </v-app>
+  </v-app>
 </template>
 
 <style lang="scss" scoped>
-  .breadcrumbs {
-    margin-left: 5%;
-    margin-top: 6%;
-  }
-
-  .main-container {
-    display: flex;
-    gap: 20px;
-    min-height: 100vh;
-  }
-
-  .perfil__container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-  }
-
-  .left__panel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    width: 100%;
-
-    .avatar-container {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .nombre__perfil {
-      width: 40%;
-    }
-
-    .frase__perfil {
-      width: 80%;
-    }
-  }
-
-  .right__panel {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-
-  v-col.md-9 {
-    min-height: 300px;
-  }
+ @import "@/assets/sass/pages/Perfil.scss";
 </style>
