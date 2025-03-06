@@ -19,6 +19,7 @@
     email: "",
     password: "",
     tipoUsuario: "",
+    idRol: undefined, // Añadimos el campo idRol
   });
 
   const confirmPassword = ref("");
@@ -39,7 +40,18 @@
 
   const toggleModo = () => {
     esRegistro.value = !esRegistro.value;
-    usuario.value = { nombre: "", email: "", password: "", tipoUsuario: "" };
+    resetFormulario();
+  };
+
+  // Resetear formulario
+  const resetFormulario = () => {
+    usuario.value = {
+      nombre: "",
+      email: "",
+      password: "",
+      tipoUsuario: "",
+      idRol: undefined,
+    };
     confirmPassword.value = "";
     errorMessage.value = "";
   };
@@ -58,6 +70,27 @@
     router.push("/cursos");
   };
 
+  const redirigirSegunRol = () => {
+    if (usuarioLogeadoStore.usuarioActual) {
+      const usuario = usuarioLogeadoStore.usuarioActual;
+      
+      const idRol = usuario.idRol || 
+                    (usuario.rol && usuario.rol.idRol) || 
+                    (usuario.rol && usuario.rol.id);
+      
+      console.log("ID del rol:", idRol);
+      
+      if (idRol === 1) {
+        router.push("/admin");
+      } else {
+        router.push("/cursos");
+      }
+    } else {
+      router.push("/cursos");
+    }
+  };
+
+  // Metodo login
   const iniciarSesion = async () => {
     if (!formEsValido.value) {
       errorMessage.value = "Verifica tus credenciales";
@@ -71,7 +104,8 @@
       const resultado = await usuarioLogeadoStore.login(usuario.value.email, usuario.value.password);
       if (resultado) {
         cerrarModal();
-        router.push("/cursos");
+        // Usar el nuevo método de redirección según rol
+        redirigirSegunRol();
       } else {
         errorMessage.value = usuarioLogeadoStore.errorMessage;
       }
@@ -92,22 +126,60 @@
     errorMessage.value = "";
 
     try {
-      const response = await fetch("/api/usuarios/registro", {
+      // Asignar el idRol según el tipo de usuario
+      let idRol = 2; // Valor por defecto (profesor)
+      if (usuario.value.tipoUsuario === 'profesor') {
+        idRol = 2; // Rol de profesor
+      } else if (usuario.value.tipoUsuario === 'alumno') {
+        idRol = 3; // Rol de alumno
+      }
+      
+      // Formato exacto según el formato Swagger verificado
+      const nuevoUsuario = {
+        idUsuario: 0,
+        nombre: usuario.value.nombre,
+        apellido: "",  // Campo vacío por defecto
+        gmail: usuario.value.email,  // Mapeo de email a gmail
+        telefono: "",  // Campo vacío por defecto
+        contraseña: usuario.value.password,  // Mapeo de password a contraseña
+        idRol: idRol
+      };
+      
+      console.log("Datos de registro:", JSON.stringify(nuevoUsuario));
+      
+      // Realizar petición directa a la API
+      const response = await fetch("/api/Usuario", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(usuario.value),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(nuevoUsuario),
       });
-
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error del servidor:", errorText);
+        throw new Error(`Error al registrar: ${response.status}`);
+      }
+      
+      // Obtener la respuesta e iniciar sesión si es exitoso
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Error en el registro");
+      console.log("Registro exitoso:", data);
+      
+      // Iniciar sesión con las credenciales del nuevo usuario
+      const resultado = await usuarioLogeadoStore.login(
+        usuario.value.email, 
+        usuario.value.password
+      );
+      
 
-      // Inicio de sesión automático después del registro
-      const resultado = await usuarioLogeadoStore.login(usuario.value.email, usuario.value.password);
       if (resultado) {
         cerrarModal();
-        router.push("/cursos");
+        redirigirSegunRol();
       } else {
-        errorMessage.value = usuarioLogeadoStore.errorMessage;
+        // Aunque el registro fue exitoso, no se pudo iniciar sesión
+        errorMessage.value = "Registro completado. Por favor inicia sesión.";
+        esRegistro.value = false; // Cambiar a modo login
       }
     } catch (error: any) {
       errorMessage.value = error.message || "Error en el registro";
