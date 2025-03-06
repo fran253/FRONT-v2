@@ -21,7 +21,7 @@ const routes = [
   { path: "/cursos", component: CursosPage },
   { path: "/perfil", component: PerfilPage },
   { path: "/mis-cursos", component: MisCursosPage },
-  { path: "/info", component: InfoPage },
+  { path: "/mis-archivos", component: MisArchivosPage },
   { 
     path: "/admin", component: AdminPage,
     //nos aseguramos de que solo los usuarios admin puedan 

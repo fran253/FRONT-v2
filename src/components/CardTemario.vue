@@ -26,7 +26,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <v-card class="mx-auto text-white" max-width="400" color="blue-darken-2">
+  <v-card class="mx-auto text-white" max-width="400" color="orange-darken-4">
     <v-card-title class="text-h5 text-center">
       {{ temario.titulo }}
     </v-card-title>

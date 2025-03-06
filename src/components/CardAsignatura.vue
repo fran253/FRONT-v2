@@ -25,7 +25,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <v-card class="mx-auto d-flex flex-column" max-width="400" color="grey-darken-4">
+  <v-card class="mx-auto d-flex flex-column" max-width="400" color="orange-lighten-1">
     <div class="pa-3 flex-grow-1">
       <v-card-title class="text-h5 text-white text-wrap">
         <span class="d-block text-truncate" style="max-width: 100%;">
@@ -44,7 +44,7 @@ const props = defineProps<{
       <v-btn 
         class="ms-2"
         size="small"
-        color="orange-lighten-1"
+        color="orange-lighten-5"
         text="Ver temarios"
         variant="outlined"
         @click="irATemarios"

@@ -21,10 +21,10 @@ const verArchivo = () => {
       <v-divider></v-divider>
 
       <v-card-actions class="Archivos__Botones">
-        <v-btn color="orange-darken-2" icon class="Archivos__Boton" @click="verArchivo" aria-label="Ver archivo">
+        <v-btn color="blue-grey-lighten-2" icon class="Archivos__Boton" @click="verArchivo" aria-label="Ver archivo">
           <v-icon color="white">mdi-eye</v-icon>
         </v-btn>
-        <v-btn color="orange-darken-2" icon class="Archivos__Boton" :href="props.archivo.url" target="_blank" download aria-label="Descargar archivo">
+        <v-btn color="blue-grey-lighten-2" icon class="Archivos__Boton" :href="props.archivo.url" target="_blank" download aria-label="Descargar archivo">
           <v-icon color="white">mdi-download</v-icon>
         </v-btn>
       </v-card-actions>
