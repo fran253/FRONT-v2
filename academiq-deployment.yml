@@ -4,7 +4,7 @@ metadata:
   name: academiq
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-east-1:725628648316:certificate/ba72f68d-87e8-494c-8f50-1f3e6e3c13d8
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-east-1:499779885172:certificate/5a86e5d6-f4bb-4b84-b8ab-200bb81504eb
     # Only run TLS on the port named "https" below.
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
 spec:
@@ -40,6 +40,6 @@ spec:
     spec:
       containers:
       - name: academiq
-        image: diegosv1/front:latest
+        image: diegosv1/front2:latest
         ports:
         - containerPort: 80

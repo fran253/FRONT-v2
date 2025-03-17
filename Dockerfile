@@ -19,4 +19,4 @@ RUN npm run build-only
 EXPOSE 80
 
 # Comando para ejecutar en modo producción usando el nuevo script start
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
