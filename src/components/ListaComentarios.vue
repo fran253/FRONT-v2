@@ -5,6 +5,34 @@ import CardComentario from "@/components/CardComentario.vue";
 import { useComentarioStore } from "@/stores/Comentario";
 import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
 
+// Definir la interfaz para comentarios
+interface Comentario {
+  id: number;
+  usuario: string;
+  avatar: string;
+  texto: string;
+  fecha: string;
+}
+
+// Propiedades del componente
+const props = defineProps<{ 
+  archivoId: number; 
+}>();
+
+const emit = defineEmits(["comentarioCargado"]);
+
+//Almacenar los comentarios
+const comentarios = ref<Comentario[]>([]);
+
+//  Obtener usuario logeado
+const usuarioLogeadoStore = useUsuarioLogeadoStore();
+const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
+
+// Variables
+const nuevoComentario = ref("");
+const cargando = ref(false);
+const comentarioStore = useComentarioStore();
+const errorMensaje = ref("");
 
 // fetch a la API
 async function mostrarComentarios() {
@@ -13,7 +41,7 @@ async function mostrarComentarios() {
   try {
     const datos = await comentarioStore.fetchComentariosByArchivoId(props.archivoId);
     
-    comentarios.value = datos.map(c => ({
+    comentarios.value = datos.map((c: any) => ({
       id: c.idComentario,
       usuario: `Usuario ${c.idUsuario}`,
       avatar: `https://i.pravatar.cc/40?u=${c.idUsuario}`,
@@ -30,23 +58,6 @@ async function mostrarComentarios() {
   cargando.value = false;
 }
 
-// Propiedades del componente
-const props = defineProps<{ 
-  archivoId: number; 
-}>();
-
-
-const emit = defineEmits(["comentarioCargado"]);
-
-//Almacenar los comentarios
-const comentarios = ref([]);
-
-
-
-//  Obtener usuario logeado
-const usuarioLogeadoStore = useUsuarioLogeadoStore();
-const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
-
 // comprobaciones
 console.log("Usuario actual en ListaComentarios:", usuarioActual.value);
 
@@ -55,15 +66,6 @@ onMounted(() => {
   usuarioLogeadoStore.cargarUsuarioDesdeStorage(); 
   mostrarComentarios();
 });
-
-
-// Variables
-const nuevoComentario = ref("");
-const cargando = ref(false);
-const comentarioStore = useComentarioStore();
-const errorMensaje = ref("");
-
-
 
 // fetch a la API (añadir comentario)
 async function añadirComentario() {
@@ -102,11 +104,7 @@ async function añadirComentario() {
     errorMensaje.value = "Ocurrió un error al publicar el comentario.";
   }
 }
-
-
 </script>
-
-
 
 <template>
   <div class="ListaComentarios">

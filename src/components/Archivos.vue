@@ -1,42 +1,24 @@
 <script setup lang="ts">
-// Imports
 import { ref, computed, onMounted, watch } from "vue";
 import ModalArchivoComentario from "@/components/ModalArchivoComentarios.vue";
 import SubirArchivoModal from "@/components/SubirArchivoModal.vue";
 import CardArchivo from "@/components/CardArchivo.vue";
 import { useArchivoStore } from "@/stores/Archivo";
+import type { ArchivoDTO } from "@/stores/dtos/ArchivoDTO";
 
-// Props
-const props = defineProps<{ 
-  temarioId: number | null; 
-  terminoBusqueda: string 
-}>();
+const props = defineProps<{ temarioId: number | null; terminoBusqueda: string }>();
 
-// Variables
 const modalSubidaVisible = ref(false);
 const visorAbierto = ref(false);
-const archivoSeleccionado = ref<Archivo | null>(null);
+const archivoSeleccionado = ref<{ id: number; nombre: string; url: string } | null>(null);
 const cargando = ref(false);
 const error = ref("");
-const tipoSeleccionado = ref("todos");
 
-// Tipos de archivos disponibles en el filtro
-const tiposArchivo = ref([
-  { title: "Todos los archivos", value: "todos" },
-  { title: "PDF", value: "PDF" },
-  { title: "Word", value: "Word" },
-  { title: "Imagen", value: "imagen" },
-  { title: "Video", value: "video" },
-  { title: "Otro", value: "otro" }
-]);
-
-// Store
 const archivoStore = useArchivoStore();
 
-// Métodos
 const cargarArchivos = async (temarioId: number | null) => {
   if (!temarioId) {
-    error.value = "Error con id Temario.";
+    error.value = "No se ha proporcionado un temario válido.";
     return;
   }
 
@@ -44,11 +26,7 @@ const cargarArchivos = async (temarioId: number | null) => {
   error.value = "";
 
   try {
-    if (tipoSeleccionado.value === "todos") {
-      await archivoStore.fetchArchivosByTemario(temarioId);
-    } else {
-      await archivoStore.fetchArchivosByTipoAndTemario(tipoSeleccionado.value, temarioId);
-    }
+    await archivoStore.fetchArchivosByTemario(temarioId);
   } catch (e) {
     error.value = "Error al cargar los archivos";
     console.error(e);
@@ -57,79 +35,47 @@ const cargarArchivos = async (temarioId: number | null) => {
   }
 };
 
-const cambiarTipoArchivo = (tipo: string) => {
-  tipoSeleccionado.value = tipo;
-  cargarArchivos(props.temarioId);
-};
-//Abrir y cerrar archivo
-const verArchivo = (archivo: Archivo) => {
-  archivoSeleccionado.value = archivo;
-  visorAbierto.value = true;
-};
-const cerrarModal = () => {
-  visorAbierto.value = false;
-};
-
-// Computed
 const archivosFiltrados = computed(() => {
   if (!props.terminoBusqueda) return archivoStore.archivos;
-  return archivoStore.archivos.filter((archivo) =>
+  return archivoStore.archivos.filter((archivo: ArchivoDTO) =>
     archivo.titulo.toLowerCase().includes(props.terminoBusqueda.toLowerCase())
   );
 });
 
-const tipoActual = computed(() => {
-  return tipoSeleccionado.value === 'todos' 
-    ? 'Todos los archivos' 
-    : tiposArchivo.value.find(t => t.value === tipoSeleccionado.value)?.title;
+onMounted(async () => {
+  await cargarArchivos(props.temarioId);
 });
-
-const mensajeNoArchivos = computed(() => {
-  return tipoSeleccionado.value === 'todos'
-    ? 'No hay archivos en este temario'
-    : `No hay archivos de tipo ${tipoSeleccionado.value}`;
-});
-
-// Lifecycle hooks
-onMounted(() => cargarArchivos(props.temarioId));
 
 watch(
   () => props.temarioId,
-  (nuevoId) => cargarArchivos(nuevoId),
+  async (nuevoId) => {
+    await cargarArchivos(nuevoId);
+  },
   { immediate: true }
 );
+
+const verArchivo = (archivo: ArchivoDTO) => {
+  archivoSeleccionado.value = {
+    id: archivo.idArchivo, // Mapeo correcto de la propiedad
+    nombre: archivo.titulo, // Convertimos `titulo` en `nombre`
+    url: archivo.url,
+  };
+  visorAbierto.value = true;
+};
+
+const cerrarModal = () => {
+  visorAbierto.value = false;
+};
 </script>
 
 <template>
   <v-container fluid>
     <v-row>
       <v-col cols="12" md="10">
-        <!-- Barra de herramientas -->
-        <div class="d-flex align-center mb-3 gap-2 flex-wrap">
-          <v-btn color="orange-darken-2" class="mr-2 mb-2" @click="modalSubidaVisible = true">
-            <v-icon class="mr-1">mdi-upload</v-icon>
-            Subir Archivo
-          </v-btn>
-          
-          <v-btn color="primary" class="mb-2"> 
-            <v-icon class="mr-1">mdi-filter-variant</v-icon>
-            {{ tipoActual }}
-            <v-menu activator="parent">
-              <v-list>
-                <v-list-item
-                  v-for="(tipo, index) in tiposArchivo"
-                  :key="index"
-                  :value="tipo.value"
-                  @click="cambiarTipoArchivo(tipo.value)"
-                >
-                  <v-list-item-title>{{ tipo.title }}</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </v-btn>
-        </div>
+        <v-btn color="orange-darken-2" class="mb-3" @click="modalSubidaVisible = true">
+          Subir Archivo
+        </v-btn>
 
-        <!-- Estados -->
         <v-card v-if="cargando" class="pa-5 d-flex justify-center align-center">
           <v-progress-circular indeterminate color="orange-darken-2"></v-progress-circular>
         </v-card>
@@ -142,17 +88,11 @@ watch(
           </v-btn>
         </v-card>
 
-        <v-card v-else-if="archivosFiltrados.length === 0" class="pa-5 text-center">
-          <v-icon size="large">mdi-file-search</v-icon>
-          <p class="text-h6 mt-2">{{ mensajeNoArchivos }}</p>
-        </v-card>
-
-        <!-- Lista de archivos -->
         <v-card v-else class="pa-5">
           <v-row>
             <CardArchivo
               v-for="archivo in archivosFiltrados"
-              :key="archivo.id"
+              :key="archivo.idArchivo"
               :archivo="archivo"
               @ver="verArchivo(archivo)"
             />
@@ -161,7 +101,6 @@ watch(
       </v-col>
     </v-row>
 
-    <!-- Modales -->
     <SubirArchivoModal 
       :visible="modalSubidaVisible" 
       :temarioId="props.temarioId!" 
@@ -176,13 +115,3 @@ watch(
     />
   </v-container>
 </template>
-
-<style lang="scss" scoped>
-.gap-2 {
-  gap: 8px;
-}
-
-.mb-2 {
-  margin-bottom: 8px;
-}
-</style>

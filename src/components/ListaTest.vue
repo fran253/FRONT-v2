@@ -17,7 +17,7 @@ const props = defineProps({
 
 const emit = defineEmits(["testsCargados"]);
 
-// usa el Test.ts en store
+// Usa el Test.ts en store
 const testStore = useTestStore();
 
 const loading = ref(false);
@@ -87,7 +87,7 @@ onMounted(async () => {
     <!-- Lista de tests -->
     <v-card v-else class="pa-5">
       <v-row>
-        <v-col v-for="test in testsFiltrados" :key="test.id" cols="12" md="6" lg="4">
+        <v-col v-for="test in testsFiltrados" :key="test.idTest" cols="12" md="6" lg="4">
           <CardTest :test="test" />
         </v-col>
       </v-row>

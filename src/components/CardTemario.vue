@@ -1,9 +1,8 @@
 <script setup lang="ts">
 // Imports
-import { computed } from "vue";
 import { useRouter } from "vue-router";
 
-//Evento de clickar en temario para ir a la página de archivos-test
+// Evento de clickar en temario para ir a la página de archivos-test
 const seleccionarTemario = () => {
   if (props.temario && props.temario.id) {
     router.push(`/temarios/${props.temario.id}/archivos-test`);
@@ -22,7 +21,6 @@ const props = defineProps({
     required: true
   }
 });
-
 </script>
 
 <template>
@@ -36,10 +34,9 @@ const props = defineProps({
     </v-card-subtitle>
 
     <v-card-actions class="justify-center">
-      <v-btn color="white" text @click="seleccionarTemario">
+      <v-btn color="white" variant="text" @click="seleccionarTemario">
         Ver contenido
       </v-btn>
     </v-card-actions>
   </v-card>
 </template>
-

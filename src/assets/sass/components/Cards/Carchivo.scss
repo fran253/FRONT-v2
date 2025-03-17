@@ -26,40 +26,13 @@ overflow: hidden;
 text-overflow: ellipsis;
 }
 
-
-
 .Archivo__Tipo {
-padding: 4px 8px;
+background-color: #BF360C;
+color: white;
 border-radius: 4px;
+padding: 4px 8px;
 font-size: 0.8rem;
-font-weight: bold;
-text-transform: uppercase;
-min-width: 70px;
-text-align: center;
-}
-  
-
-.Archivo___PDF {
-background-color: #ff3434; 
-color: white;
-}
-
-.Archivo___Word {
-background-color: #3087df; 
-color: white;
-}
-
-.Archivo___Imagen {
-background-color: #0eaf16; 
-color: white;
-}
-
-.Archivo___Video {
-background-color: #cf29e6;
-color: white;
-}
-
-.Archivo___Otro {
-background-color: #ff8018; 
-color: white;
+font-weight: 500;
+margin-left: 10px;
+white-space: nowrap;
 }

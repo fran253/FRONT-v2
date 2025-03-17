@@ -2,13 +2,18 @@
 // Importar Vue
 import { defineProps, defineEmits } from 'vue';
 
+// Definir la interfaz para los slides
+interface Slide {
+  image: string;
+  title: string;
+  text?: string;
+  showButton?: boolean;
+}
+
 // Definir propiedades
-const props = defineProps({
-  slides: {
-    type: Array,
-    required: true
-  }
-});
+const props = defineProps<{
+  slides: Slide[]
+}>();
 
 // Definir eventos que emitiremos
 const emit = defineEmits(['entrarCursos']);

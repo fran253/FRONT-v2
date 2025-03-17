@@ -114,8 +114,9 @@ async function createUsuario() {
     await usuarioStore.fetchAllUsuarios();
     successMessage.value = "Usuario creado con éxito";
     closeForm();
-  } catch (error) {
-    errorMessage.value = error.message || "Error al crear el usuario";
+  } catch (error: unknown) {
+    const errorMsg = error instanceof Error ? error.message : "Error al crear el usuario";
+    errorMessage.value = errorMsg;
   } finally {
     isLoading.value = false;
   }
@@ -147,8 +148,9 @@ async function updateUsuario() {
     await usuarioStore.fetchAllUsuarios();
     successMessage.value = "Usuario actualizado con éxito";
     closeForm();
-  } catch (error) {
-    errorMessage.value = error.message || "Error al actualizar el usuario";
+  } catch (error: unknown) {
+    const errorMsg = error instanceof Error ? error.message : "Error al actualizar el usuario";
+    errorMessage.value = errorMsg;
   } finally {
     isLoading.value = false;
   }
@@ -176,8 +178,9 @@ async function confirmDeleteUsuario() {
     await usuarioStore.fetchAllUsuarios();
     confirmDelete.value = false;
     idToDelete.value = null;
-  } catch (error) {
-    errorMessage.value = error.message || "Error al eliminar el usuario";
+  } catch (error: unknown) {
+    const errorMsg = error instanceof Error ? error.message : "Error al eliminar el usuario";
+    errorMessage.value = errorMsg;
   } finally {
     isLoading.value = false;
   }

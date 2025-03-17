@@ -2,10 +2,17 @@
 // Imports
 import { ref, onMounted, computed, watch } from "vue";
 import { useArchivoStore } from "@/stores/Archivo";
+import type { ArchivoDTO } from "@/stores/dtos/ArchivoDTO";
 import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
 import CardArchivo from "@/components/CardArchivo.vue";
-import type { Archivo } from "@/store/Archivo";
 import ModalArchivoComentario from '@/components/ModalArchivoComentarios.vue';
+
+// Interfaz para el modal, que espera otra estructura
+interface ArchivoModal {
+  id: number;
+  nombre: string;
+  url: string;
+}
 
 // Estado del usuario logueado
 const usuarioLogeadoStore = useUsuarioLogeadoStore();
@@ -17,7 +24,7 @@ const error = ref("");
 
 // Estado para el modal
 const visorAbierto = ref(false);
-const archivoSeleccionado = ref<Archivo | null>(null);
+const archivoSeleccionado = ref<ArchivoModal | null>(null);
 
 // obtener el ID del usuario actual
 const usuarioId = computed(() => {
@@ -26,8 +33,7 @@ const usuarioId = computed(() => {
   console.log("ID de usuario encontrado:", id);
   return id;
 });
-
-
+ 
 // Computada para tener acceso a los archivos desde el store
 const misArchivos = computed(() => {
   console.log("Archivos en el store:", archivoStore.archivos);
@@ -35,9 +41,14 @@ const misArchivos = computed(() => {
 });
 
 // Método para ver un archivo (abrir el modal)
-const verArchivo = (archivo: Archivo) => {
-  console.log("Ver archivo:", archivo);
-  archivoSeleccionado.value = archivo;
+const verArchivo = (item: ArchivoDTO) => {
+  console.log("Ver archivo:", item);
+  // Transformar ArchivoDTO al formato esperado por el modal
+  archivoSeleccionado.value = {
+    id: item.idArchivo,
+    nombre: item.titulo,
+    url: item.url
+  };
   visorAbierto.value = true;
 };
 
@@ -62,8 +73,9 @@ async function cargarArchivosUsuario(userId: number) {
     console.log("Cargando archivos para el usuario ID:", userId);
     await archivoStore.fetchArchivosByUsuario(userId);
     console.log("Archivos cargados:", archivoStore.archivos);
-  } catch (e) {
-    error.value = `Error al cargar los archivos: ${e.message}`;
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : 'Error desconocido';
+    error.value = `Error al cargar los archivos: ${errorMessage}`;
     console.error("Error en cargarArchivosUsuario:", e);
   } finally {
     loading.value = false;
@@ -102,9 +114,9 @@ onMounted(async () => {
     <!-- Lista de archivos -->
     <v-row v-else align="start" justify="start">
       <CardArchivo 
-        v-for="archivo in misArchivos" 
-        :key="archivo.idArchivo || archivo.id" 
-        :archivo="archivo" 
+        v-for="item in misArchivos"
+        :key="item.idArchivo"
+        :archivo="item"
         @ver="verArchivo"
       />
     </v-row>

@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import type { TemarioDTO } from "@/stores/dtos/TemarioDTO";
+import type { Temario } from "@/stores/dtos/TemarioDTO";
 
 export const useTemarioStore = defineStore("temario", () => {
-  const temarios = ref<TemarioDTO[]>([]);
+  const temarios = ref<Temario[]>([]);
   const errorMessage = ref<string>("");
 
   //Find All Classic!
@@ -49,7 +49,7 @@ export const useTemarioStore = defineStore("temario", () => {
   // filtro por nombre
   const temariosFiltrados = computed(() => (searchQuery: string) => {
     if (!searchQuery) return temarios.value;
-    return temarios.value.filter(temario =>
+    return temarios.value.filter((temario: Temario) =>
       temario.titulo.toLowerCase().includes(searchQuery.toLowerCase())
     );
   });

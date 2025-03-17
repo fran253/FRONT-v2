@@ -1,11 +1,28 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
+// Definir interfaz para un comentario
+interface Comentario {
+  idComentario: number;
+  contenido: string;
+  fechaCreacion: string | Date;
+  idUsuario: number;
+  idArchivo: number;
+}
+
+// Definir interfaz para un nuevo comentario (puede ser parcial)
+interface NuevoComentario {
+  contenido: string;
+  fechaCreacion: string | Date;
+  idUsuario: number;
+  idArchivo: number;
+}
+
 export const useComentarioStore = defineStore("comentario", () => {
   const errorMessage = ref("");
 
   // Obtener comentarios por ID de archivo
-  async function fetchComentariosByArchivoId(idArchivo) {
+  async function fetchComentariosByArchivoId(idArchivo: number): Promise<Comentario[]> {
     try {
       const response = await fetch(`/api/Comentario/archivo/${idArchivo}`);
       if (!response.ok) return [];
@@ -16,10 +33,10 @@ export const useComentarioStore = defineStore("comentario", () => {
     }
   }
 
-  async function createComentario(nuevoComentario) {
+  async function createComentario(nuevoComentario: NuevoComentario): Promise<Comentario | null> {
     try {
-      const comentarioData = {
-        idComentario: 0, 
+      const comentarioData: Comentario = {
+        idComentario: 0,
         contenido: nuevoComentario.contenido,
         fechaCreacion: nuevoComentario.fechaCreacion,
         idUsuario: nuevoComentario.idUsuario,
@@ -27,13 +44,13 @@ export const useComentarioStore = defineStore("comentario", () => {
       };
       
       console.log("Enviando comentario:", JSON.stringify(comentarioData));
-    
+      
       const response = await fetch("/api/Comentario/publicar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(comentarioData),
       });
-    
+      
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`Error del servidor (${response.status}): ${errorText}`);
@@ -46,11 +63,9 @@ export const useComentarioStore = defineStore("comentario", () => {
       return null;
     }
   }
-  
-  
-
-  return { 
-    fetchComentariosByArchivoId, 
-    createComentario 
+    
+  return {
+    fetchComentariosByArchivoId,
+    createComentario
   };
 });

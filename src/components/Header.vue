@@ -45,7 +45,7 @@ const search = ref('');
     <!-- Buscador universal -->
     <v-text-field
       v-model="search"
-      label="Buscar..."
+      label="Buscador..."
       append-icon="mdi-magnify"
       single-line
       hide-details

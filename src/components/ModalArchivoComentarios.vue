@@ -8,7 +8,8 @@ const props = defineProps<{
   archivo: { 
     id: number;
     nombre: string;
-    url: string 
+    url: string;
+    idArchivo?: number; // Hacemos opcional idArchivo para compatibilidad
   } 
   | null; 
   abierto: boolean 
@@ -23,6 +24,12 @@ const cantidadComentarios = ref(0);
 // Manejar evento de comentarios cargados
 const onComentariosCargados = (cantidad: number) => {
   cantidadComentarios.value = cantidad;
+};
+
+// Determinar el ID a usar para los comentarios
+const obtenerArchivoId = () => {
+  if (!props.archivo) return null;
+  return props.archivo.id;
 };
 </script>
 
@@ -51,8 +58,8 @@ const onComentariosCargados = (cantidad: number) => {
 
         <!-- Listado de los comentarios -->
         <ListaComentarios 
-          v-if="props.archivo && (props.archivo.id || props.archivo.idArchivo)"
-          :archivoId="props.archivo.id || props.archivo.idArchivo" 
+          v-if="props.archivo && props.archivo.id"
+          :archivoId="props.archivo.id" 
           @comentarioCargado="onComentariosCargados"
         />
       </v-card-text>

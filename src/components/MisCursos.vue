@@ -3,6 +3,17 @@
 import { ref, onMounted } from "vue";
 import CardCurso from "@/components/CardCurso.vue";
 
+// Definir interfaz para el tipo Curso
+interface Curso {
+  id: number;
+  titulo: string;
+  subtitulo: string;
+  descripcion: string;
+  imagen: string;
+}
+
+// Crear ref tipado
+const misCursos = ref<Curso[]>([]);
 
 //fetch mis cursos
 const fetchMisCursos = () => {
@@ -11,8 +22,6 @@ const fetchMisCursos = () => {
         misCursos.value = JSON.parse(storedCursos);
     }
 };
-
-const misCursos = ref([]);
 
 //llamar al fetch con los cursos guardados
 onMounted(fetchMisCursos);

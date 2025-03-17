@@ -115,25 +115,29 @@ async function createAsignatura() {
     
     // Probar cada formato hasta que uno funcione
     for (let i = 0; i < payloads.length && !success; i++) {
-      response = await fetch("/api/Asignatura", {
+      const tempResponse = await fetch("/api/Asignatura", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payloads[i]),
       });
       
-      success = response.ok;
+      if (tempResponse.ok) {
+        response = tempResponse;
+        success = true;
+      }
     }
     
     // Procesar respuesta final
-    if (success) {
+    if (success && response) {
       await asignaturaStore.fetchAllAsignaturas();
       successMessage.value = "Asignatura creada con éxito";
       closeForm();
     } else {
-      throw new Error(`No se pudo crear la asignatura. Código: ${response.status}`);
+      throw new Error(`No se pudo crear la asignatura. Código: ${response?.status || 'desconocido'}`);
     }
-  } catch (error) {
-    errorMessage.value = error.message || "Error al crear la asignatura";
+  } catch (error: unknown) {
+    const errorMsg = error instanceof Error ? error.message : "Error al crear la asignatura";
+    errorMessage.value = errorMsg;
   } finally {
     isLoading.value = false;
   }
@@ -182,8 +186,9 @@ async function updateAsignatura() {
     await asignaturaStore.fetchAllAsignaturas();
     successMessage.value = "Asignatura actualizada con éxito";
     closeForm();
-  } catch (error) {
-    errorMessage.value = error.message || "Error al actualizar la asignatura";
+  } catch (error: unknown) {
+    const errorMsg = error instanceof Error ? error.message : "Error al actualizar la asignatura";
+    errorMessage.value = errorMsg;
   } finally {
     isLoading.value = false;
   }
@@ -218,8 +223,9 @@ async function confirmDeleteAsignatura() {
     await asignaturaStore.fetchAllAsignaturas();
     confirmDelete.value = false;
     idToDelete.value = null;
-  } catch (error) {
-    errorMessage.value = error.message || "Error al eliminar la asignatura";
+  } catch (error: unknown) {
+    const errorMsg = error instanceof Error ? error.message : "Error al eliminar la asignatura";
+    errorMessage.value = errorMsg;
   } finally {
     isLoading.value = false;
   }
