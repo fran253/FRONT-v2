@@ -10,7 +10,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
   // Corregida a URL relativa
   async function fetchAllUsuarios() {
     try {
-      const response = await fetch("/api/Usuario");
+      const response = await fetch("https://academiqapi.retocsv.es/api/Usuario");
       if (!response.ok) throw new Error("Error al obtener los usuarios");
 
       usuarios.value = await response.json();
@@ -23,7 +23,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
   // Corregida a URL relativa
   async function fetchUsuarioById(idUsuario: number) {
     try {
-      const response = await fetch(`/api/Usuario/${idUsuario}`);
+      const response = await fetch(`https://academiqapi.retocsv.es/api/Usuario/${idUsuario}`);
       if (!response.ok) throw new Error("Error al obtener el usuario");
 
       usuario.value = await response.json();
@@ -36,7 +36,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
   // Este ya tenía URL relativa
   async function createUsuario(newUser: UsuarioDTO) {
     try {
-      const response = await fetch("/api/Usuario", {
+      const response = await fetch("https://academiqapi.retocsv.es/api/Usuario", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newUser),
@@ -55,7 +55,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
   // Este ya tenía URL relativa
   async function updateUsuario(updatedUser: UsuarioDTO) {
     try {
-      const response = await fetch(`/api/Usuario/${updatedUser.idUsuario}`, {
+      const response = await fetch(`https://academiqapi.retocsv.es/api/Usuario/${updatedUser.idUsuario}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedUser),
@@ -73,7 +73,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
   // Este ya tenía URL relativa
   async function deleteUsuario(idUsuario: number) {
     try {
-      const response = await fetch(`/api/Usuario/${idUsuario}`, {
+      const response = await fetch(`https://academiqapi.retocsv.es/api/Usuario/${idUsuario}`, {
         method: "DELETE",
       });
 

@@ -9,7 +9,7 @@ export const usePreguntaStore = defineStore("pregunta", () => {
   // Obtener preguntas por ID de test
   async function fetchPreguntasByTestId(testId: number) {
     try {
-      const response = await fetch(`/api/Pregunta/test/${testId}`);
+      const response = await fetch(`https://academiqapi.retocsv.es/api/Pregunta/test/${testId}`);
       if (!response.ok) throw new Error("Error al obtener las preguntas del test");
       
       preguntas.value = await response.json();
@@ -23,7 +23,7 @@ export const usePreguntaStore = defineStore("pregunta", () => {
   // Obtener una pregunta específica por ID
   async function fetchPreguntaById(preguntaId: number) {
     try {
-      const response = await fetch(`/api/Pregunta/${preguntaId}`);
+      const response = await fetch(`https://academiqapi.retocsv.es/api/Pregunta/${preguntaId}`);
       if (!response.ok) throw new Error("Error al obtener la pregunta");
       
       return await response.json();

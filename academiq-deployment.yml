@@ -40,6 +40,6 @@ spec:
     spec:
       containers:
       - name: academiq
-        image: diegosv1/front3:latest
+        image: diegosv1/front10:latest
         ports:
         - containerPort: 80

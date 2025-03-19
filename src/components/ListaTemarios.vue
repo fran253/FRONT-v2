@@ -23,7 +23,7 @@ const temarios = ref<Temario[]>([]);
 async function fetchTemarios() {
   if (!props.idAsignatura || props.idAsignatura === "undefined") return;
   try {
-    const response = await fetch(`/api/Temario/asignatura/${props.idAsignatura}`);
+    const response = await fetch(`https://academiqapi.retocsv.es/api/Temario/asignatura/${props.idAsignatura}`);
     if (!response.ok) throw new Error("Error al obtener los temarios");
 
     const data: Temario[] = await response.json();

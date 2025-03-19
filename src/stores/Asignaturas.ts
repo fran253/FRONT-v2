@@ -20,7 +20,7 @@ export const useAsignaturaStore = defineStore("asignatura", () => {
     clearMessages();
     
     try {
-      const response = await fetch("/api/Asignatura");
+      const response = await fetch("https://academiqapi.retocsv.es/api/Asignatura");
       if (!response.ok) throw new Error("Error al obtener todas las asignaturas");
 
       asignaturas.value = await response.json();
@@ -38,7 +38,7 @@ export const useAsignaturaStore = defineStore("asignatura", () => {
     clearMessages();
     
     try {
-      const response = await fetch(`/api/Asignatura/curso/${idCurso}`);
+      const response = await fetch(`https://academiqapi.retocsv.es/api/Asignatura/curso/${idCurso}`);
       if (!response.ok) throw new Error("Error al obtener las asignaturas del curso");
 
       asignaturas.value = await response.json();
@@ -56,7 +56,7 @@ export const useAsignaturaStore = defineStore("asignatura", () => {
     clearMessages();
     
     try {
-      const response = await fetch(`/api/Asignatura/${idAsignatura}`);
+      const response = await fetch(`https://academiqapi.retocsv.es/api/Asignatura/${idAsignatura}`);
       if (!response.ok) throw new Error("Error al obtener la asignatura");
 
       return await response.json();
@@ -75,7 +75,7 @@ export const useAsignaturaStore = defineStore("asignatura", () => {
     clearMessages();
     
     try {
-      const response = await fetch("/api/Asignatura", {
+      const response = await fetch("https://academiqapi.retocsv.es/api/Asignatura", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -104,7 +104,7 @@ export const useAsignaturaStore = defineStore("asignatura", () => {
     clearMessages();
     
     try {
-      const response = await fetch(`/api/Asignatura/${asignatura.idAsignatura}`, {
+      const response = await fetch(`https://academiqapi.retocsv.es/api/Asignatura/${asignatura.idAsignatura}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -137,7 +137,7 @@ export const useAsignaturaStore = defineStore("asignatura", () => {
     clearMessages();
     
     try {
-      const response = await fetch(`/api/Asignatura/${idAsignatura}`, {
+      const response = await fetch(`https://academiqapi.retocsv.es/api/Asignatura/${idAsignatura}`, {
         method: "DELETE",
       });
 

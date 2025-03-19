@@ -9,7 +9,7 @@ export const useArchivoStore = defineStore("archivo", () => {
   // Obtener todos los archivos
   async function fetchAllArchivos() {
     try {
-      const response = await fetch("/api/Archivo");
+      const response = await fetch("https://academiqapi.retocsv.es/api/Archivo");
       if (!response.ok) throw new Error("Error al obtener todos los archivos");
 
       archivos.value = await response.json();
@@ -22,7 +22,7 @@ export const useArchivoStore = defineStore("archivo", () => {
   // Obtener archivo por ID
   async function fetchArchivoById(idArchivo: number) {
     try {
-      const response = await fetch(`/api/Archivo/${idArchivo}`);
+      const response = await fetch(`https://academiqapi.retocsv.es/api/Archivo/${idArchivo}`);
       if (!response.ok) throw new Error("Error al obtener el archivo");
 
       return await response.json();
@@ -36,7 +36,7 @@ export const useArchivoStore = defineStore("archivo", () => {
   // Obtener archivos por ID de temario
   async function fetchArchivosByTemario(idTemario: number) {
     try {
-      const response = await fetch(`/api/Archivo/temario/${idTemario}`);
+      const response = await fetch(`https://academiqapi.retocsv.es/api/Archivo/temario/${idTemario}`);
       if (!response.ok) throw new Error("Error al obtener los archivos del temario");
 
       const data = await response.json();
@@ -58,7 +58,7 @@ export const useArchivoStore = defineStore("archivo", () => {
   // Obtener archivos por ID de usuario
   async function fetchArchivosByUsuario(idUsuario: number) {
     try {
-      const response = await fetch(`/api/Archivo/usuario/${idUsuario}`);
+      const response = await fetch(`https://academiqapi.retocsv.es/api/Archivo/usuario/${idUsuario}`);
       if (!response.ok) throw new Error("Error al obtener los archivos del usuario");
 
       const data = await response.json();
@@ -120,7 +120,7 @@ export const useArchivoStore = defineStore("archivo", () => {
   // Crear archivo en la base de datos
   async function createArchivo(archivo: Partial<ArchivoDTO>, userId: number) {
     try {
-      const response = await fetch("/api/Archivo", {
+      const response = await fetch("https://academiqapi.retocsv.es/api/Archivo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -26,7 +26,7 @@ export const useUsuarioLogeadoStore = defineStore("usuarioLogeado", () => {
   // Guardar usuario en localStorage al iniciar sesión
   async function login(email: string, password: string): Promise<boolean> {
     try {
-      const response = await fetch("/api/Usuario/login", {
+      const response = await fetch("https://academiqapi.retocsv.es/api/Usuario/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
