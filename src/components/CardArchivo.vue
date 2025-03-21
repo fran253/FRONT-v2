@@ -1,14 +1,24 @@
 <script setup lang="ts">
-import { type PropType } from 'vue';
-import type { ArchivoDTO } from "@/stores/dtos/ArchivoDTO"; // Corregido el path de importación
+import { computed } from "vue";
+import type { Archivo } from "@/stores/Archivo"; 
 
-// Usar el nombre correcto de la propiedad para acceder a ella en la función
-const props = defineProps<{ archivo: ArchivoDTO }>();
+const props = defineProps<{ archivo: Archivo }>();
 const emit = defineEmits(["ver"]);
 
 const verArchivo = () => {
   emit("ver", props.archivo);
 };
+
+// Computed para definir la clase de color según el tipo de archivo
+const tipoClase = computed(() => {
+  switch (props.archivo.tipo.toLowerCase()) {
+    case "pdf": return "Archivo___PDF";
+    case "word": return "Archivo___Word";
+    case "imagen": return "Archivo___Imagen";
+    case "video": return "Archivo___Video";
+    default: return "Archivo___Otro";
+  }
+});
 </script>
 
 <template>
@@ -16,9 +26,13 @@ const verArchivo = () => {
     <v-card class="pa-3">
       <div class="d-flex align-center justify-space-between Archivos__TituloContenedor">
         <v-card-title class="Archivo__Titulo">{{ props.archivo.titulo }}</v-card-title>
-        <div class="Archivo__Tipo">{{ props.archivo.tipo }}</div>
+        <!-- Aplicar clase dinámica SOLO a este div -->
+        <div class="Archivo__Tipo" :class="tipoClase">{{ props.archivo.tipo }}</div>
       </div>
       <v-divider></v-divider>
+
+            <v-divider></v-divider>
+
 
       <v-card-actions class="Archivos__Botones">
         <v-btn color="blue-grey-lighten-2" icon class="Archivos__Boton" @click="verArchivo" aria-label="Ver archivo">
@@ -32,7 +46,6 @@ const verArchivo = () => {
   </v-col>
 </template>
 
-
 <style lang="scss" scoped>
-  @import "@/assets/sass/components/Cards/Carchivo.scss";
+@import "@/assets/sass/components/Cards/Carchivo.scss";
 </style>

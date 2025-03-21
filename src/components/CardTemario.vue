@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 // Evento de clickar en temario para ir a la página de archivos-test
 const seleccionarTemario = () => {
   if (props.temario && props.temario.id) {
-    router.push(`/temarios/${props.temario.id}/archivos-test`);
+    router.push(`https://academiqapi.retocsv.es/api/temarios/${props.temario.id}/archivos-test`);
   } else {
     console.error('Error: el temario o su ID no están definidos');
   }

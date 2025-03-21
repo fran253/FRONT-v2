@@ -19,7 +19,7 @@
             
             <!-- Letra Q animada (más cerca) -->
             <text x="243" y="85" font-family="serif" font-style="italic" font-size="55" fill="#FF8000">
-              
+              Q
               <animate 
                 attributeName="y" 
                 values="85; 50; 90; 70; 85" 
