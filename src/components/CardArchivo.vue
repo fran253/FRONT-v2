@@ -38,9 +38,17 @@ const tipoClase = computed(() => {
         <v-btn color="blue-grey-lighten-2" icon class="Archivos__Boton" @click="verArchivo" aria-label="Ver archivo">
           <v-icon color="white">mdi-eye</v-icon>
         </v-btn>
-        <v-btn color="blue-grey-lighten-2" icon class="Archivos__Boton" :href="props.archivo.url" target="_blank" download aria-label="Descargar archivo">
-          <v-icon color="white">mdi-download</v-icon>
+        <v-btn
+          color="orange-darken-2"
+          icon
+          :href="props.archivo.url"
+          target="_blank"
+          download
+          aria-label="Descargar archivo"
+        >
+          <v-icon color="orange">mdi-download</v-icon>
         </v-btn>
+
       </v-card-actions>
     </v-card>
   </v-col>

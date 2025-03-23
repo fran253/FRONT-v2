@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import type { ArchivoDTO } from "@/stores/dtos/ArchivoDTO";
 
 export const useArchivoStore = defineStore("archivo", () => {
@@ -46,9 +46,7 @@ export const useArchivoStore = defineStore("archivo", () => {
       archivos.value = data.map((archivo: ArchivoDTO) => {
         return {
           ...archivo,
-          url: archivo.url 
-            ? (archivo.url.startsWith("/") ? `http://localhost:5167${archivo.url}` : archivo.url) 
-            : null
+          url: archivo.url || null
         };
       });
 
@@ -62,25 +60,22 @@ export const useArchivoStore = defineStore("archivo", () => {
   // Obtener archivos por ID de temario
   async function fetchArchivosByTemario(idTemario: number) {
     try {
-        const response = await fetch(`/api/Archivo/temario/${idTemario}`);
-        if (!response.ok) throw new Error("Error al obtener los archivos del temario");
+      const response = await fetch(`/api/Archivo/temario/${idTemario}`);
+      if (!response.ok) throw new Error("Error al obtener los archivos del temario");
 
-        const data = await response.json();
+      const data = await response.json();
 
-        // Convertir URL relativa en absoluta, manejando posibles valores nulos
-        archivos.value = data.map((archivo: ArchivoDTO) => {
-            return {
-                ...archivo,
-                url: archivo.url ? 
-                    (archivo.url.startsWith("/") ? `http://localhost:5167${archivo.url}` : archivo.url) 
-                    : null 
-            };
-        });
+      archivos.value = data.map((archivo: ArchivoDTO) => {
+        return {
+          ...archivo,
+          url: archivo.url || null
+        };
+      });
 
-        console.log("Archivos cargados correctamente:", archivos.value);
+      console.log("Archivos cargados correctamente:", archivos.value);
     } catch (error: any) {
-        errorMessage.value = error.message;
-        console.error("Error al obtener los archivos del temario:", error);
+      errorMessage.value = error.message;
+      console.error("Error al obtener los archivos del temario:", error);
     }
   }
 
@@ -92,13 +87,10 @@ export const useArchivoStore = defineStore("archivo", () => {
 
       const data = await response.json();
 
-      // Convertimos la URL en absoluta y manejamos valores nulos
       archivos.value = data.map((archivo: ArchivoDTO) => {
         return {
           ...archivo,
-          url: archivo.url 
-            ? (archivo.url.startsWith("/") ? `http://localhost:5167${archivo.url}` : archivo.url) 
-            : null
+          url: archivo.url || null
         };
       });
 
@@ -110,21 +102,25 @@ export const useArchivoStore = defineStore("archivo", () => {
   }
 
   // Subir archivo físico con manejo mejorado para archivos grandes
-  // Modifica la función uploadArchivoFile en Archivo.ts
-async function uploadArchivoFile(file: File | null, titulo: string, tipo: string, temarioId: number | null, userId: number | null) {
-  if (!file || !titulo || !tipo || !temarioId || !userId) {
+  async function uploadArchivoFile(
+    file: File | null,
+    titulo: string,
+    tipo: string,
+    temarioId: number | null,
+    userId: number | null
+  ) {
+    if (!file || !titulo || !tipo || !temarioId || !userId) {
       console.error("Faltan datos para la subida del archivo", { file, titulo, tipo, temarioId, userId });
       return null;
-  }
+    }
 
-  const fileSize = (file.size / (1024 * 1024)).toFixed(2);
-  console.log(`Subiendo archivo: ${file.name}, Tamaño: ${fileSize} MB para el temario ID: ${temarioId} y usuario ID: ${userId}`);
-  
-  isUploading.value = true;
-  uploadProgress.value = 0;
-  errorMessage.value = "";
+    console.log(`Subiendo archivo: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
 
-  try {
+    isUploading.value = true;
+    uploadProgress.value = 0;
+    errorMessage.value = "";
+
+    try {
       const formData = new FormData();
       formData.append("archivo", file);
       formData.append("titulo", titulo);
@@ -132,73 +128,55 @@ async function uploadArchivoFile(file: File | null, titulo: string, tipo: string
       formData.append("idUsuario", userId.toString());
       formData.append("idTemario", temarioId.toString());
 
-      // Usar el proxy de Vite en lugar de la URL directa
-      return new Promise((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          
-          // Usar la ruta relativa para aprovechar el proxy de Vite
-          xhr.open("POST", "/api/Archivo/upload", true);
-          
-          // Configurar tiempo de espera muy largo (30 minutos)
-          xhr.timeout = 100000; 
-          
-          xhr.onload = function() {
-              isUploading.value = false;
-              uploadProgress.value = 100;
-              
-              if (xhr.status >= 200 && xhr.status < 300) {
-                  try {
-                      const data = JSON.parse(xhr.responseText);
-                      console.log("Archivo subido correctamente:", data);
-                      // Actualizar automáticamente la lista de archivos
-                      fetchArchivosByTemario(temarioId);
-                      resolve(data);
-                  } catch (e) {
-                      console.error("Error al parsear respuesta:", e);
-                      reject(new Error("Error en el formato de respuesta del servidor"));
-                  }
-              } else {
-                  console.error("Error en la respuesta del servidor:", xhr.status, xhr.statusText, xhr.responseText);
-                  reject(new Error(xhr.responseText || "Error al subir el archivo"));
-              }
-          };
-          
-          xhr.onerror = function() {
-              isUploading.value = false;
-              console.error("Error de red al subir el archivo");
-              errorMessage.value = "Error de conexión. Verifique su red e intente nuevamente.";
-              reject(new Error("Error de red al intentar subir el archivo"));
-          };
-          
-          xhr.ontimeout = function() {
-              isUploading.value = false;
-              console.error("Tiempo de espera agotado al subir el archivo");
-              errorMessage.value = "La subida ha tardado demasiado. Intente con un archivo más pequeño o compruebe su conexión.";
-              reject(new Error("Tiempo de espera agotado"));
-          };
-          
-          // Monitorear el progreso y actualizar el estado
-          xhr.upload.onprogress = function(event) {
-              if (event.lengthComputable) {
-                  const percentComplete = (event.loaded / event.total) * 100;
-                  uploadProgress.value = percentComplete;
-                  console.log(`Progreso: ${percentComplete.toFixed(2)}%`);
-              }
-          };
-          
-          // No necesitamos withCredentials cuando usamos el proxy de Vite
-          xhr.withCredentials = false;
-          
-          xhr.send(formData);
+      return await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+
+        xhr.open("POST", "/api/Archivo/upload", true);
+        xhr.timeout = 300000; 
+        xhr.withCredentials = false;
+
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percent = (event.loaded / event.total) * 100;
+            uploadProgress.value = percent;
+          }
+        };
+
+        xhr.onload = async () => {
+          isUploading.value = false;
+          if (xhr.status >= 200 && xhr.status < 300) {
+            const data = JSON.parse(xhr.responseText);
+            console.log("Archivo subido correctamente:", data);
+            await fetchArchivosByTemario(temarioId);
+            resolve(data);
+          } else {
+            errorMessage.value = xhr.responseText;
+            reject(new Error(xhr.responseText));
+          }
+        };
+
+        xhr.onerror = () => {
+          isUploading.value = false;
+          errorMessage.value = "Error de red. Revisa tu conexión.";
+          reject(new Error("Error de red"));
+        };
+
+        xhr.ontimeout = () => {
+          isUploading.value = false;
+          errorMessage.value = "La subida tardó demasiado. Intenta de nuevo.";
+          reject(new Error("Timeout"));
+        };
+
+        xhr.send(formData);
       });
-  } catch (error: any) {
+    } catch (error: any) {
       isUploading.value = false;
-      errorMessage.value = error.message || "Error al subir el archivo";
-      console.error("Error al subir el archivo:", error);
+      errorMessage.value = error.message || "Error al subir el archivo.";
+      console.error("Error al subir:", error);
       return null;
+    }
   }
-}
-  
+
   // Crear archivo en la base de datos
   async function createArchivo(archivo: Partial<ArchivoDTO>, userId: number) {
     try {

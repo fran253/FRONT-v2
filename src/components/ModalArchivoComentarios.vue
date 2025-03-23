@@ -38,16 +38,43 @@ const onComentariosCargados = (cantidad: number) => {
       <v-card-text class="ArchivoComentario__Contenido">
         <!-- Ver Archivo -->
         <div class="ArchivoComentario__VerArchivo">
-          <iframe
-            v-if="props.archivo?.url"
-            :src="props.archivo.url"
-            width="100%"
-            height="400px"
-          ></iframe>
-          <div v-else class="ArchivoComentario__ErrorVerArchivo">
-            <p>No hay archivo seleccionado o la URL no es válida</p>
-          </div>
-        </div>
+  <!-- Imágenes -->
+  <img
+    v-if="props.archivo?.url && /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(props.archivo.url)"
+    :src="props.archivo.url"
+    alt="Vista previa de imagen"
+    style="max-width: 100%; max-height: 400px;"
+  />
+
+  <!-- PDFs -->
+  <iframe
+    v-else-if="props.archivo?.url && /\.pdf$/i.test(props.archivo.url)"
+    :src="props.archivo.url"
+    width="100%"
+    height="400px"
+  ></iframe>
+
+  <!-- Vídeos -->
+  <video
+    v-else-if="props.archivo?.url && /\.(mp4|webm|ogg)$/i.test(props.archivo.url)"
+    :src="props.archivo.url"
+    controls
+    width="100%"
+    height="400px"
+  ></video>
+
+  <!-- Word y otros no renderizables directamente -->
+  <div v-else-if="props.archivo?.url">
+    <v-alert type="info" class="mt-2">
+      Este tipo de archivo no se puede previsualizar. Puedes <a :href="props.archivo.url" target="_blank">descargarlo aquí</a>.
+    </v-alert>
+  </div>
+
+  <div v-else class="ArchivoComentario__ErrorVerArchivo">
+    <p>No hay archivo seleccionado o la URL no es válida</p>
+  </div>
+</div>
+
 
         <!-- Listado de los comentarios -->
         <ListaComentarios 
