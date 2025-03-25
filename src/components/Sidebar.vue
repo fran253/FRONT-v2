@@ -40,7 +40,7 @@ const expandSidebar = () => (isExpanded.value = true);
   <v-navigation-drawer v-model="drawer" :width="isExpanded ? 250 : 80" :rail="!isExpanded" app class="SideBar">
     <v-list>
       <v-list-item
-        :prepend-avatar="usuarioActual?.avatar || 'https://randomuser.me/api/portraits/women/85.jpg'"
+        :prepend-avatar="usuarioActual?.avatar || 'https://randomuser.mehttps://localhost:7278/api/portraits/women/85.jpg'"
         :subtitle="usuarioActual?.email || 'Usuario'"
         :title="usuarioActual?.nombre || 'Usuario'"
         @click="expandSidebar">

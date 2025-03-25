@@ -148,7 +148,7 @@
       console.log("Datos de registro:", JSON.stringify(nuevoUsuario));
       
       // Realizar petición directa a la API
-      const response = await fetch("/api/Usuario", {
+      const response = await fetch("https://localhost:7278/api/Usuario", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

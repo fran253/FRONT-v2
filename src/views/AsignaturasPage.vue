@@ -20,7 +20,7 @@ async function fetchAsignaturasByCurso(idCurso: string) {
   if (!idCurso) return; // Evitar llamadas con ID vacío
 
   try {
-    const response = await fetch(`/api/Asignatura/curso/${idCurso}`);
+    const response = await fetch(`https://localhost:7278/api/Asignatura/curso/${idCurso}`);
     if (!response.ok) throw new Error("Error al obtener las asignaturas del curso");
 
     asignaturas.value = await response.json();
