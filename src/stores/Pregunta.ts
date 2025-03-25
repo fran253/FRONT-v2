@@ -3,8 +3,11 @@ import { ref } from "vue";
 import type { PreguntaDTO } from "@/stores/dtos/PreguntaDTO";
 
 export const usePreguntaStore = defineStore("pregunta", () => {
+  // --------------------------- Estado ---------------------------
   const preguntas = ref<PreguntaDTO[]>([]);
   const errorMessage = ref<string>("");
+
+  // --------------------------- Métodos de Fetch ---------------------------
   
   // Obtener preguntas por ID de test
   async function fetchPreguntasByTestId(testId: number) {
@@ -19,7 +22,7 @@ export const usePreguntaStore = defineStore("pregunta", () => {
       preguntas.value = [];
     }
   }
-  
+
   // Obtener una pregunta específica por ID
   async function fetchPreguntaById(preguntaId: number) {
     try {
@@ -33,7 +36,7 @@ export const usePreguntaStore = defineStore("pregunta", () => {
       return null;
     }
   }
-  
+
   return { 
     preguntas, 
     fetchPreguntasByTestId, 

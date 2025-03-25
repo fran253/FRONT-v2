@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Imports
+// --------------------------- Imports ---------------------------
 import { ref, computed, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import Header from "@/components/Header.vue";
@@ -7,15 +7,13 @@ import Footer from "@/components/Footer.vue";
 import Sidebar from "@/components/Sidebar.vue";
 import CardAsignatura from "@/components/CardAsignatura.vue";
 
-
-//breadcrumb
+// --------------------------- Breadcrumb ---------------------------
 const items = ref([
   { title: "Cursos", disabled: false, href: "/cursos" },
   { title: "Asignaturas", disabled: true },
 ]);
 
-
-// Fetch a la API
+// --------------------------- Fetch de asignaturas ---------------------------
 async function fetchAsignaturasByCurso(idCurso: string) {
   if (!idCurso) return; // Evitar llamadas con ID vacío
 
@@ -29,8 +27,7 @@ async function fetchAsignaturasByCurso(idCurso: string) {
   }
 }
 
-
-// Buscador
+// --------------------------- Buscador ---------------------------
 const searchQuery = ref("");
 const asignaturasFiltradas = computed(() => {
   if (!searchQuery.value) return asignaturas.value;
@@ -39,20 +36,16 @@ const asignaturasFiltradas = computed(() => {
   );
 });
 
-//almacenar datos de la asignatura
+// --------------------------- Almacenar datos de asignaturas ---------------------------
 const asignaturas = ref([]);
 
-//variables
+// --------------------------- Variables ---------------------------
 const drawer = ref(false);
-// Ruta actual
 const route = useRoute();
-// ID del curso
 const idCurso = computed(() => route.params.idCurso ?? "");
-//mensaje error
 const errorMessage = ref<string>("");
 
-
-//cambio asignaturas depende el idCurso
+// --------------------------- Cargar asignaturas al cambiar ID de curso ---------------------------
 watchEffect(() => {
   if (idCurso.value) {
     fetchAsignaturasByCurso(idCurso.value);
@@ -63,9 +56,10 @@ watchEffect(() => {
 
 <template>
   <v-app>
-    <Header @toggle-sidebar="drawer = !drawer" @update-search="searchQuery = $event" /> <!-- Recibir búsqueda -->
+    <!-- --------------------------- Header --------------------------- -->
+    <Header @toggle-sidebar="drawer = !drawer" @update-search="searchQuery = $event" />
 
-    <!-- Breadcrumb -->
+    <!-- --------------------------- Breadcrumb --------------------------- -->
     <v-breadcrumbs class="AsignaturasPage__Breadcrumb" :items="items">
       <template v-slot:prepend>
         <v-icon icon="$vuetify" size="small"></v-icon>
@@ -73,11 +67,14 @@ watchEffect(() => {
     </v-breadcrumbs>
 
     <v-container class="AsignaturasPage__Contenedor">
+      <!-- --------------------------- Sidebar --------------------------- -->
       <Sidebar v-model="drawer" />
 
+      <!-- --------------------------- Contenido --------------------------- -->
       <div class="AsignaturasPage__Contenido">
         <v-container class="AsignaturasPage__ContenedorAsignaturas">
           <v-row align="start" justify="start">
+            <!-- --------------------------- Mostrar Asignaturas --------------------------- -->
             <v-col v-for="asignatura in asignaturasFiltradas" :key="asignatura.id" cols="12" sm="6" md="4" lg="3">
               <CardAsignatura :asignatura="asignatura" />
             </v-col>
@@ -86,10 +83,11 @@ watchEffect(() => {
       </div>
     </v-container>
 
+    <!-- --------------------------- Footer --------------------------- -->
     <Footer />
   </v-app>
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/pages/Asignaturas.scss";
+  @import "@/assets/sass/pages/Asignaturas.scss";
 </style>

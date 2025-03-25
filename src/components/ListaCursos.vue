@@ -1,9 +1,8 @@
 <script setup>
-//imports
+// --------------------------- Imports ---------------------------
 import { ref, onMounted, computed } from 'vue';
 
-
-// fetch a la API
+// --------------------------- Fetch a la API ---------------------------
 async function fetchCursos() {
   try {
     const response = await fetch("https://localhost:7278/api/Curso");
@@ -17,7 +16,7 @@ async function fetchCursos() {
   }
 }
 
-// filtrar los cursos al buscar
+// --------------------------- Filtrar cursos ---------------------------
 const cursosFiltrados = computed(() => {
   if (!props.searchQuery) return cursos.value;
   return cursos.value.filter(curso =>
@@ -25,24 +24,27 @@ const cursosFiltrados = computed(() => {
   );
 });
 
-// Prop para recibir la búsqueda desde el padre
+// --------------------------- Propiedades ---------------------------
 defineProps({
   searchQuery: String
 });
 
-
+// --------------------------- eventos ---------------------------
 const emit = defineEmits(["cursosCargados"]);
 
-// almacenar los cursos
+// --------------------------- Almacenar cursos ---------------------------
 const cursos = ref([]);
 
-// LLamamos al metodo
+// --------------------------- Llamar al método al montar ---------------------------
 onMounted(fetchCursos);
 </script>
 
 <template>
+  <!-- --------------------------- Contenedor de cursos --------------------------- -->
   <v-container class="ListaCursos__Contenedor">
     <v-row align="start" justify="start">
+      
+      <!-- --------------------------- Mostrar cursos --------------------------- -->
       <v-col v-for="curso in cursosFiltrados" :key="curso.idCurso" cols="12" sm="6" md="4" lg="3">
         <CardCurso 
           :id="curso.idCurso"

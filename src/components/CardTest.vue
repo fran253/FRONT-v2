@@ -1,20 +1,19 @@
 <script setup lang="ts">
-// Imports
+// --------------------------- Imports ---------------------------
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
 
-
-//Evento de clickar en test para ver la ventana del test
+// --------------------------- Evento de selección de test ---------------------------
 const verTest = () => {
   if (props.test && props.test.id) {
     router.push(`/test/${props.test.id}`);
   }
 };
 
-
-// Router
+// --------------------------- Router ---------------------------
 const router = useRouter();
-// Definir las propiedades de test
+
+// --------------------------- Propiedades de test ---------------------------
 const props = defineProps({
   test: {
     type: Object,
@@ -22,16 +21,23 @@ const props = defineProps({
   }
 });
 
-// Obtener el título
+// --------------------------- Computed ---------------------------
 const testTitle = computed(() => {
   return props.test?.titulo || props.test?.nombre || 'Test sin título';
 });
 </script>
 
 <template>
+  <!-- --------------------------- Card del test --------------------------- -->
   <v-card class="pa-3">
+    
+    <!-- --------------------------- Título del test --------------------------- -->
     <v-card-title>{{ testTitle }}</v-card-title>
+    
+    <!-- --------------------------- Separador --------------------------- -->
     <v-divider></v-divider>
+    
+    <!-- --------------------------- Botones del test --------------------------- -->
     <v-card-actions class="CardTest__Botones">
       <v-btn color="orange-darken-2" icon class="CardTest__Botones__Verbtn" @click="verTest">
         <v-icon color="white">mdi-eye</v-icon>

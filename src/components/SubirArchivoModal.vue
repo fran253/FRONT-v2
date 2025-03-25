@@ -1,9 +1,10 @@
 <script setup lang="ts">
+// --------------------------- Imports ---------------------------
 import { ref, computed, onMounted, watchEffect } from 'vue';
 import { useUsuarioLogeadoStore } from '@/stores/UsuarioLogeado';
 import { useArchivoStore } from '@/stores/Archivo';
 
-// Props
+// --------------------------- Props ---------------------------
 const props = defineProps<{ 
   visible: boolean;
   temarioId: number;
@@ -11,18 +12,18 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:visible', 'archivo-subido']);
 
-// Estado del formulario
+// --------------------------- Variables ---------------------------
 const archivoSeleccionado = ref<File | null>(null);
 const tituloArchivo = ref("");
 const tipoArchivo = ref("");
 const cargandoSubida = ref(false);
 const errorSubida = ref("");
 
-// Instancias de stores
+// --------------------------- Instancias de stores ---------------------------
 const usuarioLogeadoStore = useUsuarioLogeadoStore();
 const archivoStore = useArchivoStore();
 
-// Asegurar que el usuario se cargue desde localStorage
+// --------------------------- Asegurar que el usuario se cargue desde localStorage ---------------------------
 onMounted(() => {
   usuarioLogeadoStore.cargarUsuarioDesdeStorage();
   console.log("Usuario cargado desde localStorage:", usuarioLogeadoStore.usuarioActual);
@@ -35,15 +36,15 @@ onMounted(() => {
   }
 });
 
-// Obtener ID del usuario autenticado desde `localStorage`
+// --------------------------- Obtener ID del usuario autenticado ---------------------------
 const idUsuario = computed(() => usuarioLogeadoStore.usuarioActual?.idUsuario || null);
 
-// Verificar cambios en usuarioStore
+// --------------------------- Verificar cambios en el usuario ---------------------------
 watchEffect(() => {
   console.log("Usuario actualizado:", usuarioLogeadoStore.usuarioActual);
 });
 
-// comprobar archivo seleccionado
+// --------------------------- Comprobar archivo seleccionado ---------------------------
 const onFileSelected = (event: Event) => {
   const target = event.target as HTMLInputElement;
   if (target.files && target.files.length > 0) {
@@ -54,7 +55,7 @@ const onFileSelected = (event: Event) => {
   }
 };
 
-// Subir archivo
+// --------------------------- Subir archivo ---------------------------
 const subirArchivo = async () => {
   console.log("Título:", tituloArchivo.value);
   console.log("Tipo de archivo:", tipoArchivo.value);
@@ -99,14 +100,14 @@ const subirArchivo = async () => {
 };
 </script>
 
-
-
 <template>
+  <!-- --------------------------- Modal de subir archivo --------------------------- -->
   <v-dialog v-model="props.visible" max-width="500px">
-    <v-card>
+    <v-card class="ArchivoComentario__Contenedor">
       <v-card-title>Subir nuevo archivo</v-card-title>
       <v-divider></v-divider>
 
+      <!-- --------------------------- Formulario de subida --------------------------- -->
       <v-form @submit.prevent="subirArchivo" class="pa-5">
         <!-- Título -->
         <v-text-field
@@ -125,29 +126,30 @@ const subirArchivo = async () => {
 
         <!-- Seleccionar archivo -->
         <v-file-input
-        label="Seleccionar archivo"
-        @change="onFileSelected"
-        required
-        :max-file-size="500000000" 
-        accept="video/*,application/pdf,application/msword,image/*" 
-        show-size
-        counter
-        @error="onFileError"
-      ></v-file-input>
-      <!-- Barra de progreso de carga -->
-      <div v-if="cargandoSubida" class="mt-4">
-        <p>Subiendo archivo... Por favor espere, esto puede tardar varios minutos para archivos grandes.</p>
-        <v-progress-linear
-          indeterminate
-          color="orange-darken-2"
-          class="mb-2"
-        ></v-progress-linear>
-      </div>
+          label="Seleccionar archivo"
+          @change="onFileSelected"
+          required
+          :max-file-size="500000000" 
+          accept="video/*,application/pdf,application/msword,image/*" 
+          show-size
+          counter
+          @error="onFileError"
+        ></v-file-input>
 
+        <!-- Barra de progreso de carga -->
+        <div v-if="cargandoSubida" class="mt-4">
+          <p>Subiendo archivo... Por favor espere, esto puede tardar varios minutos para archivos grandes.</p>
+          <v-progress-linear
+            indeterminate
+            color="orange-darken-2"
+            class="mb-2"
+          ></v-progress-linear>
+        </div>
 
-        <!-- Mensaje de error -->
+        <!-- --------------------------- Mensaje de error --------------------------- -->
         <v-alert v-if="errorSubida" type="error" class="mt-2">{{ errorSubida }}</v-alert>
 
+        <!-- --------------------------- Botones de acción --------------------------- -->
         <v-card-actions class="d-flex justify-end">
           <v-btn text @click="emit('update:visible', false)">Cancelar</v-btn>
           <v-btn type="submit" color="orange-darken-2" :loading="cargandoSubida">
@@ -158,3 +160,7 @@ const subirArchivo = async () => {
     </v-card>
   </v-dialog>
 </template>
+
+<style lang="scss" scoped>
+  @import "@/assets/sass/components/Models/M_ArchivoComentarios.scss";
+</style>

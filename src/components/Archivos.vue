@@ -1,18 +1,21 @@
 <script setup lang="ts">
-// Imports
+/* ----------------------------- Imports ----------------------------- */
 import { ref, computed, onMounted, watch } from "vue";
 import ModalArchivoComentario from "@/components/ModalArchivoComentarios.vue";
 import SubirArchivoModal from "@/components/SubirArchivoModal.vue";
 import CardArchivo from "@/components/CardArchivo.vue";
 import { useArchivoStore } from "@/stores/Archivo";
 
-// Props
-const props = defineProps<{ 
-  temarioId: number | null; 
-  terminoBusqueda: string 
+/* ------------------------------ Props ------------------------------ */
+const props = defineProps<{
+  temarioId: number | null;
+  terminoBusqueda: string;
 }>();
 
-// Variables
+/* ---------------------------- Store Pinia ---------------------------- */
+const archivoStore = useArchivoStore();
+
+/* --------------------------- Refs / Estado --------------------------- */
 const modalSubidaVisible = ref(false);
 const visorAbierto = ref(false);
 const archivoSeleccionado = ref<Archivo | null>(null);
@@ -20,20 +23,36 @@ const cargando = ref(false);
 const error = ref("");
 const tipoSeleccionado = ref("todos");
 
-// Tipos de archivos disponibles en el filtro
 const tiposArchivo = ref([
   { title: "Todos los archivos", value: "todos" },
   { title: "PDF", value: "PDF" },
   { title: "Word", value: "Word" },
   { title: "Imagen", value: "imagen" },
   { title: "Video", value: "video" },
-  { title: "Otro", value: "otro" }
+  { title: "Otro", value: "otro" },
 ]);
 
-// Store
-const archivoStore = useArchivoStore();
+/* --------------------------- Computed --------------------------- */
+const archivosFiltrados = computed(() => {
+  if (!props.terminoBusqueda) return archivoStore.archivos;
+  return archivoStore.archivos.filter((archivo) =>
+    archivo.titulo.toLowerCase().includes(props.terminoBusqueda.toLowerCase())
+  );
+});
 
-// Métodos
+const tipoActual = computed(() => {
+  return tipoSeleccionado.value === "todos"
+    ? "Todos los archivos"
+    : tiposArchivo.value.find((t) => t.value === tipoSeleccionado.value)?.title;
+});
+
+const mensajeNoArchivos = computed(() => {
+  return tipoSeleccionado.value === "todos"
+    ? "No hay archivos en este temario"
+    : `No hay archivos de tipo ${tipoSeleccionado.value}`;
+});
+
+/* --------------------------- Métodos --------------------------- */
 const cargarArchivos = async (temarioId: number | null) => {
   if (!temarioId) {
     error.value = "Error con id Temario.";
@@ -47,7 +66,10 @@ const cargarArchivos = async (temarioId: number | null) => {
     if (tipoSeleccionado.value === "todos") {
       await archivoStore.fetchArchivosByTemario(temarioId);
     } else {
-      await archivoStore.fetchArchivosByTipoAndTemario(tipoSeleccionado.value, temarioId);
+      await archivoStore.fetchArchivosByTipoAndTemario(
+        tipoSeleccionado.value,
+        temarioId
+      );
     }
   } catch (e) {
     error.value = "Error al cargar los archivos";
@@ -61,36 +83,17 @@ const cambiarTipoArchivo = (tipo: string) => {
   tipoSeleccionado.value = tipo;
   cargarArchivos(props.temarioId);
 };
-//Abrir y cerrar archivo
+
 const verArchivo = (archivo: Archivo) => {
   archivoSeleccionado.value = archivo;
   visorAbierto.value = true;
 };
+
 const cerrarModal = () => {
   visorAbierto.value = false;
 };
 
-// Computed
-const archivosFiltrados = computed(() => {
-  if (!props.terminoBusqueda) return archivoStore.archivos;
-  return archivoStore.archivos.filter((archivo) =>
-    archivo.titulo.toLowerCase().includes(props.terminoBusqueda.toLowerCase())
-  );
-});
-
-const tipoActual = computed(() => {
-  return tipoSeleccionado.value === 'todos' 
-    ? 'Todos los archivos' 
-    : tiposArchivo.value.find(t => t.value === tipoSeleccionado.value)?.title;
-});
-
-const mensajeNoArchivos = computed(() => {
-  return tipoSeleccionado.value === 'todos'
-    ? 'No hay archivos en este temario'
-    : `No hay archivos de tipo ${tipoSeleccionado.value}`;
-});
-
-// Lifecycle hooks
+/* ------------------------ Ciclo de Vida ------------------------ */
 onMounted(() => cargarArchivos(props.temarioId));
 
 watch(
@@ -100,18 +103,27 @@ watch(
 );
 </script>
 
+
 <template>
+  <!-- Contenedor principal -->
   <v-container fluid>
     <v-row>
       <v-col cols="12" md="10">
-        <!-- Barra de herramientas -->
+        
+        <!-- 1. Barra de herramientas -->
         <div class="d-flex align-center mb-3 gap-2 flex-wrap">
-          <v-btn color="orange-darken-2" class="mr-2 mb-2" @click="modalSubidaVisible = true">
+          <!-- Botón: Subir archivo -->
+          <v-btn
+            color="orange-darken-2"
+            class="mr-2 mb-2"
+            @click="modalSubidaVisible = true"
+          >
             <v-icon class="mr-1">mdi-upload</v-icon>
             Subir Archivo
           </v-btn>
-          
-          <v-btn color="primary" class="mb-2"> 
+
+          <!-- Botón: Filtro por tipo -->
+          <v-btn color="primary" class="mb-2">
             <v-icon class="mr-1">mdi-filter-variant</v-icon>
             {{ tipoActual }}
             <v-menu activator="parent">
@@ -129,25 +141,38 @@ watch(
           </v-btn>
         </div>
 
-        <!-- Estados -->
-        <v-card v-if="cargando" class="pa-5 d-flex justify-center align-center">
-          <v-progress-circular indeterminate color="orange-darken-2"></v-progress-circular>
+        <!-- 2. Estados condicionales -->
+
+        <!-- Estado: Cargando -->
+        <v-card
+          v-if="cargando"
+          class="pa-5 d-flex justify-center align-center"
+        >
+          <v-progress-circular
+            indeterminate
+            color="orange-darken-2"
+          ></v-progress-circular>
         </v-card>
 
+        <!-- Estado: Error -->
         <v-card v-else-if="error" class="pa-5 text-center">
           <v-icon color="error" size="large">mdi-alert-circle</v-icon>
           <p class="text-h6 mt-2">{{ error }}</p>
-          <v-btn color="orange-darken-2" @click="cargarArchivos(props.temarioId!)">
+          <v-btn
+            color="orange-darken-2"
+            @click="cargarArchivos(props.temarioId!)"
+          >
             Reintentar
           </v-btn>
         </v-card>
 
+        <!-- Estado: Lista vacía -->
         <v-card v-else-if="archivosFiltrados.length === 0" class="pa-5 text-center">
           <v-icon size="large">mdi-file-search</v-icon>
           <p class="text-h6 mt-2">{{ mensajeNoArchivos }}</p>
         </v-card>
 
-        <!-- Lista de archivos -->
+        <!-- 3. Contenido: Lista de archivos -->
         <v-card v-else class="pa-5">
           <v-row>
             <CardArchivo
@@ -161,7 +186,7 @@ watch(
       </v-col>
     </v-row>
 
-    <!-- Modales -->
+    <!-- 4. Modales -->
     <SubirArchivoModal 
       :visible="modalSubidaVisible" 
       :temarioId="props.temarioId!" 
@@ -176,6 +201,7 @@ watch(
     />
   </v-container>
 </template>
+
 
 <style lang="scss" scoped>
 .gap-2 {

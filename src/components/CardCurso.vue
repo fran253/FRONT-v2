@@ -1,18 +1,12 @@
 <script setup>
-//Imports
+// --------------------------- Imports ---------------------------
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
-//Evento de clickar en el curso para ir a la página de asignaturas
-const seleccionarCurso = () => {
-  if (curso.id) {
-    router.push(`/asignaturas/${curso.id}`);
-  }
-};
-
-//router
+// --------------------------- Router ---------------------------
 const router = useRouter();
-//propiedades del curso
+
+// --------------------------- Propiedades ---------------------------
 const curso = defineProps({
   id: Number, 
   titulo: String,
@@ -21,16 +15,20 @@ const curso = defineProps({
   imagen: String
 });
 
+// --------------------------- Variables reactivas ---------------------------
 const show = ref(false);
-
-//Funcionalidad Mis cursos
 const misCursos = ref(JSON.parse(localStorage.getItem('misCursos') || '[]'));
 
-//verificar si el curso ya está en la lista
+// --------------------------- Computed ---------------------------
 const estaEnMisCursos = computed(() => misCursos.value.some(c => c.id === curso.id));
 
+// --------------------------- Métodos ---------------------------
+const seleccionarCurso = () => {
+  if (curso.id) {
+    router.push(`/asignaturas/${curso.id}`);
+  }
+};
 
-//Metodo para añadir o quitar un curso de la lista de mis cursos
 const añadirAMisCursos = () => {
   if (estaEnMisCursos.value) {
     misCursos.value = misCursos.value.filter(c => c.id !== curso.id);
@@ -42,6 +40,7 @@ const añadirAMisCursos = () => {
 </script>
 
 <template>
+  <!-- --------------------------- Card de Curso --------------------------- -->
   <v-card class="curso-card" @click="seleccionarCurso">
     <v-img :src="imagen" height="200px" cover></v-img>
 
@@ -53,6 +52,7 @@ const añadirAMisCursos = () => {
       {{ subtitulo }}
     </v-card-subtitle>
 
+    <!-- --------------------------- Botón para añadir a Mis Cursos --------------------------- -->
     <v-card-actions>
       <v-btn variant="flat" :color="estaEnMisCursos ? 'orange' : 'white'" class="CardCurso__BotonLike" @click.stop="añadirAMisCursos">
         <v-icon :color="estaEnMisCursos ? 'white' : 'orange'">
@@ -61,6 +61,7 @@ const añadirAMisCursos = () => {
       </v-btn>
     </v-card-actions>
 
+    <!-- --------------------------- Descripción Expansible --------------------------- -->
     <v-expand-transition>
       <div v-show="show">
         <v-divider></v-divider>

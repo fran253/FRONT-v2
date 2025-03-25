@@ -3,11 +3,13 @@ import { ref } from "vue";
 import type { ArchivoDTO } from "@/stores/dtos/ArchivoDTO";
 
 export const useArchivoStore = defineStore("archivo", () => {
+  // --------------------------- Estado ---------------------------
   const archivos = ref<ArchivoDTO[]>([]);
   const errorMessage = ref<string>("");
   const isUploading = ref<boolean>(false);
   const uploadProgress = ref<number>(0);
 
+  // --------------------------- Métodos de Fetch ---------------------------
   // Obtener todos los archivos
   async function fetchAllArchivos() {
     try {
@@ -35,21 +37,17 @@ export const useArchivoStore = defineStore("archivo", () => {
     }
   }
 
-  // Obtener archivos por Tipo
+  // Obtener archivos por Tipo y Temario
   async function fetchArchivosByTipoAndTemario(tipo: string, idTemario: number) {
     try {
       const response = await fetch(`https://localhost:7278/api/Archivo/tipo/${tipo}/temario/${idTemario}`);
       if (!response.ok) throw new Error("Error al obtener los archivos del tipo y temario seleccionados");
 
       const data = await response.json();
-
-      archivos.value = data.map((archivo: ArchivoDTO) => {
-        return {
-          ...archivo,
-          url: archivo.url || null
-        };
-      });
-
+      archivos.value = data.map((archivo: ArchivoDTO) => ({
+        ...archivo,
+        url: archivo.url || null,
+      }));
       console.log("Archivos filtrados por tipo y temario cargados correctamente:", archivos.value);
     } catch (error: any) {
       errorMessage.value = error.message;
@@ -64,14 +62,10 @@ export const useArchivoStore = defineStore("archivo", () => {
       if (!response.ok) throw new Error("Error al obtener los archivos del temario");
 
       const data = await response.json();
-
-      archivos.value = data.map((archivo: ArchivoDTO) => {
-        return {
-          ...archivo,
-          url: archivo.url || null
-        };
-      });
-
+      archivos.value = data.map((archivo: ArchivoDTO) => ({
+        ...archivo,
+        url: archivo.url || null,
+      }));
       console.log("Archivos cargados correctamente:", archivos.value);
     } catch (error: any) {
       errorMessage.value = error.message;
@@ -82,26 +76,31 @@ export const useArchivoStore = defineStore("archivo", () => {
   // Obtener archivos por ID de usuario
   async function fetchArchivosByUsuario(idUsuario: number) {
     try {
+      archivos.value = [];
       const response = await fetch(`https://localhost:7278/api/Archivo/usuario/${idUsuario}`);
       if (!response.ok) throw new Error("Error al obtener los archivos del usuario");
 
       const data = await response.json();
-
-      archivos.value = data.map((archivo: ArchivoDTO) => {
-        return {
+      if (data.length > 0) {
+        archivos.value = data.map((archivo: ArchivoDTO) => ({
           ...archivo,
-          url: archivo.url || null
-        };
-      });
-
-      console.log("Archivos del usuario cargados correctamente:", archivos.value);
+          url: archivo.url || null,
+        }));
+        localStorage.setItem("archivosUsuario", JSON.stringify(archivos.value));
+        console.log("Archivos del usuario cargados correctamente:", archivos.value);
+      } else {
+        console.log("No hay archivos para este usuario");
+        localStorage.removeItem("archivosUsuario");
+      }
     } catch (error: any) {
+      archivos.value = [];
+      localStorage.removeItem("archivosUsuario");
       errorMessage.value = error.message;
       console.error("Error al obtener los archivos del usuario:", error);
     }
   }
 
-  // Subir archivo físico con manejo mejorado para archivos grandes
+  // --------------------------- Subida de archivos ---------------------------
   async function uploadArchivoFile(
     file: File | null,
     titulo: string,
@@ -130,9 +129,8 @@ export const useArchivoStore = defineStore("archivo", () => {
 
       return await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-
         xhr.open("POST", "https://localhost:7278/api/Archivo/upload", true);
-        xhr.timeout = 300000; 
+        xhr.timeout = 300000;
         xhr.withCredentials = false;
 
         xhr.upload.onprogress = (event) => {
@@ -177,7 +175,7 @@ export const useArchivoStore = defineStore("archivo", () => {
     }
   }
 
-  // Crear archivo en la base de datos
+  // --------------------------- Crear archivo ---------------------------
   async function createArchivo(archivo: Partial<ArchivoDTO>, userId: number) {
     try {
       const response = await fetch("https://localhost:7278/api/Archivo", {

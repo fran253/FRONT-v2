@@ -3,11 +3,14 @@ import { ref } from "vue";
 import type { UsuarioDTO } from "@/stores/dtos/UsuarioDTO";
 
 export const useUsuarioStore = defineStore("usuario", () => {
+  // --------------------------- Estado ---------------------------
   const usuarios = ref<UsuarioDTO[]>([]);
   const usuario = ref<UsuarioDTO | null>(null);
   const errorMessage = ref<string>("");
 
-  // Corregida a URL relativa
+  // --------------------------- Métodos de Fetch ---------------------------
+  
+  // Obtener todos los usuarios
   async function fetchAllUsuarios() {
     try {
       const response = await fetch("https://localhost:7278/api/Usuario");
@@ -20,7 +23,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     }
   }
 
-  // Corregida a URL relativa
+  // Obtener un usuario por ID
   async function fetchUsuarioById(idUsuario: number) {
     try {
       const response = await fetch(`https://localhost:7278/api/Usuario/${idUsuario}`);
@@ -33,7 +36,9 @@ export const useUsuarioStore = defineStore("usuario", () => {
     }
   }
 
-  // Este ya tenía URL relativa
+  // --------------------------- Métodos de Modificación ---------------------------
+  
+  // Crear un nuevo usuario
   async function createUsuario(newUser: UsuarioDTO) {
     try {
       const response = await fetch("https://localhost:7278/api/Usuario", {
@@ -52,7 +57,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     }
   }
 
-  // Este ya tenía URL relativa
+  // Actualizar un usuario existente
   async function updateUsuario(updatedUser: UsuarioDTO) {
     try {
       const response = await fetch(`https://localhost:7278/api/Usuario/${updatedUser.idUsuario}`, {
@@ -70,7 +75,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     }
   }
 
-  // Este ya tenía URL relativa
+  // Eliminar un usuario
   async function deleteUsuario(idUsuario: number) {
     try {
       const response = await fetch(`https://localhost:7278/api/Usuario/${idUsuario}`, {
@@ -79,7 +84,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
 
       if (!response.ok) throw new Error("Error al eliminar el usuario");
 
-      // borrado de front (actualiza la pagina para que se impriman los usuario existentes)
+      // Actualizar la lista de usuarios en el frontend después de eliminar
       usuarios.value = usuarios.value.filter(u => u.idUsuario !== idUsuario);
     } catch (error: any) {
       errorMessage.value = error.message;
@@ -87,5 +92,14 @@ export const useUsuarioStore = defineStore("usuario", () => {
     }
   }
 
-  return { usuarios, usuario, fetchAllUsuarios, fetchUsuarioById, createUsuario, updateUsuario, deleteUsuario, errorMessage };
+  return { 
+    usuarios, 
+    usuario, 
+    fetchAllUsuarios, 
+    fetchUsuarioById, 
+    createUsuario, 
+    updateUsuario, 
+    deleteUsuario, 
+    errorMessage 
+  };
 });

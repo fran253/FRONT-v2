@@ -3,18 +3,21 @@ import { ref, computed } from "vue";
 import type { AsignaturaDTO } from "@/stores/dtos/AsignaturasDTO";
 
 export const useAsignaturaStore = defineStore("asignatura", () => {
+  // --------------------------- Estado ---------------------------
   const asignaturas = ref<AsignaturaDTO[]>([]);
   const errorMessage = ref<string>("");
   const isLoading = ref<boolean>(false);
   const successMessage = ref<string>("");
 
-  // limpiar mensajes
+  // --------------------------- Métodos de gestión de mensajes ---------------------------
+  // Limpiar mensajes
   function clearMessages() {
     errorMessage.value = "";
     successMessage.value = "";
   }
 
-  // obtener todas las asignaturas
+  // --------------------------- Métodos de Fetch ---------------------------
+  // Obtener todas las asignaturas
   async function fetchAllAsignaturas() {
     isLoading.value = true;
     clearMessages();
@@ -32,7 +35,7 @@ export const useAsignaturaStore = defineStore("asignatura", () => {
     }
   }
 
-  // obtener asignaturas por curso
+  // Obtener asignaturas por curso
   async function fetchAsignaturasByCurso(idCurso: number) {
     isLoading.value = true;
     clearMessages();
@@ -69,6 +72,7 @@ export const useAsignaturaStore = defineStore("asignatura", () => {
     }
   }
 
+  // --------------------------- Métodos de modificación de asignaturas ---------------------------
   // Crear una nueva asignatura
   async function createAsignatura(nuevaAsignatura: Omit<AsignaturaDTO, 'idAsignatura' | 'fechaCreacion'>): Promise<boolean> {
     isLoading.value = true;
@@ -157,7 +161,7 @@ export const useAsignaturaStore = defineStore("asignatura", () => {
     }
   }
 
-  // Filtrar por nombre
+  // --------------------------- Filtrado de asignaturas ---------------------------
   const asignaturasFiltradas = computed(() => (searchQuery: string) => {
     if (!searchQuery) return asignaturas.value;
     return asignaturas.value.filter(asignatura =>

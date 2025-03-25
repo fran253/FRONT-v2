@@ -1,12 +1,32 @@
 <script setup lang="ts">
-//imports
+// --------------------------- Imports ---------------------------
 import { ref, onMounted, computed } from "vue";
 import CardComentario from "@/components/CardComentario.vue";
 import { useComentarioStore } from "@/stores/Comentario";
 import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
 
+// --------------------------- Propiedades del componente ---------------------------
+const props = defineProps<{ 
+  archivoId: number; 
+}>();
 
-// fetch a la API
+// --------------------------- Emisión de eventos ---------------------------
+const emit = defineEmits(["comentarioCargado"]);
+
+// --------------------------- Almacenar comentarios ---------------------------
+const comentarios = ref([]);
+
+// --------------------------- Obtener usuario logeado ---------------------------
+const usuarioLogeadoStore = useUsuarioLogeadoStore();
+const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
+
+// --------------------------- Variables ---------------------------
+const nuevoComentario = ref("");
+const cargando = ref(false);
+const comentarioStore = useComentarioStore();
+const errorMensaje = ref("");
+
+// --------------------------- Mostrar comentarios (fetch) ---------------------------
 async function mostrarComentarios() {
   cargando.value = true;
   
@@ -30,55 +50,19 @@ async function mostrarComentarios() {
   cargando.value = false;
 }
 
-// Propiedades del componente
-const props = defineProps<{ 
-  archivoId: number; 
-}>();
-
-
-const emit = defineEmits(["comentarioCargado"]);
-
-//Almacenar los comentarios
-const comentarios = ref([]);
-
-
-
-//  Obtener usuario logeado
-const usuarioLogeadoStore = useUsuarioLogeadoStore();
-const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
-
-// comprobaciones
-console.log("Usuario actual en ListaComentarios:", usuarioActual.value);
-
-// Cuando abres el modal, llama al metodo
-onMounted(() => {
-  usuarioLogeadoStore.cargarUsuarioDesdeStorage(); 
-  mostrarComentarios();
-});
-
-
-// Variables
-const nuevoComentario = ref("");
-const cargando = ref(false);
-const comentarioStore = useComentarioStore();
-const errorMensaje = ref("");
-
-
-
-// fetch a la API (añadir comentario)
+// --------------------------- Añadir comentario (fetch) ---------------------------
 async function añadirComentario() {
   console.log("Intentando enviar comentario con usuario:", usuarioActual.value);
 
   if (!nuevoComentario.value.trim()) return;
 
-  //verificar usuario logeado
   if (!usuarioActual.value || !usuarioActual.value.id) {
     return;
   }
 
   try {
     const comentarioObj = {
-      idComentario: 0, // The backend will assign the actual ID
+      idComentario: 0,
       contenido: nuevoComentario.value.trim(),
       idUsuario: usuarioActual.value.id,
       idArchivo: props.archivoId,
@@ -103,26 +87,33 @@ async function añadirComentario() {
   }
 }
 
+// --------------------------- Montar el componente ---------------------------
+onMounted(() => {
+  usuarioLogeadoStore.cargarUsuarioDesdeStorage(); 
+  mostrarComentarios();
+});
 
 </script>
 
-
-
 <template>
   <div class="ListaComentarios">
+    <!-- --------------------------- Título y separador --------------------------- -->
     <h3>Comentarios</h3>
     <v-divider></v-divider>
 
+    <!-- --------------------------- Lista de comentarios --------------------------- -->
     <div class="lista">
       <v-progress-circular v-if="cargando" indeterminate color="orange"></v-progress-circular>
       <template v-else>
         <CardComentario v-for="comentario in comentarios" :key="comentario.id" :comentario="comentario" />
-        <p v-if="comentarios.length === 0">No hay comentarios aún. Sé el primero en comentar.</p>
+        <p v-if="comentarios.length === 0">Los comentarios se implementarán próximamente.</p>
       </template>
     </div>
 
+    <!-- --------------------------- Mensaje de error --------------------------- -->
     <p v-if="errorMensaje" class="ListaComentarios__Error">{{ errorMensaje }}</p>
 
+    <!-- --------------------------- Sección para nuevo comentario --------------------------- -->
     <div class="nueva-entrada">
       <v-text-field
         v-model="nuevoComentario"

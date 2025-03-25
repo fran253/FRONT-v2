@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Propiedades del comentario
+// --------------------------- Propiedades ---------------------------
 defineProps<{
   comentario: {
     id: number;
@@ -12,16 +12,18 @@ defineProps<{
 </script>
 
 <template>
+  <!-- --------------------------- Comentario Card --------------------------- -->
   <v-card class="Comentario__Card">
     <v-row no-gutters>
-      <!-- Avatar -->
+      
+      <!-- --------------------------- Avatar --------------------------- -->
       <v-col cols="2">
         <v-avatar size="40">
           <img :src="comentario.avatar" alt="Avatar" />
         </v-avatar>
       </v-col>
 
-      <!-- Información del usuario -->
+      <!-- --------------------------- Información del usuario --------------------------- -->
       <v-col cols="3">
         <div class="Comentario__InfoUsuario">
           <v-card-title class="Comentario__InfoUsuario__Nombre">{{ comentario.usuario }}</v-card-title>
@@ -29,7 +31,7 @@ defineProps<{
         </div>
       </v-col>
 
-      <!-- Texto del comentario -->
+      <!-- --------------------------- Texto del comentario --------------------------- -->
       <v-col cols="7">
         <v-card-text class="Comentario__InfoUsuario__Comentario">{{ comentario.texto }}</v-card-text>
       </v-col>

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-//Imports
+/* --------------------------- Imports --------------------------- */
 import { useRouter } from "vue-router";
 
-//Router
+/* --------------------------- Router --------------------------- */
 const router = useRouter();
 
-//Evento para ir a la página de temarios al hacer clic en el botón
+/* --------------------------- Métodos --------------------------- */
 const irATemarios = () => {
   if (props.asignatura && props.asignatura.idAsignatura) {
       router.push(`/temarios/${props.asignatura.idAsignatura}`);
@@ -14,7 +14,7 @@ const irATemarios = () => {
   }
 };
 
-//Propiedades de la asignatura
+/* --------------------------- Props --------------------------- */
 const props = defineProps<{ 
   asignatura: { 
     idAsignatura: number;

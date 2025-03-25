@@ -1,5 +1,5 @@
 <script setup>
-//imports
+// --------------------------- Imports ---------------------------
 import { ref, watch, computed, onMounted } from 'vue';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
@@ -9,18 +9,17 @@ import Login from '@/components/Login.vue';
 import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
 import AvatarRiendo from '@/components/AvatarEmote.vue';
 
-
-// Store de usuario
+// --------------------------- Store de usuario ---------------------------
 const usuarioLogeadoStore = useUsuarioLogeadoStore();
 
-// Variables
+// --------------------------- Variables ---------------------------
 const drawer = ref(false);
 const items = ref([{ title: 'Perfil', disabled: false }]);
 
-// Obtener el usuario actual del store
+// --------------------------- Obtener el usuario actual ---------------------------
 const usuarioActual = computed(() => usuarioLogeadoStore.usuarioActual);
-  
-// Utilizar el nombre del usuario logueado o un valor por defecto
+
+// --------------------------- Nombre de usuario ---------------------------
 const nombre = computed({
   get: () => usuarioActual.value?.nombre || "Usuario",
   set: (value) => {
@@ -28,7 +27,7 @@ const nombre = computed({
   }
 });
 
-// Verificar si hay un usuario en el localStorage al cargar la página
+// --------------------------- Verificar usuario en localStorage ---------------------------
 const checkUsuarioLocal = () => {
   const usuarioGuardado = localStorage.getItem('usuario');
   if (usuarioGuardado && !usuarioActual.value) {
@@ -41,7 +40,7 @@ const checkUsuarioLocal = () => {
   }
 };
 
-// Frases inspiradoras para el perfil
+// --------------------------- Frases inspiradoras para el perfil ---------------------------
 const estados = [
   "Me encanta Estudiar",
   "Soy una persona aplicada",
@@ -51,7 +50,7 @@ const estados = [
   "Alumno sin igual"
 ];
 
-// Ejecutar al cargar el componente
+// --------------------------- Ejecutar al montar el componente ---------------------------
 onMounted(() => {
   checkUsuarioLocal();
 });
@@ -59,32 +58,37 @@ onMounted(() => {
 
 <template>
   <v-app>
+    <!-- --------------------------- Header --------------------------- -->
     <Header @toggle-sidebar="drawer = !drawer" />
     
-    <!-- Breadcrumb -->
+    <!-- --------------------------- Breadcrumb --------------------------- -->
     <v-breadcrumbs class="PerfilPage__Breadcrumb" :items="items">
       <template v-slot:prepend>
         <v-icon icon="$vuetify" size="small"></v-icon>
       </template>
     </v-breadcrumbs>
 
+    <!-- --------------------------- Contenedor principal --------------------------- -->
     <v-container class="perfil-container">
+      <!-- --------------------------- Sidebar --------------------------- -->
       <Sidebar v-model="drawer" />
 
       <div class="perfil-content">
         <v-row class="perfil-row">
-          <!-- Fila superior con avatar, nombre, email y frase -->
+          
+          <!-- --------------------------- Fila superior con avatar, nombre, email y frase --------------------------- -->
           <v-col cols="12" class="perfil-info-row">
             <v-card class="perfil-card">
               <v-row no-gutters align="center">
-                <!-- Avatar -->
+                <!-- --------------------------- Avatar --------------------------- -->
                 <v-col cols="12" sm="3" class="perfil-avatar-container">
                   <AvatarRiendo />
                 </v-col>
 
-                <!-- Información del usuario -->
+                <!-- --------------------------- Información del usuario --------------------------- -->
                 <v-col cols="12" sm="9" class="perfil-info">
                   <v-row>
+                    <!-- --------------------------- Nombre --------------------------- -->
                     <v-col cols="12" sm="6">
                       <v-text-field 
                         class="perfil-nombre" 
@@ -97,6 +101,7 @@ onMounted(() => {
                       ></v-text-field>
                     </v-col>
                     
+                    <!-- --------------------------- Email --------------------------- -->
                     <v-col cols="12" sm="6">
                       <v-text-field
                         class="perfil-email"
@@ -109,6 +114,7 @@ onMounted(() => {
                       ></v-text-field>
                     </v-col>
                     
+                    <!-- --------------------------- Frase --------------------------- -->
                     <v-col cols="12">
                       <v-autocomplete 
                         class="perfil-frase" 
@@ -125,7 +131,7 @@ onMounted(() => {
             </v-card>
           </v-col>
 
-          <!-- Fila inferior con pestañas -->
+          <!-- --------------------------- Fila inferior con pestañas --------------------------- -->
           <v-col cols="12" class="perfil-tab-row">
             <UserTab />
           </v-col>
@@ -133,10 +139,11 @@ onMounted(() => {
       </div>
     </v-container>
 
+    <!-- --------------------------- Footer --------------------------- -->
     <Footer />
   </v-app>
 </template>
 
 <style lang="scss" scoped>
- @import "@/assets/sass/pages/Perfil.scss";
+  @import "@/assets/sass/pages/Perfil.scss";
 </style>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-// Importar Vue
+// --------------------------- Imports ---------------------------
 import { defineProps, defineEmits } from 'vue';
 
-// Definir propiedades
+// --------------------------- propiedades ---------------------------
 const props = defineProps({
   slides: {
     type: Array,
@@ -10,25 +10,32 @@ const props = defineProps({
   }
 });
 
-// Definir eventos que emitiremos
+// --------------------------- eventos ---------------------------
 const emit = defineEmits(['entrarCursos']);
 
-// Función para manejar el clic en el botón
+// --------------------------- Función para manejar clic en el botón ---------------------------
 const handleEntrarCursos = () => {
   emit('entrarCursos');
 };
 </script>
 
 <template>
+  <!-- --------------------------- Carrusel Home --------------------------- -->
   <div class="Carrusel__Home">
     <v-carousel class="Carrusel__Componente" height="600" progress="primary" hide-delimiters>
+      
+      <!-- --------------------------- Item del carrusel --------------------------- -->
       <v-carousel-item v-for="(slide, i) in slides" :key="i">
         <v-sheet height="100%">
           <div class="d-flex fill-height justify-center align-center">
             <v-img :src="slide.image" height="100%" cover>
+              
+              <!-- --------------------------- Contenido del slide --------------------------- -->
               <div class="Carrusel__Contenido">
                 <h2 class="Carrusel__Titulo">{{ slide.title }}</h2>
                 <p v-if="slide.text" class="Carrusel__Texto">{{ slide.text }}</p>
+                
+                <!-- --------------------------- Botón para entrar a cursos --------------------------- -->
                 <v-btn 
                   v-if="slide.showButton" 
                   variant="outlined" 
