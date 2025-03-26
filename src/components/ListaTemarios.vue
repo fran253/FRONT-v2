@@ -1,19 +1,18 @@
 <script setup lang="ts">
-// Imports
+// --------------------------- Imports ---------------------------
 import { ref, onMounted, computed, watch } from "vue";
 import CardTemario from "@/components/CardTemario.vue";
 
-
-// fetch a la API
+// --------------------------- Fetch a la API ---------------------------
 async function fetchTemarios() {
   if (!props.idAsignatura || props.idAsignatura === "undefined") return;
   try {
-    const response = await fetch(`/api/Temario/asignatura/${props.idAsignatura}`);
+    const response = await fetch(`http://localhost:5687/api/Temario/asignatura/${props.idAsignatura}`);
     if (!response.ok) throw new Error("Error al obtener los temarios");
 
     const data = await response.json();
     
-    // verificar id temario
+    // Verificar id temario
     temarios.value = data.map(temario => ({
       ...temario,
       id: temario.id || temario.idTemario || temario.temarioId || null
@@ -25,7 +24,7 @@ async function fetchTemarios() {
   }
 }
 
-// filtrar los temarios al buscar
+// --------------------------- Filtrar los temarios ---------------------------
 const temariosFiltrados = computed(() => {
   if (!props.searchQuery) return temarios.value;
   return temarios.value.filter(temario =>
@@ -33,9 +32,7 @@ const temariosFiltrados = computed(() => {
   );
 });
 
-
-
-// Propiedades para filtrar los datos
+// --------------------------- Propiedades ---------------------------
 const props = defineProps({
   searchQuery: {
     type: String,
@@ -47,33 +44,33 @@ const props = defineProps({
   }
 });
 
-
-
+// --------------------------- Emitir eventos ---------------------------
 const emit = defineEmits(["temariosCargados"]);
 
-// almacenar los temarios
+// --------------------------- Almacenar temarios ---------------------------
 const temarios = ref([]);
 
-// LLamamos al metodo
+// --------------------------- Llamar al método ---------------------------
 onMounted(fetchTemarios);
 
-// Llamamos a la API cuando cambie el ID de la asignatura
+// --------------------------- Llamar a la API cuando cambie el ID de la asignatura ---------------------------
 watch(() => props.idAsignatura, (newVal) => {
   if (newVal && newVal !== "undefined") {
     fetchTemarios();
   }
 }, { immediate: true });
-
 </script>
 
 <template>
+  <!-- --------------------------- Contenedor principal --------------------------- -->
   <v-container class="ListaTemarios__Contenedor">
-    <!-- cuando no hayan temarios aparece mensaje de error -->
+    
+    <!-- --------------------------- Mensaje cuando no haya temarios --------------------------- -->
     <div v-if="temarios.length === 0" class="text-center my-4">
       <p>No hay temarios disponibles para esta asignatura</p>
     </div>
   
-
+    <!-- --------------------------- Mostrar temarios --------------------------- -->
     <v-row align="start" justify="start">
       <v-col v-for="temario in temariosFiltrados" :key="temario.id || index" cols="12" sm="6" md="4" lg="3">
         <CardTemario :temario="temario" />

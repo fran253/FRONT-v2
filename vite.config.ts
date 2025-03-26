@@ -15,11 +15,20 @@ export default defineConfig({
     },
   },
   server: {
+    hmr: {
+      protocol: 'ws'
+    },
     proxy: {
-      '/api': {
-        target: 'http://localhost:5167', 
+      'https://localhost:5687/api': {
+        target: 'http://localhost:5687', 
         changeOrigin: true,
-        secure: false
+        secure: false,
+        configure: (proxy) => {
+          proxy.options.agent = false;
+          proxy.options.headers = {
+            'Connection': 'keep-alive'
+          };
+        }
       }
     }
   }

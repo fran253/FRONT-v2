@@ -1,9 +1,10 @@
 <script setup lang="ts">
+// --------------------------- Imports ---------------------------
 import { ref, onMounted, computed, watch } from "vue";
 import CardTest from "@/components/CardTest.vue";
 import { useTestStore } from "@/stores/Test";
 
-// Props para recibir los datos desde el padre
+// --------------------------- Props ---------------------------
 const props = defineProps({
   searchQuery: {
     type: String,
@@ -17,13 +18,14 @@ const props = defineProps({
 
 const emit = defineEmits(["testsCargados"]);
 
-// usa el Test.ts en store
+// --------------------------- Store ---------------------------
 const testStore = useTestStore();
 
+// --------------------------- Variables de estado ---------------------------
 const loading = ref(false);
 const error = ref("");
 
-// Filtrar los tests dinámicamente
+// --------------------------- Computed ---------------------------
 const testsFiltrados = computed(() => {
   if (!props.searchQuery) return testStore.tests;
   
@@ -32,7 +34,7 @@ const testsFiltrados = computed(() => {
   );
 });
 
-// Método para cargar los tests del temario
+// --------------------------- Métodos ---------------------------
 async function cargarTests() {
   if (!props.temarioId) return;
   
@@ -49,27 +51,29 @@ async function cargarTests() {
   }
 }
 
-// Observar cambios en el temarioId
+// --------------------------- Observadores ---------------------------
 watch(() => props.temarioId, async (nuevoId) => {
   if (nuevoId) {
     await cargarTests();
   }
 }, { immediate: true });
 
-// LLamamos al metodo
+// --------------------------- Ciclo de Vida ---------------------------
 onMounted(async () => {
   await cargarTests();
 });
 </script>
 
 <template>
+  <!-- --------------------------- Contenedor principal --------------------------- -->
   <v-container fluid>
-    <!-- Estado de carga -->
+    
+    <!-- --------------------------- Estado de carga --------------------------- -->
     <v-card v-if="loading" class="pa-5 d-flex justify-center align-center">
       <v-progress-circular indeterminate color="orange-darken-2"></v-progress-circular>
     </v-card>
     
-    <!-- Mensaje de error -->
+    <!-- --------------------------- Mensaje de error --------------------------- -->
     <v-card v-else-if="error" class="pa-5 text-center">
       <v-icon color="error" size="large">mdi-alert-circle</v-icon>
       <p class="text-h6 mt-2">{{ error }}</p>
@@ -78,13 +82,13 @@ onMounted(async () => {
       </v-btn>
     </v-card>
     
-    <!-- Sin tests -->
+    <!-- --------------------------- Sin tests --------------------------- -->
     <v-card v-else-if="testsFiltrados.length === 0" class="pa-5 text-center">
       <v-icon size="large">mdi-file-search</v-icon>
       <p class="text-h6 mt-2">No se encontraron tests para este temario</p>
     </v-card>
     
-    <!-- Lista de tests -->
+    <!-- --------------------------- Lista de tests --------------------------- -->
     <v-card v-else class="pa-5">
       <v-row>
         <v-col v-for="test in testsFiltrados" :key="test.id" cols="12" md="6" lg="4">

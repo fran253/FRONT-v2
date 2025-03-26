@@ -3,13 +3,16 @@ import { ref } from "vue";
 import type { PreguntaDTO } from "@/stores/dtos/PreguntaDTO";
 
 export const usePreguntaStore = defineStore("pregunta", () => {
+  // --------------------------- Estado ---------------------------
   const preguntas = ref<PreguntaDTO[]>([]);
   const errorMessage = ref<string>("");
+
+  // --------------------------- Métodos de Fetch ---------------------------
   
   // Obtener preguntas por ID de test
   async function fetchPreguntasByTestId(testId: number) {
     try {
-      const response = await fetch(`/api/Pregunta/test/${testId}`);
+      const response = await fetch(`http://localhost:5687/api/Pregunta/test/${testId}`);
       if (!response.ok) throw new Error("Error al obtener las preguntas del test");
       
       preguntas.value = await response.json();
@@ -19,11 +22,11 @@ export const usePreguntaStore = defineStore("pregunta", () => {
       preguntas.value = [];
     }
   }
-  
+
   // Obtener una pregunta específica por ID
   async function fetchPreguntaById(preguntaId: number) {
     try {
-      const response = await fetch(`/api/Pregunta/${preguntaId}`);
+      const response = await fetch(`http://localhost:5687/api/Pregunta/${preguntaId}`);
       if (!response.ok) throw new Error("Error al obtener la pregunta");
       
       return await response.json();
@@ -33,7 +36,7 @@ export const usePreguntaStore = defineStore("pregunta", () => {
       return null;
     }
   }
-  
+
   return { 
     preguntas, 
     fetchPreguntasByTestId, 

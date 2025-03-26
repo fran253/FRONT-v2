@@ -1,27 +1,27 @@
 <script setup lang="ts">
-// Imports
+// --------------------------- Imports ---------------------------
 import { ref } from "vue";
-import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
 import { useRouter } from "vue-router";
+import { useUsuarioLogeadoStore } from "@/stores/UsuarioLogeado";
+import Headerhome from "@/components/HeaderHome.vue";
 import Footer from "@/components/Footer.vue";
 import HomeInfoSection from "@/components/HomeInfosection.vue";
-import Headerhome from "@/components/HeaderHome.vue"
-import Login from "@/components/Login.vue";
 import Carousel from "@/components/Carrusel.vue";
-import logoImg from "@/assets/images/logo.png";
+import AcademIQ from "@/components/AcademIQ.vue";
+import Login from "@/components/Login.vue";
 
-// Importar imágenes
+// --------------------------- Imágenes ---------------------------
 import imgGradoMedio from "@/assets/images/Carrusel1.jpg";
 import imgGradoSuperior from "@/assets/images/Carrusel2.jpg";
 import imgGradoMedicina from "@/assets/images/Carrusel3.jpg";
+import logoImg from "@/assets/images/logo.png";
 
-// Logo
-const logoSrc = logoImg;
+// --------------------------- Variables ---------------------------
 const router = useRouter();
 const usuarioLogeadoStore = useUsuarioLogeadoStore();
 const mostrarLogin = ref(false);
 
-// Datos para el carrusel
+// --------------------------- Datos del Carrusel ---------------------------
 const slides = ref([
   {
     image: imgGradoMedio,
@@ -42,7 +42,10 @@ const slides = ref([
   },
 ]);
 
-// Función para manejar la entrada a cursos
+// --------------------------- Logo ---------------------------
+const logoSrc = logoImg;
+
+// --------------------------- Función para manejar la entrada a cursos ---------------------------
 const entrarACursos = () => {
   if (usuarioLogeadoStore.estaAutenticado) {
     router.push("/cursos");
@@ -54,21 +57,27 @@ const entrarACursos = () => {
 
 <template>
   <v-app>
+    <!-- --------------------------- Header --------------------------- -->
     <Headerhome />
+    
+    <!-- --------------------------- Contenedor principal --------------------------- -->
     <v-container class="HomePage__Contenedor">
-      <!-- Logo  -->
+      <!-- --------------------------- Logo --------------------------- -->
       <div class="HomePage__LogoContenedor">
-        <img :src="logoSrc" alt="Logo de AcademIQ" class="HomePage__Logo" />
+        <AcademIQ />
       </div>
 
+      <!-- --------------------------- Contenido principal --------------------------- -->
       <v-container class="HomePage__Contenido">
         <section class="HomePage__Seccion">
-          <!-- carrusel -->
+          
+          <!-- --------------------------- Carrusel --------------------------- -->
           <Carousel :slides="slides" @entrarCursos="entrarACursos" />
 
           <div class="HomePage__Divider">
-            <!-- Stepper vuetify -->
+            <!-- --------------------------- Stepper --------------------------- -->
             <v-stepper :items="['Paso 1', 'Paso 2', 'Paso 3', 'Paso 4']" class="HomePage__Stepper">
+              <!-- Paso 1 -->
               <template v-slot:item.1>
                 <v-card title="¡Elige tu CURSO!" flat class="HomePage__StepperCard">
                   <div class="HomePage__CardContent">
@@ -77,6 +86,7 @@ const entrarACursos = () => {
                 </v-card>
               </template>
 
+              <!-- Paso 2 -->
               <template v-slot:item.2>
                 <v-card title="¡Accede a sus ASIGNATURAS!" flat class="HomePage__StepperCard">
                   <div class="HomePage__CardContent">
@@ -85,6 +95,7 @@ const entrarACursos = () => {
                 </v-card>
               </template>
 
+              <!-- Paso 3 -->
               <template v-slot:item.3>
                 <v-card title="¡Descubre todas sus UNIDADES!" flat class="HomePage__StepperCard">
                   <div class="HomePage__CardContent">
@@ -93,6 +104,7 @@ const entrarACursos = () => {
                 </v-card>
               </template>
 
+              <!-- Paso 4 -->
               <template v-slot:item.4>
                 <v-card title="Realiza TEST y explora ARCHIVOS" flat class="HomePage__StepperCard">
                   <div class="HomePage__CardContent">
@@ -106,14 +118,17 @@ const entrarACursos = () => {
       </v-container>
     </v-container>
 
+    <!-- --------------------------- Home Info Section --------------------------- -->
     <HomeInfoSection />
 
+    <!-- --------------------------- Footer --------------------------- -->
     <Footer />
 
+    <!-- --------------------------- Modal de Login --------------------------- -->
     <Login v-if="mostrarLogin" :mostrar="mostrarLogin" @cerrar="mostrarLogin = false" @login-exitoso="router.push('/cursos')" />
   </v-app>
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/pages/Home.scss";
+  @import "@/assets/sass/pages/Home.scss";
 </style>

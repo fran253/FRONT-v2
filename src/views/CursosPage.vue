@@ -1,5 +1,5 @@
 <script setup>
-//imports
+// --------------------------- Imports ---------------------------
 import { ref, computed, onMounted } from 'vue';
 import { useUsuarioLogeadoStore } from '@/stores/UsuarioLogeado';
 import Header from '@/components/Header.vue';
@@ -8,14 +8,13 @@ import Sidebar from '@/components/Sidebar.vue';
 import CardCurso from '@/components/CardCurso.vue';
 import Login from '@/components/Login.vue';
 
+// --------------------------- Breadcrumb ---------------------------
+const items = ref([{ title: 'Cursos', disabled: true, href: '/cursos' }]);
 
-//breadcrumb
-const items = ref([{ title: 'Cursos', disabled: false, href: '/cursos' }]);
-
-// Fetch a la API
+// --------------------------- Fetch de cursos ---------------------------
 const fetchCursos = async () => {
   try {
-    const response = await fetch("/api/Curso", {
+    const response = await fetch("http://localhost:5687/api/Curso", {
       headers: usuarioLogeadoStore.usuarioActual 
         ? { 'Authorization': `Bearer ${usuarioLogeadoStore.usuarioActual.token}` }
         : {}
@@ -29,8 +28,7 @@ const fetchCursos = async () => {
   }
 };
 
-
-//Buscador
+// --------------------------- Buscador ---------------------------
 const searchQuery = ref('');
 const cursosFiltrados = computed(() => {
   if (!searchQuery.value) return cursos.value;
@@ -39,39 +37,42 @@ const cursosFiltrados = computed(() => {
   );
 });
 
-//almacenar datos del curso
+// --------------------------- Almacenar cursos ---------------------------
 const cursos = ref([]);
 
-//variables
+// --------------------------- Variables ---------------------------
 const drawer = ref(false);
 const mostrarLogin = ref(false); 
-// llamada al metodo de Usuario.ts
+
+// --------------------------- Llamada al store de usuario ---------------------------
 const usuarioLogeadoStore = useUsuarioLogeadoStore();
 
-
-//llamada ametodo de mostrar los cursos
+// --------------------------- Llamada al método para obtener cursos ---------------------------
 onMounted(fetchCursos);
-
-
-
 </script>
 
 <template>
   <v-app>
+    <!-- --------------------------- Header --------------------------- -->
     <Header @toggle-sidebar="drawer = !drawer" @update-search="searchQuery = $event" />
 
+    <!-- --------------------------- Breadcrumb --------------------------- -->
     <v-breadcrumbs class="CursosPage___Breadcrumb" :items="items">
       <template v-slot:prepend>
         <v-icon icon="$vuetify" size="small"></v-icon>
       </template>
     </v-breadcrumbs>
 
+    <!-- --------------------------- Contenedor principal --------------------------- -->
     <v-container class="CursosPage__Contenedor">
+      <!-- --------------------------- Sidebar --------------------------- -->
       <Sidebar v-model="drawer" @mostrar-login="mostrarLogin = true" />
 
+      <!-- --------------------------- Contenido --------------------------- -->
       <div class="CursosPage___contenido">
         <v-container class="CursosPage___ContenedorCursos">
           <v-row align="start" justify="start">
+            <!-- --------------------------- Mostrar cursos --------------------------- -->
             <v-col v-for="curso in cursosFiltrados" :key="curso.idCurso" cols="12" sm="6" md="4" lg="3">
               <CardCurso 
                 :id="curso.idCurso"
@@ -86,8 +87,10 @@ onMounted(fetchCursos);
       </div>
     </v-container>
 
+    <!-- --------------------------- Footer --------------------------- -->
     <Footer />
 
+    <!-- --------------------------- Login Modal --------------------------- -->
     <Login 
       v-if="mostrarLogin" 
       :mostrar="mostrarLogin" 
@@ -97,5 +100,5 @@ onMounted(fetchCursos);
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/pages/Cursos.scss";
+  @import "@/assets/sass/pages/Cursos.scss";
 </style>
