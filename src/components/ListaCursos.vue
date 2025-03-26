@@ -5,7 +5,7 @@ import { ref, onMounted, computed } from 'vue';
 // --------------------------- Fetch a la API ---------------------------
 async function fetchCursos() {
   try {
-    const response = await fetch("https://localhost:7278/api/Curso");
+    const response = await fetch("http://localhost:5687/api/Curso");
     if (!response.ok) throw new Error("Error al obtener los cursos");
 
     cursos.value = await response.json();

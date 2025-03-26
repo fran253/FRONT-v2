@@ -13,7 +13,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
   // Obtener todos los usuarios
   async function fetchAllUsuarios() {
     try {
-      const response = await fetch("https://localhost:7278/api/Usuario");
+      const response = await fetch("http://localhost:5687/api/Usuario");
       if (!response.ok) throw new Error("Error al obtener los usuarios");
 
       usuarios.value = await response.json();
@@ -26,7 +26,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
   // Obtener un usuario por ID
   async function fetchUsuarioById(idUsuario: number) {
     try {
-      const response = await fetch(`https://localhost:7278/api/Usuario/${idUsuario}`);
+      const response = await fetch(`http://localhost:5687/api/Usuario/${idUsuario}`);
       if (!response.ok) throw new Error("Error al obtener el usuario");
 
       usuario.value = await response.json();
@@ -41,7 +41,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
   // Crear un nuevo usuario
   async function createUsuario(newUser: UsuarioDTO) {
     try {
-      const response = await fetch("https://localhost:7278/api/Usuario", {
+      const response = await fetch("http://localhost:5687/api/Usuario", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newUser),
@@ -60,7 +60,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
   // Actualizar un usuario existente
   async function updateUsuario(updatedUser: UsuarioDTO) {
     try {
-      const response = await fetch(`https://localhost:7278/api/Usuario/${updatedUser.idUsuario}`, {
+      const response = await fetch(`http://localhost:5687/api/Usuario/${updatedUser.idUsuario}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedUser),
@@ -78,7 +78,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
   // Eliminar un usuario
   async function deleteUsuario(idUsuario: number) {
     try {
-      const response = await fetch(`https://localhost:7278/api/Usuario/${idUsuario}`, {
+      const response = await fetch(`http://localhost:5687/api/Usuario/${idUsuario}`, {
         method: "DELETE",
       });
 

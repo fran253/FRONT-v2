@@ -147,7 +147,7 @@ const registrarUsuario = async () => {
     
     console.log("Datos de registro:", JSON.stringify(nuevoUsuario));
     
-    const response = await fetch("https://localhost:7278/api/Usuario", {
+    const response = await fetch("http://localhost:5687/api/Usuario", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(nuevoUsuario),

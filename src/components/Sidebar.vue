@@ -42,7 +42,7 @@ const expandSidebar = () => (isExpanded.value = true);
     <!-- --------------------------- Información de usuario --------------------------- -->
     <v-list>
       <v-list-item
-        :prepend-avatar="usuarioActual?.avatar || 'https://randomuser.mehttps://localhost:7278/api/portraits/women/85.jpg'"
+        :prepend-avatar="usuarioActual?.avatar || 'https://randomuser.mehttp://localhost:5687/api/portraits/women/85.jpg'"
         :subtitle="usuarioActual?.email || 'Usuario'"
         :title="usuarioActual?.nombre || 'Usuario'"
         @click="expandSidebar">
